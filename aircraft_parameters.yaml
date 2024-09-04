@@ -1,0 +1,19 @@
+aspect_ratio: 7.5
+
+zero_lift_drag_coefficient_estimation:
+  wetted_to_reference_area_ratio: 6  # [-] from fig. 6.2 in ADSEE reader
+  equivalent_friction_coefficient: 0.0032  # [-] from fig. 6.3 in ADSEE reader
+
+  span_efficiency: 0.97  # [-] from page 106 in ADSEE reader
+  lift_dependent_parasite_drag_parameter: 0.0075  # [-] from page 106 in ADSEE reader
+
+  flap_efficiency_penalty: 0.0046  # [/deg] from eq. 7.56 in ADSEE reader
+  flap_zero_lift_penalty: 0.0013  # [/deg] from eq. 7.57 in ADSEE reader
+  gear_zero_lift_penalty: 0.0175  # [-] from eq. 7.58 in ADSEE reader
+
+flap_angle:
+  cruise: 0  # [deg]
+  takeoff: 15  # [deg]
+  landing: 35  # [deg]
+
+
