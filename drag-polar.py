@@ -23,3 +23,5 @@ lift_dependent_parasite_drag_parameter = 0.0075  # [-] from page 106 in ADSEE II
 oswald_efficiency_factor = 1 / (math.pi * aspect_ratio * lift_dependent_parasite_drag_parameter + (1 / span_efficiency))
 
 print("e =", oswald_efficiency_factor)
+def oswald():
+    return oswald_efficiency_factor
