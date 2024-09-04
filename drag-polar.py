@@ -17,7 +17,7 @@ zero_lift_drag_coefficient = equivalent_friction_coefficient * wet_to_ref_area_r
 
 print("CD_0 =", zero_lift_drag_coefficient)
 
-aspect_ratio = 7.8  # [-]
+aspect_ratio = 7.5  # [-]
 span_efficiency = 0.97  # [-] from page 106 in ADSEE II
 lift_dependent_parasite_drag_parameter = 0.0075  # [-] from page 106 in ADSEE II
 oswald_efficiency_factor = 1 / (math.pi * aspect_ratio * lift_dependent_parasite_drag_parameter + (1 / span_efficiency))
