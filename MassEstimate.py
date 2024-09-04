@@ -18,7 +18,7 @@ Rlost = (1/0.7 * LD * (hCR + Vcr**2 /(2*9.80665))) / 1000  #km, lost range from 
 
 Req = (Rnom + Rlost)*(1+fcon) + 1.2*Rdiv + (tE*Vcr)/1000 #km, equivalent range
 ef = 44 #MJ/kg
-nj = 0.39
+nj = 0.207
 
 f_MTOW = 1 - math.e **(-Req/(1000*nj*ef*LD/9.80665))
 print(f_MTOW)
