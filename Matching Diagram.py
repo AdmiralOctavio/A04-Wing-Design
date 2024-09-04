@@ -153,9 +153,19 @@ aero = np.array([[  0.0822, 0.984],     #DOWN, L    - G_119
                  [  0.0192, 0.823],     #UP, CR     - G_121c    - also for every other calculation
                  [  0.0647, 0.984],     #UP, L      - G_121d
                  [  0.0562, 0.892]])    #DOWN, TO   - take-off field length
+
 A = 7.5     #aspect ratio
 Bp = 9      #bypass ratio
 g = 9.80665
+
+reference = np.array([[ 4910,   0.313],
+                      [ 4690,   0.342],
+                      [ 4040,   0.326],
+                      [ 3830,   0.344],
+                      [ 4340,   0.352],
+                      [ 3790,   0.304],
+                      [ 4730,   0.367],
+                      [ 4980,   0.382]])
 
 
 
@@ -188,6 +198,12 @@ for i in range(0,5):
 graph[:,8] = takofdlen()
 plt.plot(graph[:,0], graph[:,8], color = 'm', label = 'take-off field length')
 
+#reference aircraft points
+lab = 'reference aircraft'
+for i in range(len(reference[:,0])):
+    plt.plot(reference[i,0], reference[i,1], marker = 'o', color = 'k', label = lab)
+    lab = '_Hidden label'
+    
 
 
 #design point selection
@@ -198,7 +214,7 @@ else:
 WpS_list = list(graph[:,0])
 TpW_max = ceil(100*max(graph[WpS_list.index(WpS_min),1:]))/100
 print(WpS_min,TpW_max)
-plt.plot(WpS_min, TpW_max, marker = 'o', color = 'k', label = 'design point')
+plt.plot(WpS_min, TpW_max, marker = 'o', color = 'r', label = 'design point')
 
 
 
