@@ -6,16 +6,16 @@ from utils import FlightConfiguration
 with open("aircraft_parameters.yaml") as file:
     aircraft_parameters = yaml.safe_load(file)
 
-aspect_ratio = aircraft_parameters['aspect_ratio']  # [-]
-
 estimation_parameters = aircraft_parameters['zero_lift_drag_coefficient_estimation']
+
+aspect_ratio = aircraft_parameters['aspect_ratio']  # [-]
 wetted_to_reference_area_ratio = estimation_parameters['wetted_to_reference_area_ratio']  # [-]
 equivalent_friction_coefficient = estimation_parameters['equivalent_friction_coefficient']  # [-]
 span_efficiency = estimation_parameters['span_efficiency']  # [-]
 lift_dependent_parasite_drag_parameter = estimation_parameters['lift_dependent_parasite_drag_parameter']  # [-]
-flap_efficiency_penalty = estimation_parameters['flap_efficiency_penalty']
-flap_zero_lift_penalty = estimation_parameters['flap_zero_lift_penalty']
-gear_zero_lift_penalty = estimation_parameters['gear_zero_lift_penalty']
+flap_efficiency_penalty = estimation_parameters['flap_efficiency_penalty']  # [-]
+flap_zero_lift_penalty = estimation_parameters['flap_zero_lift_penalty']  # [-]
+gear_zero_lift_penalty = estimation_parameters['gear_zero_lift_penalty']  # [-]
 
 
 def approximate_reference_wetted_area():
