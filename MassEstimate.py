@@ -8,7 +8,8 @@ tE = 4985 #loiter time
 
 Req = (Rnom + Rlost)*(1+fcon) + 1.2*Rdiv + tE*Vcr #km, equivalent range
 
-AR = 8
-φ = 0.97
-Ψ = 0.0075
-e = 1/(math.pi * AR * 1/φ * Ψ) #oswald efficiency factor
+
+SwSratio = 6 #wet to total area ratio or whatever
+Cd0 = 0.0192 #zero lift drag coef
+e = 0.8232410800988017 #Oswald
+LD = 1/2 * math.sqrt( () / () )
