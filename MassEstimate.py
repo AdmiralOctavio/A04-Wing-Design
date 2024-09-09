@@ -5,9 +5,10 @@ VcrM = 0.77 #mach
 Vcr = VcrM * 296.32 #Cruise speed in m/s
 fcon = 0.05 #contingency fuel ratio
 Rdiv = 250 #km, divergence range
-Rnom = 2574 #km, Nominal 
+Rnom = 2019 #km, Nominal 
 tE = 2700 #loiter time
 hCR = 10668 #m, cruise height
+Mpl = 7200 #kg, design payload mass
 
 B = 9 #Bypass Ratio
 
@@ -35,13 +36,13 @@ def jetEfficiency(B):
 f_MTOW = 1 - math.e **(-Req/(1000*nj*ef*LD/9.80665)) #Fuel / MTOW ratio
 OE_MTOW = 0.566492308 #OE / MTOW ratio
 p_MTOW = 1 - OE_MTOW - f_MTOW #Payload / MTOW ratio
-MTOW = 6355 / p_MTOW
+MTOW = Mpl / p_MTOW
 fuel = MTOW * f_MTOW #kg, fuel mass 
 structure = MTOW * OE_MTOW #kg, structural mass / operating empty
-#print(fuel, structure, MTOW)
+print(fuel, structure, MTOW)
 
 f_landing = 1 - Rnom/Req * f_MTOW
-#print(f_landing)
-#print(Req-Rnom)
+print(f_landing)
+print(Req-Rnom)
 #print(nj)
-print(jetEfficiency(9))
+#print(jetEfficiency(9))
