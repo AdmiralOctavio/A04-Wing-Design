@@ -44,4 +44,4 @@ f_landing = 1 - Rnom/Req * f_MTOW
 #print(f_landing)
 #print(Req-Rnom)
 #print(nj)
-print(jetEfficiency(10))
+print(jetEfficiency(9))

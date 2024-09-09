@@ -16,7 +16,7 @@ R_ferry = 2963
 R_MTOW = 2574
 
 L_over_D = 15.9
-eta_eng = 0.207
+eta_eng = 0.35783466450161727
 g = 9.81 #m/s^2
 e_f = 44000000 #J/kg
 
