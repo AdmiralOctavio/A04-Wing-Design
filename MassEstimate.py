@@ -36,7 +36,11 @@ def jetEfficiency(B):
 f_MTOW = 1 - math.e **(-Req/(1000*nj*ef*LD/9.80665)) #Fuel / MTOW ratio
 OE_MTOW = 0.566492308 #OE / MTOW ratio
 p_MTOW = 1 - OE_MTOW - f_MTOW #Payload / MTOW ratio
+<<<<<<< Updated upstream
 MTOW = Mpl / p_MTOW
+=======
+MTOW = 7200 / p_MTOW
+>>>>>>> Stashed changes
 fuel = MTOW * f_MTOW #kg, fuel mass 
 structure = MTOW * OE_MTOW #kg, structural mass / operating empty
 print(fuel, structure, MTOW)
@@ -44,5 +48,10 @@ print(fuel, structure, MTOW)
 f_landing = 1 - Rnom/Req * f_MTOW
 print(f_landing)
 print(Req-Rnom)
+<<<<<<< Updated upstream
 #print(nj)
 #print(jetEfficiency(9))
+=======
+print(nj)
+print(TSFC)
+>>>>>>> Stashed changes
