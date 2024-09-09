@@ -122,12 +122,12 @@ def takofdlen():
 
 
 
-#dimension of table (entries x functions)
+#x-axis
 limit = 7000    #maximum W/S on diagram
 step = 100
 dimension = int(limit/step)
 
-#initialize graph for matching diagram - first column is W/S
+#initialize graph for matching diagram (T/W on columns)
 graph = np.zeros((dimension,8))
 WpS_list = np.arange(step,step*dimension+1,step)
 
@@ -136,8 +136,8 @@ WpS_list = np.arange(step,step*dimension+1,step)
 #ALL THE INPUT DATA
 
                     #value  #height     #deltaT #CLmax  #Tfrac  #mfrac
-data = np.array([[  60,     0,          0,      2.3,    0.0,    0.91],  #approach speed
-                 [  1210,   0,          0,      2.3,    0.0,    0.91],  #landing field length
+data = np.array([[  60,     0,          0,      2.3,    0.0,    0.926],  #approach speed
+                 [  1210,   0,          0,      2.3,    0.0,    0.926],  #landing field length
                  [  0.77,   10668,      0,      1.5,    1.0,    0.95],  #cruise Mach number
                  [  12.7,   0,          0,      1.5,    1.0,    0.95],  #minimum climb rate
                  [  0.032,  0,          0,      2.3,    1.0,    1.00],  #G_119
