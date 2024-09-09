@@ -6,6 +6,9 @@ Rdiv = 250 #km, divergence range
 Rnom = 2574 #km, Nominal 
 tE = 2700 #loiter time
 hCR = 10668 #m, cruise height
+B = 9 #Bypass Ratio
+
+TSFC = 22*B**(-.19)
 
 AR = 7.5
 SwSratio = 6 #wet to total area ratio or whatever
@@ -17,7 +20,8 @@ Rlost = (1/0.7 * LD * (hCR + Vcr**2 /(2*9.80665))) / 1000  #km, lost range from 
 
 Req = (Rnom + Rlost)*(1+fcon) + 1.2*Rdiv + (tE*Vcr)/1000 #km, equivalent range
 ef = 44 #MJ/kg
-nj = 0.207 #Jet efficiency
+
+nj = Vcr/TSFC/ef #Jet efficiency
 
 f_MTOW = 1 - math.e **(-Req/(1000*nj*ef*LD/9.80665)) #Fuel / MTOW ratio
 OE_MTOW = 0.566492308 #OE / MTOW ratio
@@ -28,5 +32,6 @@ structure = MTOW * OE_MTOW #kg, structural mass / operating empty
 print(fuel, structure, MTOW)
 
 f_landing = 1 - Rnom/Req * f_MTOW
-#print(f_landing)
-#print(Req-Rnom)
+print(f_landing)
+print(Req-Rnom)
+print(nj)
