@@ -2,8 +2,6 @@ from matplotlib import pyplot as plt
 import numpy as np
 from math import sqrt, pi, ceil
 
-
-
 #ISA calculator (under 11km)
 def ISA(h, deltaT):
     T0 = 288.15 + deltaT

@@ -1,11 +1,12 @@
 import math
 VcrM = 0.77 #mach
-Vcr = VcrM * 296.32
+Vcr = VcrM * 296.32 #Cruise speed in m/s
 fcon = 0.05 #contingency fuel ratio
 Rdiv = 250 #km, divergence range
 Rnom = 2574 #km, Nominal 
 tE = 2700 #loiter time
 hCR = 10668 #m, cruise height
+Bp = 9
 
 AR = 7.5
 SwSratio = 6 #wet to total area ratio or whatever
