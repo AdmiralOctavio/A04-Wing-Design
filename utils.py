@@ -9,3 +9,7 @@ class FlightConfiguration(Enum):
     CRUISE = "cruise"
     TAKEOFF = "takeoff"
     LANDING = "landing"
+
+def jetEfficiency(B):
+    TSFC = 22 * B**(-.19)
+    return Vcr/TSFC/ef

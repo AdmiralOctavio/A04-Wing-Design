@@ -28,11 +28,6 @@ ef = 44 #MJ/kg
 global nj
 nj = Vcr/TSFC/ef #Jet efficiency
 
-def jetEfficiency(B):
-    TSFC = 22 * B**(-.19)
-    return Vcr/TSFC/ef
-
-
 def main(Rnom, Mpl):
     Req = (Rnom + Rlost)*(1+fcon) + 1.2*Rdiv + (tE*Vcr)/1000 #km, equivalent range
     f_MTOW = 1 - math.e **(-Req/(1000*nj*ef*LD/9.80665)) #Fuel / MTOW ratio
