@@ -12,46 +12,36 @@ Mpl = 7200 #kg, design payload mass
 
 B = 9 #Bypass Ratio
 
-TSFC = 22*B**(-.19)
+TSFC = 22*B**(-.19) #Thrust specific fuel consumption
 
-AR = 7.5
+AR = 7.5 #Aspect ratio duh
 SwSratio = 6 #wet to total area ratio or whatever
 Cd0 = 0.0192 #zero lift drag coef
 e = 0.8280596821832961 #Oswald
+global LD
 LD = 1/2 * math.sqrt( (math.pi * AR * e) / (Cd0) )#Lift drag ratio
-
+global Rlost
 Rlost = (1/0.7 * LD * (hCR + Vcr**2 /(2*9.80665))) / 1000  #km, lost range from drag
 
-Req = (Rnom + Rlost)*(1+fcon) + 1.2*Rdiv + (tE*Vcr)/1000 #km, equivalent range
 global ef
 ef = 44 #MJ/kg
-
+global nj
 nj = Vcr/TSFC/ef #Jet efficiency
 
 def jetEfficiency(B):
-    
     TSFC = 22 * B**(-.19)
     return Vcr/TSFC/ef
 
-f_MTOW = 1 - math.e **(-Req/(1000*nj*ef*LD/9.80665)) #Fuel / MTOW ratio
-OE_MTOW = 0.566492308 #OE / MTOW ratio
-p_MTOW = 1 - OE_MTOW - f_MTOW #Payload / MTOW ratio
 
-MTOW = Mpl / p_MTOW
+def main(Rnom, Mpl):
+    Req = (Rnom + Rlost)*(1+fcon) + 1.2*Rdiv + (tE*Vcr)/1000 #km, equivalent range
+    f_MTOW = 1 - math.e **(-Req/(1000*nj*ef*LD/9.80665)) #Fuel / MTOW ratio
+    OE_MTOW = 0.566492308 #OE / MTOW ratio
+    p_MTOW = 1 - OE_MTOW - f_MTOW #Payload / MTOW ratio
+    MTOW = Mpl / p_MTOW
+    fuel = MTOW * f_MTOW #kg, fuel mass 
+    structure = MTOW * OE_MTOW #kg, structural mass / operating empty
+    f_landing = 1 - Rnom/Req * f_MTOW #Landing mass fraction
+    print(f_MTOW, fuel, structure, f_landing, MTOW)
 
-MTOW = 7200 / p_MTOW
-
-fuel = MTOW * f_MTOW #kg, fuel mass 
-structure = MTOW * OE_MTOW #kg, structural mass / operating empty
-print(fuel, structure, MTOW)
-
-f_landing = 1 - Rnom/Req * f_MTOW
-print(f_landing)
-print(Req-Rnom)
-
-#print(nj)
-#print(jetEfficiency(9))
-
-print(nj)
-print(TSFC)
-
+main(int(input("Enter Rnom: ")), int(input("Enter Mpl: ")))
