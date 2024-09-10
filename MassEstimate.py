@@ -37,6 +37,8 @@ def main(Rnom, Mpl):
     fuel = MTOW * f_MTOW #kg, fuel mass 
     structure = MTOW * OE_MTOW #kg, structural mass / operating empty
     f_landing = 1 - Rnom/Req * f_MTOW #Landing mass fraction
-    print(f_MTOW, fuel, structure, f_landing, MTOW)
+    #print(f_MTOW, fuel, structure, f_landing, MTOW)
+    print(structure)
 
-main(int(input("Enter Rnom: ")), int(input("Enter Mpl: ")))
+main(2019, 7200)
+main(2574, 6355)
