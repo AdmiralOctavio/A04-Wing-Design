@@ -38,7 +38,7 @@ def main(Rnom, Mpl):
     structure = MTOW * OE_MTOW #kg, structural mass / operating empty
     f_landing = 1 - Rnom/Req * f_MTOW #Landing mass fraction
     #print(f_MTOW, fuel, structure, f_landing, MTOW)
-    print(structure)
+    print(MTOW)
 
-main(2019, 7200)
-main(2574, 6355)
+main(2019, 7200) #design
+main(2574, 6355) #full MTOW
