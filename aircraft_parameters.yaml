@@ -16,4 +16,29 @@ flap_angle:
   takeoff: 15  # [deg]
   landing: 35  # [deg]
 
+requirements:
+  # TLARs
+  maximum_payload: 9302  # [kg]
+  cruise_mach: 0.77  # [Mach]
+  cruise_altitude: 35000  # [feet]
+  take_off_distance: 1296  # [m]
+  landing_distance: 1210  # [m]
+  nominal_range: 2019  # [km]
+  design_payload: 7200  # [kg]
+  mtow_range: 2574  # [m]
+  mtow_payload: 6355  # [kg]
+  ferry_range: 2963  # [km]
+
+  # Other Requirements
+  diversion_range: 250  # [km] TODO: Where does this come from?
+  fuel_contingency_ratio: 0.05  # [-]
+  loiter_time: 2700  # [secs]
+
+engine:
+  bypass_ratio: 9  # [-]
+  specific_energy: 44  # [MJ/kg]
+
+
+
+
 
