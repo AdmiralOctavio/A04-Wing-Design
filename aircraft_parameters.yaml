@@ -1,4 +1,5 @@
 aspect_ratio: 7.5
+gravity: 9.80665  # [m/s^2]
 
 zero_lift_drag_coefficient_estimation:
   wetted_to_reference_area_ratio: 6  # [-] from fig. 6.2 in ADSEE reader
@@ -37,6 +38,10 @@ requirements:
 engine:
   bypass_ratio: 9  # [-]
   specific_energy: 44  # [MJ/kg]
+
+matching_diagram_requirements:
+  approach_speed:
+    value: 60  # [m/s]
 
 
 
