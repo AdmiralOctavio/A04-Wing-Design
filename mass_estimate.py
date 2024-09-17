@@ -76,6 +76,88 @@ def calculate_class_i_estimation(
     return mtow, fuel_mass, operating_empty_mass, landing_mass_fraction
 
 
+def calculate_design_equivalent_range():
+    # Load Parameters
+    with open("aircraft_parameters.yaml") as file:
+        aircraft_parameters = yaml.safe_load(file)
+
+    requirements = aircraft_parameters['requirements']
+
+    cruise_mach = requirements['cruise_mach']  # [Mach]
+    cruise_altitude_feet = requirements['cruise_altitude']  # [feet]
+
+    cruise_altitude = convert_feet_to_meters(cruise_altitude_feet)  # [m]
+    speed_of_sound_at_cruise = get_speed_of_sound(cruise_altitude)  # [m/s]
+    cruise_speed = cruise_mach * speed_of_sound_at_cruise  # [m/s]
+
+    fuel_contingency_ratio = requirements['fuel_contingency_ratio']  # [-]
+    diversion_range = requirements['diversion_range'] * 1000  # [m]
+    nominal_range = requirements['nominal_range'] * 1000  # [m]
+    loiter_time = requirements['loiter_time']  # [secs]
+
+    aspect_ratio = aircraft_parameters['aspect_ratio']  # [-]
+
+    return calculate_equivalent_range(nominal_range, diversion_range, loiter_time, fuel_contingency_ratio,
+                                      cruise_speed, cruise_altitude, aspect_ratio)  # [m]
+
+
+def calculate_design_mtow():
+    return get_aircraft_values()[0]
+
+
+def calculate_fuel_mass():
+    return get_aircraft_values()[1]
+
+
+def calculate_operating_empty_mass():
+    return get_aircraft_values()[2]
+
+
+def calculate_landing_mass_fraction():
+    return get_aircraft_values()[3]
+
+
+def get_aircraft_values():
+    # Load Parameters
+    with open("aircraft_parameters.yaml") as file:
+        aircraft_parameters = yaml.safe_load(file)
+
+    requirements = aircraft_parameters['requirements']
+    engine_parameters = aircraft_parameters['engine']
+
+    cruise_mach = requirements['cruise_mach']  # [Mach]
+    cruise_altitude_feet = requirements['cruise_altitude']  # [feet]
+
+    cruise_altitude = convert_feet_to_meters(cruise_altitude_feet)  # [m]
+    speed_of_sound_at_cruise = get_speed_of_sound(cruise_altitude)  # [m/s]
+    cruise_speed = cruise_mach * speed_of_sound_at_cruise  # [m/s]
+
+    fuel_contingency_ratio = requirements['fuel_contingency_ratio']  # [-]
+    diversion_range = requirements['diversion_range'] * 1000  # [m]
+    nominal_range = requirements['nominal_range'] * 1000  # [m]
+    loiter_time = requirements['loiter_time']  # [secs]
+
+    design_payload = requirements['design_payload']  # [kg]
+
+    design_bypass_ratio = engine_parameters['bypass_ratio']  # [-]
+    specific_energy = engine_parameters['specific_energy']  # [MJ/kg]
+
+    aspect_ratio = aircraft_parameters['aspect_ratio']  # [-]
+
+    mtow_range = requirements['mtow_range'] * 1000  # [m]
+    mtow_payload = requirements['mtow_payload']  # [kg]
+
+    ferry_range = requirements['ferry_range'] * 1000  # [m]
+
+    # Mission Profile 1: Design Range at Design Payload Mass
+    mtow, fuel_mass, operating_empty_mass, landing_mass_fraction = (
+        calculate_class_i_estimation(nominal_range, diversion_range, loiter_time, fuel_contingency_ratio,
+                                     cruise_speed, cruise_altitude, design_bypass_ratio, specific_energy,
+                                     aspect_ratio, design_payload))
+
+    return mtow, fuel_mass, operating_empty_mass, landing_mass_fraction
+
+
 def main():
     # Load Parameters
     with open("aircraft_parameters.yaml") as file:
@@ -106,6 +188,8 @@ def main():
     mtow_range = requirements['mtow_range'] * 1000  # [m]
     mtow_payload = requirements['mtow_payload']  # [kg]
 
+    ferry_range = requirements['ferry_range'] * 1000  # [m]
+
     # Mission Profile 1: Design Range at Design Payload Mass
     profile1_mtow, profile1_fuel_mass, profile1_operating_empty_mass, profile1_landing_mass_fraction = (
         calculate_class_i_estimation(nominal_range, diversion_range, loiter_time, fuel_contingency_ratio,
@@ -126,11 +210,25 @@ def main():
                                      cruise_speed, cruise_altitude, design_bypass_ratio, specific_energy,
                                      aspect_ratio, mtow_payload))
 
-    print(f"Profile 2: Design Range ({mtow_range / 1000:.0f} km) at Design Payload Mass ({mtow_payload} kg):")
+    print(f"Profile 2: MTOW Range ({mtow_range / 1000:.0f} km) at MTOW ({mtow_payload} kg):")
     print(f"\tMTOW: {profile2_mtow} kg")
     print(f"\tFuel Mass: {profile2_fuel_mass} kg")
     print(f"\tOEM: {profile2_operating_empty_mass}")
     print(f"\tLanding Mass Fraction: {profile2_landing_mass_fraction}")
+
+    print()
+
+    # Mission Profile 3: Ferry Range at 0 Payload
+    profile3_mtow, profile3_fuel_mass, profile3_operating_empty_mass, profile3_landing_mass_fraction = (
+        calculate_class_i_estimation(ferry_range, diversion_range, loiter_time, fuel_contingency_ratio,
+                                     cruise_speed, cruise_altitude, design_bypass_ratio, specific_energy,
+                                     aspect_ratio, 0))
+
+    print(f"Profile 3: Ferry Range ({ferry_range / 1000:.0f} km) with no payload:")
+    print(f"\tMTOW: {profile3_mtow} kg")
+    print(f"\tFuel Mass: {profile3_fuel_mass} kg")
+    print(f"\tOEM: {profile3_operating_empty_mass}")
+    print(f"\tLanding Mass Fraction: {profile3_landing_mass_fraction}")
 
 
 if __name__ == "__main__":
