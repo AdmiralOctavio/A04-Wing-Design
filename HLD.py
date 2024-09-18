@@ -10,3 +10,7 @@ Fixed_Slot = 0.2
 Leading_edge = 0.3
 Kruger = 0.3
 Slat = 0.4 #c' / c
+
+#For full wing
+CL_takeoff = 1.9
+CL_landing = 2.3
