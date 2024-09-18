@@ -23,8 +23,8 @@ Tip_chord = Taper * Root_chord
 print(Span)
 print(Root_chord,Tip_chord, 'metres')
 
+
 print(MTOW,'kg', nj)
 
-dihedral = 3 - Sweep * 180 / math.pi / 10 + 2
-
+dihedral = 3 - Sweep * 180 / math.pi / 10 - 2
 print(dihedral, 'degrees')
