@@ -27,9 +27,18 @@ AR = aircraft_parameters['aspect_ratio']
 ZL = aircraft_parameters['zero_lift_drag_coefficient_estimation']
 e = ZL['euler_efficiency']
 
-def LiftCoefficient(Slat, Flap, Cl): 
+def LiftCoefficient(Slat, Flap, Cl, Sf): 
     #Slat, Flap, Cl
-    ClTot = Slat + Flap + Cl
-    CL = ClTot / (1 + ClTot/(AR * math.pi * e) )
-    return CL
-print(LiftCoefficient(0.4, 0.9, 1))
+    #Flap dCl is localised to the region where its acting, S'/S fraction has to be included (Sf).
+    ClTot = Slat + (Flap * Sf) + Cl #I need to take into account the fact that the flaps only act on part of the wing, slats are full leading edge.
+    return ClTot / (1 + ClTot/(AR * math.pi * e) )
+
+ClVal1 = []
+ClVal2 = []
+for i in range(50, 100, 5):
+    ClVal1.append(LiftCoefficient(Slat, Plain, 1.598, i/100))
+    ClVal2.append(LiftCoefficient(Fixed_Slot, Fowler, 1.598, i/100))
+
+    print(str(ClVal1[int((i-50)/5)]) + " " + str(i) + "%  | 1")
+    print(str(ClVal2[int((i-50)/5)]) + " " + str(i) + "%  | 2")
+    print("\n")
