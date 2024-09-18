@@ -7,6 +7,7 @@ zero_lift_drag_coefficient_estimation:
 
   span_efficiency: 0.97  # [-] from page 106 in ADSEE reader
   lift_dependent_parasite_drag_parameter: 0.0075  # [-] from page 106 in ADSEE reader
+  euler_efficiency: 0.8280596821832961
 
   flap_efficiency_penalty: 0.0046  # [/deg] from eq. 7.56 in ADSEE reader
   flap_zero_lift_penalty: 0.0013  # [/deg] from eq. 7.57 in ADSEE reader
