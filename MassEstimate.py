@@ -12,7 +12,6 @@ Mpl = 7200 #kg, design payload mass
 
 B = 9 #Bypass Ratio
 
-<<<<<<< Updated upstream
 TSFC = 22*B**(-.19) #Thrust specific fuel consumption
 
 AR = 7.5 #Aspect ratio duh
@@ -49,7 +48,7 @@ def ferry():
     MTOW = OE/OE_MTOW
     Fuel = MTOW - OE
     return OE_MTOW, MTOW, Fuel
-=======
+
 TSFC = 22*B**(-.19)
 
 AR = 7.5
@@ -61,7 +60,7 @@ LD = 1/2 * math.sqrt( (math.pi * AR * e) / (Cd0) )#Lift drag ratio
 Rlost = (1/0.7 * LD * (hCR + Vcr**2 /(2*9.80665))) / 1000  #km, lost range from drag
 
 Req = (Rnom + Rlost)*(1+fcon) + 1.2*Rdiv + (tE*Vcr)/1000 #km, equivalent range
-global ef
+
 ef = 44 #MJ/kg
 
 nj = Vcr/TSFC/ef #Jet efficiency
@@ -90,5 +89,3 @@ f_landing = 1 - Rnom/Req * f_MTOW
 #print(nj)
 #print(jetEfficiency(9))
 #print(TSFC)
-
->>>>>>> Stashed changes

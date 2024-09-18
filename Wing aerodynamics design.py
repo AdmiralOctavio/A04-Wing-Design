@@ -11,7 +11,6 @@ Sw = MTOW * g / Wing_load
 AR = 7.5
 
 
-
 Sweep = math.acos(1.16/(Mcr+0.5))
 print(Sweep * 180 / math.pi, 'degrees')
 
