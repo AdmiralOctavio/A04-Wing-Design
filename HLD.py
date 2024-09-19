@@ -1,5 +1,7 @@
 import math
 import yaml
+#Go to bottom of program if you want to check different configurations
+f = open("HLD_Data.txt", "w")
 
 #Taken from ADSEE II Slides
 #Delta Cl (For airfoil!):
@@ -28,22 +30,31 @@ AR = aircraft_parameters['aspect_ratio']
 ZL = aircraft_parameters['zero_lift_drag_coefficient_estimation']
 e = ZL['euler_efficiency']
 
-def LiftCoefficient(Slat, Flap, Cl, Sf): 
-    #Slat, Flap, Cl
-    #Flap dCl is localised to the region where its acting, S'/S fraction has to be included (Sf).
-    ClTot = Slat + (Flap * Sf) + Cl
-    #Official eq: dCL = 0.9 * dCl * Swf/Sw * cos(HingeAngle)
-    #Interpreted: CL = [ 1 + ClTot/(AR * math.pi * e) ] * ClTot * Swf/Sw * cos(HingeAngle)
-    #0.9 coefficient is probably from 1 + ClTot/(AR * math.pi * e)
-    #What is Swf/Sw and Hinge Angle ??
-    return ClTot / (1 + ClTot/(AR * math.pi * e) )
+'''
+    Flap dCl is localised to the region where its acting, S'/S fraction has to be included (Sf).
+    Official eq: dCL = 0.9 * dCl * Swf/Sw * cos(HingeAngle)
+    Interpreted: CL = [ 1 + ClTot/(AR * math.pi * e) ] * ClTot * Swf/Sw * cos(HingeAngle)
+    0.9 coefficient is probably from 1 + ClTot/(AR * math.pi * e)
+'''
+def LiftCoefficient(Slat, Flap, Cl):
+    f.write("CL:         Wing Fraction:       Wetted Area Ratio: \n")
 
-ClVal1 = []
-ClVal2 = []
-for i in range(50, 100, 5):
-    #ClVal1.append(LiftCoefficient(Slat, Plain, 1.598, i/100))
-    ClVal2.append(LiftCoefficient(Slat, Double_Slotted, 1.323, i/100))
+    for Wf in range(50, 100, 5):
+        ClTot = Slat + (Flap * Wf/100) + Cl
+        CLValues = [] 
+        Swf = []
 
-    #print(str(ClVal1[int((i-50)/5)]) + " " + str(i) + "%  | 1")
-    print(str(  round(ClVal2[int((i-50)/5)], 3)  ) + " " + str(i) + "%")
-    #print("\n")
+        for i in range (10):
+            Swf.append((i / 100) + 1)
+            CLValues.append( ( ClTot / ( 1 + ClTot/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9)))
+
+        for j in range(10):
+            if round(CLValues[j], 3) >= 2.3:
+                full = ("%.3f" % round(CLValues[j], 3)) + "*            " + str(Wf/100) + "%                  " + str(Swf[j]) + "\n"
+            else: full = ("%.3f" % round(CLValues[j], 3)) + "             " + str(Wf/100) + "%                  " + str(Swf[j]) + "\n"
+            f.writelines(full) 
+        f.write("\n" * 2)
+
+LiftCoefficient(Slat, Double_Slotted, 1.323)
+#Just input configuration here! ^^^^
+#Check HLD_Data.txt for results 
