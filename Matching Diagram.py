@@ -2,6 +2,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 from math import sqrt, pi, ceil
 
+
+
 #ISA calculator (under 11km)
 def ISA(h, deltaT):
     T0 = 288.15 + deltaT
@@ -61,7 +63,7 @@ def maxspd():
     V = M*sqrt(401.8*T)
     T1 = CD0*rho*V**2 * 0.5
     T2 = 2/(pi*e*A*rho*V**2)
-    TpW_min = B/a*(T1/(B*graph[:,0]) + B*graph[:,0]*T2)
+    TpW_min = B/a*(T1/(B*WpS_list) + B*WpS_list*T2)
     return TpW_min
 
 def climbrate():
@@ -76,7 +78,7 @@ def climbrate():
     CL_LpD_max = sqrt(pi*e*A*CD0)
     p, T, rho = ISA(h,deltaT)
 
-    V = np.sqrt(graph[:,0]*2/(rho*CL_LpD_max))
+    V = np.sqrt(WpS_list*2/(rho*CL_LpD_max))
     M = V/sqrt(401.8*T)
     a = lapserate(M,T,p)
     TpW_min = B/a*(c/V+2*CD0/CL_LpD_max)
@@ -94,7 +96,7 @@ def climbgrad(i):
     CL_LpD_max = sqrt(pi*e*A*CD0)
     p, T, rho = ISA(h,deltaT)
 
-    V = np.sqrt(graph[:,0]*2/(rho*CL_LpD_max))
+    V = np.sqrt(WpS_list*2/(rho*CL_LpD_max))
     M = V/sqrt(401.8*T)
     a = lapserate(M,T,p)
     TpW_min = 1/Tfrac*B/a*(G+2*CD0/CL_LpD_max)
@@ -112,30 +114,31 @@ def takofdlen():
     CL_LpD_max = sqrt(pi*e*A*CD0)
     p, T, rho = ISA(h,deltaT)
 
-    V = np.sqrt(graph[:,0]*2/(rho*CLmax))
+    V = np.sqrt(WpS_list*2/(rho*CLmax))
     M = V/sqrt(401.8*T)
     a = lapserate(M,T,p)
-    TpW_min = 1.15*a*np.sqrt(1/Tfrac*graph[:,0]/(0.85*pi*Lto*rho*g*A*e)) + 1/Tfrac*4*11/Lto
+    TpW_min = 1.15*a*np.sqrt(1/Tfrac*WpS_list/(0.85*pi*Lto*rho*g*A*e)) + 1/Tfrac*4*11/Lto
     return TpW_min
 
 
 
-#dimension of table (entries x functions)
-dimension = (70,10)
+#x-axis
+limit = 7000    #maximum W/S on diagram
 step = 100
+dimension = int(limit/step)
 
-#initialize graph for matching diagram - first column is W/S
-graph = np.zeros(dimension)
-graph[:,0] = np.arange(step,step*dimension[0]+1,step)
+#initialize graph for matching diagram (T/W on columns)
+graph = np.zeros((dimension,8))
+WpS_list = np.arange(step,step*dimension+1,step)
 
 
 
 #ALL THE INPUT DATA
 
                     #value  #height     #deltaT #CLmax  #Tfrac  #mfrac
-data = np.array([[  60,     0,          0,      2.3,    0.0,    0.85],  #minimum speed
-                 [  1210,   0,          0,      2.3,    0.0,    0.85],  #landing field length
-                 [  0.77,   10668,      0,      1.5,    1.0,    0.95],  #maximum speed (mach)
+data = np.array([[  60,     0,          0,      2.3,    0.0,    0.926],  #approach speed
+                 [  1210,   0,          0,      2.3,    0.0,    0.926],  #landing field length
+                 [  0.77,   10668,      0,      1.5,    1.0,    0.95],  #cruise Mach number
                  [  12.7,   0,          0,      1.5,    1.0,    0.95],  #minimum climb rate
                  [  0.032,  0,          0,      2.3,    1.0,    1.00],  #G_119
                  [  0,      0,          0,      1.9,    0.5,    1.00],  #G_121a
@@ -154,8 +157,9 @@ aero = np.array([[  0.0822, 0.984],     #DOWN, L    - G_119
 
 A = 7.5     #aspect ratio
 Bp = 9      #bypass ratio
-g = 9.80665
+g = 9.80665 #gravity
 
+#reference aircraft W/S and T/W
 reference = np.array([[ 4910,   0.313],
                       [ 4690,   0.342],
                       [ 4040,   0.326],
@@ -169,32 +173,32 @@ reference = np.array([[ 4910,   0.313],
 
 #MAKING THE GRAPH
 
-#minimum speed
+#approach speed
 WpS_1 = minspd()
-plt.axvline(x = WpS_1, color = 'b', label = 'minimum speed')
+plt.axvline(x = WpS_1, color = 'b', label = 'approach speed')
 
 #landing field length
 WpS_2 = landfdlen()
 plt.axvline(x = WpS_2, color = 'r', label = 'landing field length')
 
-#cruise speed
-graph[:,1] = maxspd()
-plt.plot(graph[:,0], graph[:,1], color = 'g', label = 'maximum speed')
+#cruise Mach number
+graph[:,0] = maxspd()
+plt.plot(WpS_list, graph[:,0], color = 'g', label = 'cruise Mach number')
 
 #climb rate
-graph[:,2] = climbrate()
-plt.plot(graph[:,0], graph[:,2], color = 'y', label = 'climb rate')
+graph[:,1] = climbrate()
+plt.plot(WpS_list, graph[:,1], color = 'y', label = 'climb rate')
 
 #climb gradients
 lab = 'climb gradient'
 for i in range(0,5):
-    graph[:,3+i] = climbgrad(i)
-    plt.plot(graph[:,0], graph[:,3+i], color = 'c', label = lab)
+    graph[:,2+i] = climbgrad(i)
+    plt.plot(WpS_list, graph[:,2+i], color = 'c', label = lab)
     lab = '_Hidden label'
 
 #take-off field length
-graph[:,8] = takofdlen()
-plt.plot(graph[:,0], graph[:,8], color = 'm', label = 'take-off field length')
+graph[:,7] = takofdlen()
+plt.plot(WpS_list, graph[:,7], color = 'm', label = 'take-off field length')
 
 #reference aircraft points
 lab = 'reference aircraft'
@@ -209,8 +213,9 @@ if WpS_1 < WpS_2:
     WpS_min = WpS_1 - WpS_1%step
 else:
     WpS_min = WpS_2 - WpS_2%step
-WpS_list = list(graph[:,0])
-TpW_max = ceil(100*max(graph[WpS_list.index(WpS_min),1:]))/100
+
+WpS_list = list(WpS_list)
+TpW_max = ceil(100*max(graph[WpS_list.index(WpS_min),:]))/100
 print(WpS_min,TpW_max)
 plt.plot(WpS_min, TpW_max, marker = 'o', color = 'r', label = 'design point')
 
@@ -221,9 +226,8 @@ plt.title('Matching diagram')
 plt.legend()
 plt.xlabel('W/S [N/m^2]')
 plt.ylabel('T/W [N/N]')
-plt.xlim(0,dimension[0]*step)
+plt.xlim(0,dimension*step)
 plt.ylim(0,0.5)
 plt.grid()
 plt.show()
-
-
+#plt.savefig('MatchingDiagram.jpg')
