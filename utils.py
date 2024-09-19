@@ -1,6 +1,8 @@
 import math
 from enum import Enum
 
+import numpy as np
+
 from isa import get_temperature
 
 
@@ -21,3 +23,27 @@ def convert_feet_to_meters(feet: float) -> float:
 def get_speed_of_sound(altitude: float) -> float:
     temperature = get_temperature(altitude)
     return math.sqrt(1.4 * 287 * temperature)
+
+
+def load_airfoil_data(filename: str) -> tuple[list[float], list[float]]:
+    with open(filename, "r") as file:
+        points_x = []
+        points_y = []
+
+        lines = file.readlines()
+
+        for line in lines[1:-1]:
+            raw_points_str = line.split(" ")
+
+            points_x.append(float(raw_points_str[0]))
+            points_y.append(float(raw_points_str[1]))
+
+        return points_x, points_y
+
+
+def polygon_area(x_points, y_points):
+    return 0.5 * np.abs(np.dot(x_points, np.roll(y_points, 1)) - np.dot(y_points, np.roll(x_points, 1)))
+
+
+def lerp(a, b, t):
+    return a + (b - a) * t
