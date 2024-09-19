@@ -43,4 +43,4 @@ engine:
   num_engines: 2  # [-]
 
 wing:
-  wing_area: 70  # [m^2] TODO: Update with iteration (currently based on ref. aircraft)
+  wing_area: 70  # [m^2]

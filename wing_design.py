@@ -106,11 +106,15 @@ def main():
     root_chord = calculate_root_chord(wing_area, taper_ratio, wing_span)
     tip_chord = calculate_tip_chord(taper_ratio, root_chord)
 
+    wing_area = (root_chord + tip_chord) * (wing_span / 2)
+
     # print(f"quarter chord sweep angle = {math.degrees(quarter_chord_sweep_angle)} [deg]")
     # print(f"taper ratio = {taper_ratio} [-]")
-    # print(f"wing span = {wing_span} [m]")
-    # print(f"root chord = {root_chord} [m]")
-    # print(f"tip chord = {tip_chord} [m]")
+    print(f"wing half span = {wing_span / 2:.2f} [m]")
+    print(f"root chord = {root_chord / 2:.2f} [m]")
+    print(f"tip chord = {tip_chord / 2:.2f} [m]")
+
+    print(f"full wing area = {wing_area:.2f} [m^2]")
 
     airfoil_geometries = []
     wing_volumes = []
@@ -201,6 +205,10 @@ def main():
         pygame.draw.line(screen, "black", right_tip_chord_leading_edge, right_tip_chord_trailing_edge, 2)
         pygame.draw.line(screen, "black", left_tip_chord_leading_edge, left_tip_chord_trailing_edge, 2)
 
+        tip_label, _ = text_renderer.render(f"{tip_chord:.2f} m", "black")
+        screen.blit(tip_label, (right_tip_chord_leading_edge[0] + 10,
+                                (right_tip_chord_leading_edge[1] + right_tip_chord_trailing_edge[1]) / 2))
+
         # Leading Edges
         pygame.draw.line(screen, "black", root_chord_leading_edge, right_tip_chord_leading_edge, 2)
         pygame.draw.line(screen, "black", root_chord_leading_edge, left_tip_chord_leading_edge, 2)
@@ -225,7 +233,7 @@ def main():
             wing_volume = wing_volumes[i]
 
             text_surface, text_rect = text_renderer.render(f"{airfoil_name}; wing volume of {wing_volume:.2f} [m^3]",
-                                                         "black")
+                                                           "black")
             screen.blit(text_surface, (airfoil_center[0] + (airfoil_chord_length / 2) + 20, airfoil_center[1] - 10))
 
         pygame.display.flip()
