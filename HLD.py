@@ -40,19 +40,24 @@ def LiftCoefficient(Slat, Flap, Cl):
     f.write("CL:         Wing Fraction:       Wetted Area Ratio: \n")
 
     for Wf in range(50, 100, 5):
-        ClTot = Slat + (Flap * Wf/100) + Cl
+        ClTot = Slat + (Flap * Wf/100) + Cl #Maths 
         CLValues = [] 
         Swf = []
 
         for i in range (10):
             Swf.append((i / 100) + 1)
-            CLValues.append( ( ClTot / ( 1 + ClTot/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9)))
+            CLValues.append( ( ClTot / ( 1 + ClTot/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9))) #Also maths
 
+        #This is just for a nice output
         for j in range(10):
+
             if round(CLValues[j], 3) >= 2.3:
                 full = ("%.3f" % round(CLValues[j], 3)) + "*            " + str(Wf/100) + "%                  " + str(Swf[j]) + "\n"
+
             else: full = ("%.3f" % round(CLValues[j], 3)) + "             " + str(Wf/100) + "%                  " + str(Swf[j]) + "\n"
+
             f.writelines(full) 
+            
         f.write("\n" * 2)
 
 LiftCoefficient(Slat, Double_Slotted, 1.323)
