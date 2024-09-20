@@ -4,16 +4,16 @@ import yaml
 
 #Taken from ADSEE II Slides
 #Delta Cl (For airfoil!):
-Plain = 0.9
-Slotted = 1.3
-Fowler = 1.3 #c' / c
-Double_Slotted = 1.6 #c' / c
-Triple_Slotted = 1.9# c' / c
+Plain = (0.9, "Plain")
+Slotted = (1.3,"Slotted")
+Fowler = (1.3, "Fowler") #c' / c
+Double_Slotted = (1.6, "Double_Slotted") #c' / c
+Triple_Slotted = (1.9, "Triple_Slotted")# c' / c
 
-Fixed_Slot = 0.2
-Leading_edge = 0.3
-Kruger = 0.3
-Slat = 0.4 #c' / c
+Fixed_Slot = (0.2, "Fixed_Slot")
+Leading_edge = (0.3,"Leading_edge")
+Kruger = (0.3, "Kruger")
+Slat = (0.4, "Slat") #c' / c
 
 #For full wing
 CL_takeoff = 1.9
@@ -36,11 +36,11 @@ e = ZL['euler_efficiency']
     0.9 coefficient is probably from 1 + ClTot/(AR * math.pi * e)
 '''
 def LiftCoefficient(Slat, Flap, Cl):
-    f = open("HLD_DataSF.txt", "w")
+    f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
     f.write("CL:         Wing Fraction:       Wetted Area Ratio: \n")
 
     for Wf in range(50, 100, 5):
-        ClTot = Slat + (Flap * Wf/100) + Cl #Maths 
+        ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths 
         CLValues = [] 
         Swf = []
 
@@ -60,6 +60,6 @@ def LiftCoefficient(Slat, Flap, Cl):
 
         f.write("\n" * 2)
 
-LiftCoefficient(Slat, Fowler, 1.323)
+LiftCoefficient(Kruger, Double_Slotted, 1.323)
 #Just input configuration here! ^^^^
 #Check HLD_Data.txt for results 
