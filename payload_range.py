@@ -32,7 +32,7 @@ ferry_range = requirements['ferry_range']  # [km]
 mtow_range = requirements['mtow_range']  # [km]
 
 aspect_ratio = aircraft_parameters['aspect_ratio']
-lift_to_drag_ratio = calculate_lift_to_drag_ratio(FlightConfiguration.CRUISE, False, aspect_ratio)
+lift_to_drag_ratio = calculate_lift_to_drag_ratio(FlightConfiguration.Cruise, False, aspect_ratio)
 
 cruise_mach = requirements['cruise_mach']  # [Mach]
 cruise_altitude_feet = requirements['cruise_altitude']  # [feet]

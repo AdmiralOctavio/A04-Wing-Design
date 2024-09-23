@@ -7,9 +7,9 @@ from isa import get_temperature
 
 
 class FlightConfiguration(Enum):
-    CRUISE = "cruise"
-    TAKEOFF = "takeoff"
-    LANDING = "landing"
+    Cruise = "cruise"
+    Takeoff = "takeoff"
+    Landing = "landing"
 
 
 def convert_square_meters_to_square_feet(square_meters: float) -> float:
