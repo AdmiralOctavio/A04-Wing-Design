@@ -35,6 +35,7 @@ e = ZL['euler_efficiency']
     Interpreted: CL = [ 1 + ClTot/(AR * math.pi * e) ] * ClTot * Swf/Sw * cos(HingeAngle)
     0.9 coefficient is probably from 1 + ClTot/(AR * math.pi * e)
 '''
+
 def LiftCoefficient(Slat, Flap, Cl):
     f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
     f.write("CL:         Wing Fraction:       Wetted Area Ratio: \n")
