@@ -32,11 +32,11 @@ print(dihedral, 'degrees')
 
 # MAC of flaps thing
 
-Wf = 0.5
+def MAC_flap(Wf):
+    TF = 1 - (1 - 0.3161457369885578) * (Wf)
 
-TF = 1 - (1-0.3161457369885578) * (Wf)
-
-MAC = 2/3 * (1 + TF + TF**2) * 4.41 / (TF + 1)
+    MAC = 2 / 3 * (1 + TF + TF ** 2) * 4.41 / (TF + 1)
+    return MAC
 
 print(MAC)
 
