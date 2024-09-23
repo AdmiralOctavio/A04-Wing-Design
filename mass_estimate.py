@@ -118,6 +118,13 @@ def calculate_landing_mass_fraction():
     return get_aircraft_values()[3]
 
 
+def calculate_landing_mass():
+    fraction = calculate_landing_mass_fraction()
+    mtow = calculate_design_mtow()
+
+    return fraction * mtow
+
+
 def get_aircraft_values():
     # Load Parameters
     with open("aircraft_parameters.yaml") as file:
@@ -144,11 +151,6 @@ def get_aircraft_values():
     specific_energy = engine_parameters['specific_energy']  # [MJ/kg]
 
     aspect_ratio = aircraft_parameters['aspect_ratio']  # [-]
-
-    mtow_range = requirements['mtow_range'] * 1000  # [m]
-    mtow_payload = requirements['mtow_payload']  # [kg]
-
-    ferry_range = requirements['ferry_range'] * 1000  # [m]
 
     # Mission Profile 1: Design Range at Design Payload Mass
     mtow, fuel_mass, operating_empty_mass, landing_mass_fraction = (
