@@ -36,31 +36,41 @@ e = ZL['euler_efficiency']
     0.9 coefficient is probably from 1 + ClTot/(AR * math.pi * e)
 '''
 
-def LiftCoefficient(Slat, Flap, Cl):
+'''
+    dc / cf = 0.5 for Double slotted and 0.7 for Fowler
+    Calculate cf??
+    Surface area of wings = 63.1m^2
+    Extra area required by flaps = 63.1 * (1-Sf)
+    Af = dc/cf * Wf (maybe?? probably not???)
+'''
+
+def LiftCoefficient(Slat, Flap, Cl, dccf):
     f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
-    f.write("CL:         Wing Fraction:       Wetted Area Ratio: \n")
+    f.write("CL:         Wing Fraction:       Wetted Area Ratio:           Delta Chord:            Flap Chord: \n")
 
     for Wf in range(50, 100, 5):
         ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths 
         CLValues = [] 
         Swf = []
+        deltaC = []
 
         for i in range (10):
             Swf.append((i / 100) + 1)
             CLValues.append( ( ClTot / ( 1 + ClTot/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9))) #Also maths
+            deltaC.append( ( (Swf[i]-1)*63.1 )/(Wf*21.75) *100)
 
         #This is just for a nice output
         for j in range(10):
 
             if round(CLValues[j], 3) >= 2.3:
-                full = ("%.3f" % round(CLValues[j], 3)) + "*            " + str(Wf) + "%                  " + str(Swf[j]) + "\n"
+                full = ("%.3f" % round(CLValues[j], 3)) + "*            " + ("%.0f" % round(Wf,3)) + "%                  " + ("%.2f" % round(Swf[j],3)) +"                      "+ ("%.3f" % round(deltaC[j], 5)) + "m                  " + ("%.3f" % round(deltaC[j]/dccf, 5)) +"m\n"
 
-            else: full = ("%.3f" % round(CLValues[j], 3)) + "             " + str(Wf) + "%                  " + str(Swf[j]) + "\n"
+            else: full = ("%.3f" % round(CLValues[j], 3)) + "             " + ("%.0f" % round(Wf,3)) + "%                  " + ("%.2f" % round(Swf[j],3)) +"                      "+ ("%.3f" % round(deltaC[j], 5)) + "m                  " + ("%.3f" % round(deltaC[j]/dccf, 5)) + "m\n"
 
             f.writelines(full) 
 
         f.write("\n" * 2)
 
-LiftCoefficient(Kruger, Double_Slotted, 1.323)
+LiftCoefficient(Slat, Double_Slotted, 1.323, 0.5)
 #Just input configuration here! ^^^^
 #Check HLD_Data.txt for results 
