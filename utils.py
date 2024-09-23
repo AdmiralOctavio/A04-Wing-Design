@@ -3,8 +3,6 @@ from enum import Enum
 
 import numpy as np
 
-from isa import get_temperature
-
 
 class FlightConfiguration(Enum):
     Cruise = "cruise"
@@ -18,11 +16,6 @@ def convert_square_meters_to_square_feet(square_meters: float) -> float:
 
 def convert_feet_to_meters(feet: float) -> float:
     return feet * 0.3048  # [m]
-
-
-def get_speed_of_sound(altitude: float) -> float:
-    temperature = get_temperature(altitude)
-    return math.sqrt(1.4 * 287 * temperature)
 
 
 def load_airfoil_data(filename: str) -> tuple[list[float], list[float]]:

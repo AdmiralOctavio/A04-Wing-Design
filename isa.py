@@ -87,3 +87,8 @@ def get_pressure(altitude: float) -> float:
 
 def get_density(altitude: float) -> float:
     return get_quantity_at_altitude(altitude, Quantity.Density, 1.225)
+
+
+def get_speed_of_sound(altitude: float) -> float:
+    temperature = get_temperature(altitude)
+    return math.sqrt(1.4 * 287 * temperature)
