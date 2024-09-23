@@ -12,6 +12,7 @@ Mpl = 7200 #kg, design payload mass
 
 B = 9 #Bypass Ratio
 
+
 TSFC = 22*B**(-.19) #Thrust specific fuel consumption
 
 AR = 7.5 #Aspect ratio duh
