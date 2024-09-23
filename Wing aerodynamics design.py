@@ -28,3 +28,16 @@ print(MTOW,'kg', nj)
 
 dihedral = 3 - Sweep * 180 / math.pi / 10 - 2
 print(dihedral, 'degrees')
+
+
+# MAC of flaps thing
+
+Wf = 0.5
+
+TF = 1 - (1-0.3161457369885578) * (Wf)
+
+MAC = 2/3 * (1 + TF + TF**2) * 4.41 / (TF + 1)
+
+print(MAC)
+
+
