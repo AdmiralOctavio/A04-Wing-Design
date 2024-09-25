@@ -303,9 +303,11 @@ def evaluate_sample_count():
     ax.grid()
 
     plt.show()
-    fig.savefig("wing_volume_sample.pdf")
+
+    os.makedirs("output/", exist_ok=True)
+    fig.savefig("output/wing_volume_sample.pdf")
 
 
 if __name__ == "__main__":
-    main()
-    # evaluate_sample_count()
+    # main()
+    evaluate_sample_count()
