@@ -47,7 +47,7 @@ e = ZL['euler_efficiency']
 
 def LiftCoefficient(Slat, Flap, Cl, dccf):
     f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
-    f.write(" CL:          Wf:       W. Area Ratio:       Delta Chord:          Flap Chord:            MAC Flap: \n")
+    f.write(" CL:          Wf:       W. Area Ratio:       Delta Chord:        Flap Root Chord:      Flap Tip Chord: \n")
 
     for Wf in range(50, 100, 5):
         ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths 
@@ -64,14 +64,14 @@ def LiftCoefficient(Slat, Flap, Cl, dccf):
             CL = ("%.3f" % round(CLValues[j], 3))
             WF = ("%.0f" % round(Wf,3))
             SWF = ("%.2f" % round(Swf[j],3))
-            MAC = ("%.3f" % W.MAC_flap(Wf/100)) 
-            FCHORD =("%.3f" % (4.41*0.35) )
+            FCHORD =("%.3f" % (W.MAC_flap(Wf/100)[0]*0.35) )
+            FCHORD_2 = ("%.3f" % (W.MAC_flap(Wf/100)[1]*0.35) )
             DC = ("%.3f" % (float(FCHORD) * 0.5))
 
             if round(CLValues[j], 3) >= 2.3:
-                full = CL + "*        " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD + "m                " + MAC + "m \n"
+                full = CL + "*        " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD + "m                " + FCHORD_2 + "m \n"
 
-            else: full = CL + "         " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD +  "m                " + MAC + "m \n"
+            else: full = CL + "         " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD +  "m                " + FCHORD_2 + "m \n"
 
             f.writelines(full) 
 
