@@ -2,13 +2,21 @@
 
 Dflap = 35 # degrees
 Fflap = 0.0074
-Wf = 0.5
-def d(x):
-    cd = Fflap * x * Wf * (Dflap - 10)
+cfc = 0.35
+# Wf = 0.6 has been chosen
+
+def d(Wf):
+    cd = Fflap * cfc * Wf * (Dflap - 10)
     return cd
 
-for i in range(20,36):
-    print(d(i/100))
+print(d(0.6))
+
+# ZERO LIFT DRAG
+
+Cd0 = 0.0192
+
+
+
 
 
 
