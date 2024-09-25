@@ -1,3 +1,4 @@
+import math
 from enum import Enum
 
 import numpy as np
@@ -41,3 +42,23 @@ def polygon_area(x_points: np.ndarray, y_points: np.ndarray) -> float:
 
 def lerp(a, b, t):
     return a + (b - a) * t
+
+
+def calculate_approach_speed(weight: float, air_density: float, wing_area: float) -> float:
+    stall_speed = calculate_stall_speed(weight, air_density, wing_area)
+    return 1.23 * stall_speed
+
+
+def calculate_stall_speed(weight: float, air_density: float, wing_area: float) -> float:
+    maximum_lift_coefficient = calculate_maximum_lift_coefficient()
+
+    return math.sqrt((2 * weight) / (air_density * wing_area * maximum_lift_coefficient))
+
+
+def calculate_maximum_lift_coefficient(configuration: FlightConfiguration = FlightConfiguration.Landing) -> float:
+    if configuration == FlightConfiguration.Cruise:
+        return 1.5
+    elif configuration == FlightConfiguration.Landing:
+        return 2.3
+    elif configuration == FlightConfiguration.Takeoff:
+        return 1.9
