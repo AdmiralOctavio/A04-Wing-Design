@@ -1,12 +1,7 @@
 import math
 import Wing_aerodynamics_design
-import yaml
 
-# Load Parameters
-with open("aircraft_parameters.yaml") as file:
-    aircraft_parameters = yaml.safe_load(file)
-
-A = aircraft_parameters['aspect_ratio']
+A = Wing_aerodynamics_design.AR
 
 def MachDD(ka, LEsweep, tcRatio, Clwing):
     MDD = ka/(math.cos(LEsweep)) - tcRatio/((math.cos(LEsweep))**2) - Clwing/(10*(math.cos(LEsweep))**3)
@@ -22,11 +17,12 @@ tcRatio_NACA2416 = 0.16
 tcRatio_NACA24012 = 0.12
 tcRatio_KC = 0.0796
 tcRatio_NASA = 0.1393
-Cl_NACA0012 = 0.4
-Cl_NACA2416 = 0.4
-Cl_NACA24012 = 0.4
-Cl_NASA = 0.4
-Cl_KC = 0.4
+Cl_NACA0012 = 0.332348906
+Cl_NACA2416 = 0.332348906
+Cl_NACA24012 = 0.332348906
+Cl_NASA = 0.332348906
+Cl_KC = 0.332348906
+CL_cruise = 0.332348906
 
 print("Drag Divergence Mach Numbers:")
 print("KC-135:", MachDD(ka_SC, LEsweep, tcRatio_KC, Cl_KC))
@@ -35,7 +31,8 @@ print("NACA2416:", MachDD(ka_l, LEsweep, tcRatio_NACA2416, Cl_NACA2416), "to", M
 print("NACA24012:", MachDD(ka_l, LEsweep, tcRatio_NACA24012, Cl_NACA24012), "to", MachDD(ka_u, LEsweep, tcRatio_NACA24012, Cl_NACA24012))
 print("NASA:", MachDD(ka_SC, LEsweep, tcRatio_NASA, Cl_NASA))
 
-def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b):
+# Finding dCL/dalpha for wing
+def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Cl_alpha):
     sweep_halfChord = math.atan(math.tan(LEsweep) - Cr/b*(1-Ct/Cr))
     beta = (1 - mach_infty**2)**0.5
     CLalpha = 2*math.pi*A/(2+(4+((A*beta/0.95)**2)*(1+(math.tan(sweep_halfChord)/beta)**2))**0.5)
@@ -47,15 +44,58 @@ Ct = Wing_aerodynamics_design.Tip_chord
 mach_infty = 0.77
 LEsweep = Wing_aerodynamics_design.Sweep
 b = Wing_aerodynamics_design.Span
+Clalpha_airfoil = 0.11511*180/math.pi  # 1/rad
+print('Clalpha airfoil [1/rad]', Clalpha_airfoil)
 
-CLalpha = dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b)
-# alphaZeroLift = 
+CLalpha = dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Clalpha_airfoil)  # 1/rad
+alphaZeroLift = math.radians(-1.0)  # degrees to radians
 
+
+# Calculation showing high AR DATCOM method required for CLmax
 def HighLowAR(C1, LEsweep):
     factor = 4/((C1 + 1)*math.cos(LEsweep))
 
     return factor
 
 C1 = 0.5  # from graph AC ADSEE ppt 2 slide 20 bc taper = 0.316
-factor = HighLowAR(C1, LEsweep)
-print(factor)
+factor = HighLowAR(C1, LEsweep) # factor = 2.91954 < A so high AR wings
+
+# finding cruise angle of attack and Cd cruise
+
+alpha_Cruise = (CL_cruise + CLalpha * alphaZeroLift)/CLalpha  # radians
+alpha_trim = alpha_Cruise/math.pi *180  # deg
+Cl_cruise_airfoil = CL_cruise / (math.cos(LEsweep)**2)  # slide 14 ADSEE ppt 2 notes
+Cd_cruise = 0.00472
+
+# finding CLmax high AR wings 
+CLClRatio = 0.95  # from graph ADSEE ppt 2 slide 22 with sharpness factor 1.75->1.8
+Clmax = 1.6
+def CLmaxWing(CLClRatio, Clmax):
+    CLmax = CLClRatio*Clmax
+
+    return CLmax
+
+CLmax = CLmaxWing(CLClRatio, Clmax)  # at M=0.2
+print('CLmax at 0.2 Mach:', CLmax)
+
+# finding stall AoA using CLalpha for M=0.2
+Mach = 0.2
+CLalphaM02 = dCLdalpha(A, Mach, LEsweep, Cr, Ct, b, Clalpha_airfoil) /180 *math.pi  # 1/deg
+DeltaAlphaCLmax = 3.5  # ADSEE ppt 2 slide 24 graph - (deg)
+
+def alphaStallDeg(CLmax, CLalpha, alphaZeroL, DeltaAlphaCLmax):
+    alphaS = CLmax / CLalpha + alphaZeroL/math.pi*180 + DeltaAlphaCLmax
+
+    return alphaS
+
+alphaStall = alphaStallDeg(CLmax, CLalphaM02, alphaZeroLift, DeltaAlphaCLmax)  # deg at M=0.2
+print('alpha stall at M=0.2 [deg]:', alphaStall)
+# span efficiency factor
+e = 4.61*(1-0.045*A**0.68)*(math.cos(LEsweep))**0.15 -3.1
+print('span efficiency factor:', e)
+print('alpha zero lift [deg]:', alphaZeroLift/math.pi*180)
+print('Cd cruise', Cd_cruise)
+print("Mdd:", MachDD(ka_SC, LEsweep, tcRatio_NASA, CL_cruise))
+print('alpha cruise/trim is [deg]:', alpha_Cruise/math.pi*180)
+print('cruise Cl is:', Cl_cruise_airfoil)
+print('CLalpha [1/rad]', CLalpha)
