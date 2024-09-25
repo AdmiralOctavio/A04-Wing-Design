@@ -1,0 +1,36 @@
+import math
+def MachDD(ka, LEsweep, tcRatio, Clwing):
+    MDD = ka/(math.cos(LEsweep)) - tcRatio/((math.cos(LEsweep))**2) - Clwing/(10*(math.cos(LEsweep))**3)
+    return MDD
+
+ka_SC = 0.935 #Supercritical ka
+ka_l = 0.87 # lower bound standard airfoils
+ka_u = 0.9 # upper bound standard airfoils
+
+LEsweep = math.radians(27.2)
+tcRatio_NACA0012 = 0.12
+tcRatio_NACA2416 = 0.16
+tcRatio_NACA24012 = 0.12
+tcRatio_KC = 0.0796
+tcRatio_NASA = 0.1393
+Cl_NACA0012 = 0.4
+Cl_NACA2416 = 0.4
+Cl_NACA24012 = 0.4
+Cl_NASA = 0.4
+Cl_KC = 0.4
+
+print("Drag Divergence Mach Numbers:")
+print("KC-135:", MachDD(ka_SC, LEsweep, tcRatio_KC, Cl_KC))
+print("NACA0012:", MachDD(ka_l, LEsweep, tcRatio_NACA0012, Cl_NACA0012), "to", MachDD(ka_u, LEsweep, tcRatio_NACA0012, Cl_NACA0012))
+print("NACA2416:", MachDD(ka_l, LEsweep, tcRatio_NACA2416, Cl_NACA2416), "to", MachDD(ka_u, LEsweep, tcRatio_NACA2416, Cl_NACA2416))
+print("NACA24012:", MachDD(ka_l, LEsweep, tcRatio_NACA24012, Cl_NACA24012), "to", MachDD(ka_u, LEsweep, tcRatio_NACA24012, Cl_NACA24012))
+print("NASA:", MachDD(ka_SC, LEsweep, tcRatio_NASA, Cl_NASA))
+
+def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b):
+    sweep_halfChord = math.atan(math.tan(LEsweep) - Cr/b*(1-Ct/Cr))
+    beta = (1 - mach_infty**2)**0.5
+    CLalpha = 2*math.pi*A/(2+(4+((A*beta/0.95)**2)*(1+(math.tan(sweep_halfChord)/beta)**2))**0.5)
+    
+    return CLalpha
+
+A = 7.5
