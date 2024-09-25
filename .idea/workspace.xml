@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b285b9b0-bb09-4ab6-a1db-fc5aafbd550d" name="Changes" comment="" />
+    <list default="true" id="b285b9b0-bb09-4ab6-a1db-fc5aafbd550d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Flap extra drag.py" beforeDir="false" afterPath="$PROJECT_DIR$/Flap extra drag.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wing aerodynamics design.py" beforeDir="false" afterPath="$PROJECT_DIR$/Wing aerodynamics design.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,7 +64,7 @@
       <workItem from="1726751345857" duration="368000" />
       <workItem from="1727092838118" duration="5511000" />
       <workItem from="1727104648649" duration="2421000" />
-      <workItem from="1727264773834" duration="312000" />
+      <workItem from="1727264773834" duration="1009000" />
     </task>
     <servers />
   </component>

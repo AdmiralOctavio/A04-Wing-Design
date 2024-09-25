@@ -34,9 +34,9 @@ print(dihedral, 'degrees')
 
 def MAC_flap(Wf):
     TF = 1 - (1 - 0.3161457369885578) * (Wf)
-
+    root_chord = 4.41
     MAC = 2 / 3 * (1 + TF + TF ** 2) * 4.41 / (TF + 1)
-    return MAC
+    return root_chord, TF * root_chord
 
 print(MAC)
 
