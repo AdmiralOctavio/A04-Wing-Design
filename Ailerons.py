@@ -5,7 +5,7 @@ import yaml
 
 from isa import get_density
 from mass_estimate import calculate_landing_mass
-from matching_diagram import calculate_approach_speed
+from utils import calculate_approach_speed
 from wing_design import calculate_quarter_chord_sweep_angle, calculate_taper_ratio, \
     calculate_wing_span, calculate_root_chord, calculate_tip_chord
 
@@ -52,44 +52,58 @@ def main():
 
     gravity = aircraft_parameters["gravity"]  # [m/s^2]
 
-    quarter_chord_sweep_angle = calculate_quarter_chord_sweep_angle(cruise_mach)  # [m]
+    quarter_chord_sweep_angle = calculate_quarter_chord_sweep_angle(
+        cruise_mach)  # [m]
     taper_ratio = calculate_taper_ratio(quarter_chord_sweep_angle)  # [m]
     wing_span = calculate_wing_span(wing_area, aspect_ratio)  # [m]
     root_chord = calculate_root_chord(wing_area, taper_ratio, wing_span)  # [m]
     tip_chord = calculate_tip_chord(taper_ratio, root_chord)  # [m]
 
     deflection_angle_up = aileron_parameters["deflection_angle_up"]  # [deg]
-    deflection_angle_down = aileron_parameters["deflection_angle_down"]  # [deg]
-    aileron_deflection = math.radians(0.5 * (deflection_angle_up + deflection_angle_down))  # [rad]
+    # [deg]
+    deflection_angle_down = aileron_parameters["deflection_angle_down"]
+    aileron_deflection = math.radians(
+        0.5 * (deflection_angle_up + deflection_angle_down))  # [rad]
 
     airfoil_lift_curve_slope = (1.279 - 1.229) / math.radians(5)
-    airfoil_zero_lift_drag_coefficient = airfoil_parameters["zero_lift_drag_coefficient"]  # [-]
+    # [-]
+    airfoil_zero_lift_drag_coefficient = airfoil_parameters["zero_lift_drag_coefficient"]
     aileron_effectiveness = aileron_parameters["aileron_effectiveness"]  # [-]
 
     landing_weight = calculate_landing_mass() * gravity  # [N]
-    minimum_control_speed = calculate_approach_speed(landing_weight, get_density(0), wing_area)  # [m]
+    minimum_control_speed = calculate_approach_speed(
+        landing_weight, get_density(0), wing_area)  # [m]
 
     roll_requirement = requirements["required_roll_rate"]
-    required_roll_rate = math.radians(roll_requirement["degrees"]) / roll_requirement["seconds"]
+    required_roll_rate = math.radians(
+        roll_requirement["degrees"]) / roll_requirement["seconds"]
 
     roll_damping_coefficient = calculate_roll_damping_coefficient(wing_span, airfoil_lift_curve_slope,
                                                                   airfoil_zero_lift_drag_coefficient, wing_area,
                                                                   tip_chord, root_chord)
 
-    span_wise_ratio_lower_bound = aileron_parameters["span_wise_ratio_lower_bound"]  # [-]
-    span_wise_ratio_upper_bound = aileron_parameters["span_wise_ratio_upper_bound"]  # [-]
+    # [-]
+    span_wise_ratio_lower_bound = aileron_parameters["span_wise_ratio_lower_bound"]
+    # [-]
+    span_wise_ratio_upper_bound = aileron_parameters["span_wise_ratio_upper_bound"]
 
     half_span = wing_span / 2  # [m]
 
-    span_wise_position_lower_bound = span_wise_ratio_lower_bound * half_span  # [m]
-    span_wise_position_upper_bound = span_wise_ratio_upper_bound * half_span  # [m]
+    span_wise_position_lower_bound = span_wise_ratio_lower_bound * \
+        half_span  # [m]
+    span_wise_position_upper_bound = span_wise_ratio_upper_bound * \
+        half_span  # [m]
 
     n = 1000  # [-]
-    lower_bounds = np.linspace(span_wise_position_lower_bound, span_wise_position_upper_bound, n)  # [m]
-    upper_bounds = np.linspace(span_wise_position_lower_bound, span_wise_position_upper_bound, n)  # [m]
+    lower_bounds = np.linspace(
+        span_wise_position_lower_bound, span_wise_position_upper_bound, n)  # [m]
+    upper_bounds = np.linspace(
+        span_wise_position_lower_bound, span_wise_position_upper_bound, n)  # [m]
 
-    all_bounds = np.array(np.meshgrid(lower_bounds, upper_bounds)).T.reshape(-1, 2)
-    valid_bound_bool_map = np.all(all_bounds[:, 1:] > all_bounds[:, :-1], axis=1)
+    all_bounds = np.array(np.meshgrid(
+        lower_bounds, upper_bounds)).T.reshape(-1, 2)
+    valid_bound_bool_map = np.all(
+        all_bounds[:, 1:] > all_bounds[:, :-1], axis=1)
     valid_bounds = all_bounds[valid_bound_bool_map]
 
     valid_design_options = []
@@ -107,7 +121,8 @@ def main():
         if roll_rate > required_roll_rate:
             valid_design_options.append((lower_bound, upper_bound))
 
-    print(f"Out of {len(valid_bounds)} evaluated designs, {len(valid_design_options)} are valid.")
+    print(
+        f"Out of {len(valid_bounds)} evaluated designs, {len(valid_design_options)} are valid.")
 
     minimum_span = math.inf
     for lower_bound, upper_bound in valid_design_options:
@@ -124,7 +139,8 @@ def main():
         if span <= minimum_span:
             minimum_span_designs.append((lower_bound, upper_bound))
 
-    print(f"Only {len(minimum_span_designs)} valid designs have the minimum aileron span of {minimum_span} [m].")
+    print(
+        f"Only {len(minimum_span_designs)} valid designs have the minimum aileron span of {minimum_span:.3f} [m].")
     print(f"These designs are:")
 
     for lower_bound, upper_bound in minimum_span_designs:
