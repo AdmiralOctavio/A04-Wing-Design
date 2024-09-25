@@ -1,5 +1,6 @@
 import math
 import yaml
+import Wing_aerodynamics_design as W
 #Go to bottom of program if you want to check different configurations
 
 #Taken from ADSEE II Slides
@@ -46,7 +47,7 @@ e = ZL['euler_efficiency']
 
 def LiftCoefficient(Slat, Flap, Cl, dccf):
     f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
-    f.write("CL:         Wing Fraction:       Wetted Area Ratio:           Delta Chord:            Flap Chord: \n")
+    f.write(" CL:          Wf:       W. Area Ratio:       Delta Chord:          Flap Chord:            MAC Flap: \n")
 
     for Wf in range(50, 100, 5):
         ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths 
@@ -62,10 +63,15 @@ def LiftCoefficient(Slat, Flap, Cl, dccf):
         #This is just for a nice output
         for j in range(10):
 
+            CL = ("%.3f" % round(CLValues[j], 3))
+            WF = ("%.0f" % round(Wf,3))
+            SWF = ("%.2f" % round(Swf[j],3))
+            DC = ("%.3f" % round(deltaC[j], 5))
+            MAC = str(W.MAC_flap(Wf/100))
             if round(CLValues[j], 3) >= 2.3:
-                full = ("%.3f" % round(CLValues[j], 3)) + "*            " + ("%.0f" % round(Wf,3)) + "%                  " + ("%.2f" % round(Swf[j],3)) +"                      "+ ("%.3f" % round(deltaC[j], 5)) + "m                  " + ("%.3f" % round(deltaC[j]/dccf, 5)) +"m\n"
+                full = CL + "*        " + WF + "%           " + SWF +"               "+ DC + "m                " + ("%.3f" % round(deltaC[j]/dccf, 5)) + "m             " + MAC + "\n"
 
-            else: full = ("%.3f" % round(CLValues[j], 3)) + "             " + ("%.0f" % round(Wf,3)) + "%                  " + ("%.2f" % round(Swf[j],3)) +"                      "+ ("%.3f" % round(deltaC[j], 5)) + "m                  " + ("%.3f" % round(deltaC[j]/dccf, 5)) + "m\n"
+            else: full = CL + "         " + WF + "%           " + SWF +"               "+ DC + "m                " + ("%.3f" % round(deltaC[j]/dccf, 5)) +  "m             " + MAC + "\n"
 
             f.writelines(full) 
 

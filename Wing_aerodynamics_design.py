@@ -37,7 +37,3 @@ def MAC_flap(Wf):
 
     MAC = 2 / 3 * (1 + TF + TF ** 2) * 4.41 / (TF + 1)
     return MAC
-
-print(MAC)
-
-
