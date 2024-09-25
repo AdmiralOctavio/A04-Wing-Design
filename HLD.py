@@ -58,20 +58,20 @@ def LiftCoefficient(Slat, Flap, Cl, dccf):
         for i in range (10):
             Swf.append((i / 100) + 1)
             CLValues.append( ( ClTot / ( 1 + ClTot/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9))) #Also maths
-            deltaC.append( ( (Swf[i]-1)*63.1 )/(Wf*21.75) *100)
-
         #This is just for a nice output
         for j in range(10):
 
             CL = ("%.3f" % round(CLValues[j], 3))
             WF = ("%.0f" % round(Wf,3))
             SWF = ("%.2f" % round(Swf[j],3))
-            DC = ("%.3f" % round(deltaC[j], 5))
-            MAC = str(W.MAC_flap(Wf/100))
-            if round(CLValues[j], 3) >= 2.3:
-                full = CL + "*        " + WF + "%           " + SWF +"               "+ DC + "m                " + ("%.3f" % round(deltaC[j]/dccf, 5)) + "m             " + MAC + "\n"
+            MAC = ("%.3f" % W.MAC_flap(Wf/100)) 
+            FCHORD =("%.3f" % (4.41*0.35) )
+            DC = ("%.3f" % (float(FCHORD) * 0.5))
 
-            else: full = CL + "         " + WF + "%           " + SWF +"               "+ DC + "m                " + ("%.3f" % round(deltaC[j]/dccf, 5)) +  "m             " + MAC + "\n"
+            if round(CLValues[j], 3) >= 2.3:
+                full = CL + "*        " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD + "m                " + MAC + "m \n"
+
+            else: full = CL + "         " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD +  "m                " + MAC + "m \n"
 
             f.writelines(full) 
 
