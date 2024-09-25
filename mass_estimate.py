@@ -3,7 +3,8 @@ import math
 import yaml
 
 from drag_polar import calculate_zero_lift_drag_coefficient, calculate_oswald_efficiency_factor
-from utils import FlightConfiguration, convert_feet_to_meters, get_speed_of_sound
+from utils import FlightConfiguration, convert_feet_to_meters
+from isa import get_speed_of_sound
 
 
 def calculate_lift_to_drag_ratio(
@@ -18,7 +19,7 @@ def calculate_lift_to_drag_ratio(
 
 
 def calculate_range_lost_due_to_drag(cruise_speed: float, cruise_altitude: float, aspect_ratio: float) -> float:
-    cruise_lift_to_drag_ratio = calculate_lift_to_drag_ratio(FlightConfiguration.CRUISE, False, aspect_ratio)
+    cruise_lift_to_drag_ratio = calculate_lift_to_drag_ratio(FlightConfiguration.Cruise, False, aspect_ratio)
     return ((1 / 0.7) * cruise_lift_to_drag_ratio *
             (cruise_altitude + math.pow(cruise_speed, 2) / (2 * 9.80665)))  # [m]
 
@@ -61,7 +62,7 @@ def calculate_class_i_estimation(
     equivalent_range = calculate_equivalent_range(nominal_range, divergence_range, loiter_time, fuel_contingency_ratio,
                                                   cruise_speed, cruise_altitude, aspect_ratio)  # [m]
     jet_efficiency = calculate_jet_efficiency(bypass_ratio, cruise_speed, fuel_specific_energy)
-    lift_to_drag_ratio = calculate_lift_to_drag_ratio(FlightConfiguration.CRUISE, False, aspect_ratio)
+    lift_to_drag_ratio = calculate_lift_to_drag_ratio(FlightConfiguration.Cruise, False, aspect_ratio)
 
     fuel_mass_fraction = 1 - math.exp(-equivalent_range / (1000000 * jet_efficiency * (fuel_specific_energy / 9.80665)
                                                            * lift_to_drag_ratio))
@@ -117,6 +118,13 @@ def calculate_landing_mass_fraction():
     return get_aircraft_values()[3]
 
 
+def calculate_landing_mass():
+    fraction = calculate_landing_mass_fraction()
+    mtow = calculate_design_mtow()
+
+    return fraction * mtow
+
+
 def get_aircraft_values():
     # Load Parameters
     with open("aircraft_parameters.yaml") as file:
@@ -143,11 +151,6 @@ def get_aircraft_values():
     specific_energy = engine_parameters['specific_energy']  # [MJ/kg]
 
     aspect_ratio = aircraft_parameters['aspect_ratio']  # [-]
-
-    mtow_range = requirements['mtow_range'] * 1000  # [m]
-    mtow_payload = requirements['mtow_payload']  # [kg]
-
-    ferry_range = requirements['ferry_range'] * 1000  # [m]
 
     # Mission Profile 1: Design Range at Design Payload Mass
     mtow, fuel_mass, operating_empty_mass, landing_mass_fraction = (

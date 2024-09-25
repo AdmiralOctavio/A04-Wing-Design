@@ -6,7 +6,8 @@ import yaml
 
 from mass_estimate import calculate_design_mtow, calculate_fuel_mass, calculate_operating_empty_mass, \
     calculate_design_equivalent_range, calculate_lift_to_drag_ratio, calculate_jet_efficiency
-from utils import FlightConfiguration, convert_feet_to_meters, get_speed_of_sound
+from utils import FlightConfiguration, convert_feet_to_meters
+from isa import get_speed_of_sound
 
 # Load Parameters
 with open("aircraft_parameters.yaml") as file:
@@ -32,7 +33,7 @@ ferry_range = requirements['ferry_range']  # [km]
 mtow_range = requirements['mtow_range']  # [km]
 
 aspect_ratio = aircraft_parameters['aspect_ratio']
-lift_to_drag_ratio = calculate_lift_to_drag_ratio(FlightConfiguration.CRUISE, False, aspect_ratio)
+lift_to_drag_ratio = calculate_lift_to_drag_ratio(FlightConfiguration.Cruise, False, aspect_ratio)
 
 cruise_mach = requirements['cruise_mach']  # [Mach]
 cruise_altitude_feet = requirements['cruise_altitude']  # [feet]
