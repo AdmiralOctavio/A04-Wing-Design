@@ -11,7 +11,6 @@ Sw = MTOW * g / Wing_load
 AR = 7.5
 
 
-
 Sweep = math.acos(1.16/(Mcr+0.5))
 print(Sweep * 180 / math.pi, 'degrees')
 
@@ -24,8 +23,19 @@ Tip_chord = Taper * Root_chord
 print(Span)
 print(Root_chord,Tip_chord, 'metres')
 
+
 print(MTOW,'kg', nj)
 
-dihedral = 3 - Sweep * 180 / math.pi / 10 + 2
-
+dihedral = 3 - Sweep * 180 / math.pi / 10 - 2
 print(dihedral, 'degrees')
+
+
+# MAC of flaps thing
+
+def MAC_flap(Wf):
+    TF = 1 - (1 - 0.3161457369885578) * (Wf)
+    root_chord = 4.41
+    MAC = 2 / 3 * (1 + TF + TF ** 2) * 4.41 / (TF + 1)
+
+    return root_chord, TF * root_chord
+

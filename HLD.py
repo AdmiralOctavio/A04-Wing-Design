@@ -1,19 +1,20 @@
 import math
 import yaml
+import Wing_aerodynamics_design as W
 #Go to bottom of program if you want to check different configurations
 
 #Taken from ADSEE II Slides
 #Delta Cl (For airfoil!):
-Plain = 0.9
-Slotted = 1.3
-Fowler = 1.3 #c' / c
-Double_Slotted = 1.6 #c' / c
-Triple_Slotted = 1.9# c' / c
+Plain = (0.9, "Plain")
+Slotted = (1.3,"Slotted")
+Fowler = (1.3, "Fowler") #c' / c
+Double_Slotted = (1.6, "Double_Slotted") #c' / c
+Triple_Slotted = (1.9, "Triple_Slotted")# c' / c
 
-Fixed_Slot = 0.2
-Leading_edge = 0.3
-Kruger = 0.3
-Slat = 0.4 #c' / c
+Fixed_Slot = (0.2, "Fixed_Slot")
+Leading_edge = (0.3,"Leading_edge")
+Kruger = (0.3, "Kruger")
+Slat = (0.4, "Slat") #c' / c
 
 #For full wing
 CL_takeoff = 1.9
@@ -35,31 +36,47 @@ e = ZL['euler_efficiency']
     Interpreted: CL = [ 1 + ClTot/(AR * math.pi * e) ] * ClTot * Swf/Sw * cos(HingeAngle)
     0.9 coefficient is probably from 1 + ClTot/(AR * math.pi * e)
 '''
-def LiftCoefficient(Slat, Flap, Cl):
-    f = open("HLD_DataSF.txt", "w")
-    f.write("CL:         Wing Fraction:       Wetted Area Ratio: \n")
+
+'''
+    dc / cf = 0.5 for Double slotted and 0.7 for Fowler
+    Calculate cf??
+    Surface area of wings = 63.1m^2
+    Extra area required by flaps = 63.1 * (1-Sf)
+    Af = dc/cf * Wf (maybe?? probably not???)
+'''
+
+def LiftCoefficient(Slat, Flap, Cl, dccf):
+    f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
+    f.write(" CL:          Wf:       W. Area Ratio:       Delta Chord:          Flap Chord:            MAC Flap: \n")
 
     for Wf in range(50, 100, 5):
-        ClTot = Slat + (Flap * Wf/100) + Cl #Maths 
+        ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths 
         CLValues = [] 
         Swf = []
+        deltaC = []
 
         for i in range (10):
             Swf.append((i / 100) + 1)
             CLValues.append( ( ClTot / ( 1 + ClTot/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9))) #Also maths
-
         #This is just for a nice output
         for j in range(10):
 
-            if round(CLValues[j], 3) >= 2.3:
-                full = ("%.3f" % round(CLValues[j], 3)) + "*            " + str(Wf) + "%                  " + str(Swf[j]) + "\n"
+            CL = ("%.3f" % round(CLValues[j], 3))
+            WF = ("%.0f" % round(Wf,3))
+            SWF = ("%.2f" % round(Swf[j],3))
+            MAC = ("%.3f" % W.MAC_flap(Wf/100)) 
+            FCHORD =("%.3f" % (4.41*0.35) )
+            DC = ("%.3f" % (float(FCHORD) * 0.5))
 
-            else: full = ("%.3f" % round(CLValues[j], 3)) + "             " + str(Wf) + "%                  " + str(Swf[j]) + "\n"
+            if round(CLValues[j], 3) >= 2.3:
+                full = CL + "*        " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD + "m                " + MAC + "m \n"
+
+            else: full = CL + "         " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD +  "m                " + MAC + "m \n"
 
             f.writelines(full) 
 
         f.write("\n" * 2)
 
-LiftCoefficient(Slat, Fowler, 1.323)
+LiftCoefficient(Slat, Double_Slotted, 1.323, 0.5)
 #Just input configuration here! ^^^^
 #Check HLD_Data.txt for results 

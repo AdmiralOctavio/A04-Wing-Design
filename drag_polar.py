@@ -49,7 +49,7 @@ def calculate_oswald_efficiency_factor(flight_configuration: FlightConfiguration
 def main():
     print("{:<15} {:<10} {:<10} {:<10}".format("Flight Config.", "Gear", "e", "CD_0"))
 
-    flight_configurations = [FlightConfiguration.CRUISE, FlightConfiguration.TAKEOFF, FlightConfiguration.LANDING]
+    flight_configurations = [FlightConfiguration.Cruise, FlightConfiguration.Takeoff, FlightConfiguration.Landing]
     for flight_configuration in flight_configurations:
         for gear_down in [True, False]:
             oswald = calculate_oswald_efficiency_factor(flight_configuration, gear_down)

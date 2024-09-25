@@ -1,5 +1,6 @@
 aspect_ratio: 7.5
 gravity: 9.80665  # [m/s^2]
+landing_field_length_coefficient: 0.45  # [s^2/m] from page 133 in ADSEE I reader
 
 zero_lift_drag_coefficient_estimation:
   wetted_to_reference_area_ratio: 6  # [-] from fig. 6.2 in ADSEE reader
@@ -39,12 +40,7 @@ requirements:
 engine:
   bypass_ratio: 9  # [-]
   specific_energy: 44  # [MJ/kg]
+  num_engines: 2  # [-]
 
-matching_diagram_requirements:
-  approach_speed:
-    value: 60  # [m/s]
-
-
-
-
-
+wing:
+  wing_area: 70  # [m^2]
