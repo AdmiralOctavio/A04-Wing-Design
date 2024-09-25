@@ -39,4 +39,3 @@ def MAC_flap(Wf):
 
     return root_chord, TF * root_chord
 
-print(MAC_flap(0.5))

@@ -1,5 +1,5 @@
 fcr = 0   # flap-to-chord ratio
-fd = 30    # flap deflection angle in degrees
+fd = 35    # flap deflection angle in degrees
 Sfr = 0.6
 # given a t/c of 0.14:
 
@@ -11,12 +11,16 @@ def d2(y): #contribution of the flap deflection angle to the flap drag
     d = - 3.9877 * 10**(-12) * y**6 + 1.1685 * 10**(-9) * y**5 - 1.2846 * 10**(-7) * y**4 + 6.1742 * 10**(-6) * y**3 - 9.89444 * 10**(-5) * y**2 + 6.8324 * 10**(-4) * y - 3.892 * 10**(-4)
     return d
 
-for i in range(8,40,4):
-    cd = Sfr * d2(fd) * d1(i/100)
-    print(i/100, cd)
+#for i in range(8,40,4):
+ #   cd = Sfr * d2(fd) * d1(i/100)
+  #  print(i/100, cd)
 
 Fflap = 0.0074
 
-
+Wf = 0.5
 def d(x):
-    cd = Fflap *
+    cd = Fflap * x * Wf * (fd - 10)
+    return cd
+
+for i in range(20,36):
+    print(d(i/100))
