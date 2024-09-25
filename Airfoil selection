@@ -1,4 +1,13 @@
 import math
+import Wing_aerodynamics_design
+import yaml
+
+# Load Parameters
+with open("aircraft_parameters.yaml") as file:
+    aircraft_parameters = yaml.safe_load(file)
+
+A = aircraft_parameters['aspect_ratio']
+
 def MachDD(ka, LEsweep, tcRatio, Clwing):
     MDD = ka/(math.cos(LEsweep)) - tcRatio/((math.cos(LEsweep))**2) - Clwing/(10*(math.cos(LEsweep))**3)
     return MDD
@@ -33,4 +42,20 @@ def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b):
     
     return CLalpha
 
-A = 7.5
+Cr = Wing_aerodynamics_design.Root_chord
+Ct = Wing_aerodynamics_design.Tip_chord
+mach_infty = 0.77
+LEsweep = Wing_aerodynamics_design.Sweep
+b = Wing_aerodynamics_design.Span
+
+CLalpha = dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b)
+# alphaZeroLift = 
+
+def HighLowAR(C1, LEsweep):
+    factor = 4/((C1 + 1)*math.cos(LEsweep))
+
+    return factor
+
+C1 = 0.5  # from graph AC ADSEE ppt 2 slide 20 bc taper = 0.316
+factor = HighLowAR(C1, LEsweep)
+print(factor)
