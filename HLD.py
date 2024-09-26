@@ -48,9 +48,6 @@ e = ZL['euler_efficiency']
 '''
 
 def LiftCoefficient(Slat, Flap, Cl):
-    f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
-
-def LiftCoefficient(Slat, Flap, Cl, dccf):
     os.makedirs("output/hld", exist_ok=True)
     f = open("output/hld/HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
     f.write(" CL:          Wf:       W. Area Ratio:       Delta Chord:        Flap Root Chord:      Flap Tip Chord: \n")
@@ -82,6 +79,12 @@ def LiftCoefficient(Slat, Flap, Cl, dccf):
 
         f.write("\n" * 2)
 
-LiftCoefficient(Slat, Double_Slotted, 1.323)
+LiftCoefficient(Slat, Double_Slotted, 0.7980)
 #Just input configuration here! ^^^^
 #Check HLD_Data.txt for results 
+
+'''
+Alpha = 6 -> Cl = 0.7980
+Alpha = 5.5 -> Cl = 0.7417
+Alpha = 5 -> Cl = 0.6845
+'''
