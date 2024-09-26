@@ -45,19 +45,18 @@ e = ZL['euler_efficiency']
     Af = dc/cf * Wf (maybe?? probably not???)
 '''
 
-def LiftCoefficient(Slat, Flap, Cl, dccf):
+def LiftCoefficient(Slat, Flap, Cl):
     f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
     f.write(" CL:          Wf:       W. Area Ratio:       Delta Chord:        Flap Root Chord:      Flap Tip Chord: \n")
 
     for Wf in range(50, 100, 5):
-        ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths 
+        #ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths
+        dCl =  Slat[0] + (Flap[0] * Wf/100)
         CLValues = [] 
         Swf = []
-        deltaC = []
-
         for i in range (10):
             Swf.append((i / 100) + 1)
-            CLValues.append( ( ClTot / ( 1 + ClTot/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9))) #Also maths
+            CLValues.append( ( dCl / ( 1 + dCl/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9)) + (Cl/(1+Cl/( AR * math.pi * e ))) )  #Also maths 
         #This is just for a nice output
         for j in range(10):
 
@@ -77,6 +76,6 @@ def LiftCoefficient(Slat, Flap, Cl, dccf):
 
         f.write("\n" * 2)
 
-LiftCoefficient(Slat, Double_Slotted, 1.323, 0.5)
+LiftCoefficient(Slat, Double_Slotted, 1.323)
 #Just input configuration here! ^^^^
 #Check HLD_Data.txt for results 
