@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b285b9b0-bb09-4ab6-a1db-fc5aafbd550d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DRAG ESTIMATION WP3.py" beforeDir="false" afterPath="$PROJECT_DIR$/DRAG ESTIMATION WP3.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +38,6 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -63,7 +61,7 @@
       <workItem from="1726751345857" duration="368000" />
       <workItem from="1727092838118" duration="5511000" />
       <workItem from="1727104648649" duration="2421000" />
-      <workItem from="1727264773834" duration="3125000" />
+      <workItem from="1727264773834" duration="3649000" />
     </task>
     <servers />
   </component>

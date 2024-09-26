@@ -1,4 +1,6 @@
 import math
+import os
+
 import yaml
 import Wing_aerodynamics_design as W
 #Go to bottom of program if you want to check different configurations
@@ -47,6 +49,10 @@ e = ZL['euler_efficiency']
 
 def LiftCoefficient(Slat, Flap, Cl):
     f = open("HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
+
+def LiftCoefficient(Slat, Flap, Cl, dccf):
+    os.makedirs("output/hld", exist_ok=True)
+    f = open("output/hld/HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
     f.write(" CL:          Wf:       W. Area Ratio:       Delta Chord:        Flap Root Chord:      Flap Tip Chord: \n")
 
     for Wf in range(50, 100, 5):
