@@ -58,7 +58,7 @@ wing:
     deflection_angle_up: 20  # [deg]
     deflection_angle_down: 15  # [deg] Suggested by ADSEE II to be deflection_angle_up * 0.75
 
-    aileron_effectiveness: 0.43  # from control surface-to-lifting surface chord ratio (Sadraey Aircraft Design)
+    aileron_effectiveness: 0.55  # from control surface-to-lifting surface chord ratio (Sadraey Aircraft Design)
 
-    span_wise_ratio_lower_bound: 0.4  # [-]
-    span_wise_ratio_upper_bound: 0.8  # [-]
+    span_wise_ratio_lower_bound: 0.8  # [-]
+    span_wise_ratio_upper_bound: 0.9  # [-]
