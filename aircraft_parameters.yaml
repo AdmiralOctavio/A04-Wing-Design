@@ -52,7 +52,7 @@ wing:
   airfoil:
     name: "NASA SC(2)-0714"
     file: "airfoils/nasasc2-0714.dat"
-    zero_lift_drag_coefficient: 0.00595  # [-] IF AIRFOIL CHANGES, THIS VALUE MUST BE RECOMPUTED IN XFOIL
+    zero_lift_drag_coefficient: 0.006591  # [-] IF AIRFOIL CHANGES, THIS VALUE MUST BE RECOMPUTED IN XFOIL
 
   ailerons:
     deflection_angle_up: 20  # [deg]
