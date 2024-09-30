@@ -7,6 +7,22 @@ def MachDD(ka, LEsweep, tcRatio, Clwing):
     MDD = ka/(math.cos(LEsweep)) - tcRatio/((math.cos(LEsweep))**2) - Clwing/(10*(math.cos(LEsweep))**3)
     return MDD
 
+# cruise CL using Design mission weights:
+S = 63.1  # [m^2]
+MTOW = 23173*9.80665  # [N]
+OEW = 13127*9.80665  # [N]
+Fuel_Weight = 2845*9.80665  # [N]
+PL_Weight = 7200*9.80665  # [N]
+hcr = 35000*0.3048 #m
+T_cr = 288.15-0.0065*hcr
+rho_cr = 1.225*((T_cr/288.15)**((9.80665/0.0065/287)-1))
+print('rho', rho_cr)
+Vcr = 0.77*(1.4*287*T_cr)**0.5 #m/s
+WingloadStartCr = (MTOW)/S
+WingloadEndCr = (MTOW - Fuel_Weight)/S
+CL_cruise = 1.1/(0.5*rho_cr*Vcr**2)*0.5*(WingloadStartCr + WingloadEndCr)
+print('CL cruise', CL_cruise)
+
 ka_SC = 0.935 #Supercritical ka
 ka_l = 0.87 # lower bound standard airfoils
 ka_u = 0.9 # upper bound standard airfoils
@@ -18,12 +34,11 @@ tcRatio_NACA24012 = 0.12
 tcRatio_KC = 0.0796
 tcRatio_NASA = 0.1393
 tcRatio_Lockheed = 0.1
-Cl_NACA0012 = 0.332348906
-Cl_NACA2416 = 0.332348906
-Cl_NACA24012 = 0.332348906
-Cl_NASA = 0.332348906
-Cl_KC = 0.332348906
-CL_cruise = 0.332348906
+Cl_NACA0012 = CL_cruise
+Cl_NACA2416 = CL_cruise
+Cl_NACA24012 = CL_cruise
+Cl_NASA = CL_cruise
+Cl_KC = CL_cruise
 
 print("Drag Divergence Mach Numbers:")
 print("KC-135:", MachDD(ka_SC, LEsweep, tcRatio_KC, Cl_KC))
@@ -78,10 +93,10 @@ factor = HighLowAR(C1, LEsweep) # factor = 2.91954 < A so high AR wings
 alpha_Cruise = (CL_cruise + CLalpha * alphaZeroLift)/CLalpha  # radians
 alpha_trim = alpha_Cruise/math.pi *180  # deg
 Cl_cruise_airfoil = CL_cruise / (math.cos(LEsweep)**2)  # slide 14 ADSEE ppt 2 notes
-Cd_cruise = 0.00502
+Cd_cruise = 0.005149
 
 # finding CLmax high AR wings 
-CLClRatio = 0.8  # from graph ADSEE ppt 2 slide 22 with sharpness factor 1.75->1.8
+CLClRatio = 0.8  # from graph ADSEE ppt 2 slide 22 with sharpness factor >2.5
 Clmax = 1.6
 def CLmaxWing(CLClRatio, Clmax):
     CLmax = CLClRatio*Clmax
