@@ -61,4 +61,4 @@ wing:
     aileron_effectiveness: 0.55  # from control surface-to-lifting surface chord ratio (Sadraey Aircraft Design)
 
     span_wise_ratio_lower_bound: 0.8  # [-]
-    span_wise_ratio_upper_bound: 0.88  # [-]
+    span_wise_ratio_upper_bound: 0.9  # [-]
