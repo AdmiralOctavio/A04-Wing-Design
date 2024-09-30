@@ -3,8 +3,8 @@ import math
 import yaml
 
 from drag_polar import calculate_zero_lift_drag_coefficient, calculate_oswald_efficiency_factor
-from utils import FlightConfiguration, convert_feet_to_meters
-from isa import get_speed_of_sound
+from utils import FlightConfiguration, convert_feet_to_meters, calculate_stall_speed
+from isa import get_speed_of_sound, get_density
 
 
 def calculate_lift_to_drag_ratio(
@@ -192,6 +192,9 @@ def main():
     mtow_payload = requirements['mtow_payload']  # [kg]
 
     ferry_range = requirements['ferry_range'] * 1000  # [m]
+    wing_area = aircraft_parameters['wing']['wing_area']
+
+    gravity = aircraft_parameters['gravity']  # [m/s^2]
 
     # Mission Profile 1: Design Range at Design Payload Mass
     profile1_mtow, profile1_fuel_mass, profile1_operating_empty_mass, profile1_landing_mass_fraction = (
@@ -232,6 +235,11 @@ def main():
     print(f"\tFuel Mass: {profile3_fuel_mass} kg")
     print(f"\tOEM: {profile3_operating_empty_mass}")
     print(f"\tLanding Mass Fraction: {profile3_landing_mass_fraction}")
+
+    print()
+
+    stall_speed = calculate_stall_speed(profile1_mtow * gravity, get_density(0), wing_area)
+    print(f"Stall Speed: {stall_speed} [m/s]")
 
 
 if __name__ == "__main__":

@@ -56,6 +56,7 @@ def calculate_stall_speed(weight: float, air_density: float, wing_area: float) -
 
 
 def calculate_maximum_lift_coefficient(configuration: FlightConfiguration = FlightConfiguration.Landing) -> float:
+    # TODO: These maximum lift coefficient values might change (?)
     if configuration == FlightConfiguration.Cruise:
         return 1.5
     elif configuration == FlightConfiguration.Landing:

@@ -48,7 +48,7 @@ engine:
   num_engines: 2  # [-]
 
 wing:
-  wing_area: 70  # [m^2]
+  wing_area: 63.1  # [m^2]
   airfoil:
     name: "NASA SC(2)-0714"
     file: "airfoils/nasasc2-0714.dat"

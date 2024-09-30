@@ -23,7 +23,7 @@ def calculate_quarter_chord_sweep_angle(cruise_mach: float) -> float:
 
 def calculate_taper_ratio(quarter_chord_sweep_angle: float) -> float:
     # Eq. 8.3 in ADSEE I reader
-    return 0.2 * (2 - math.radians(quarter_chord_sweep_angle))
+    return 0.2 * (2 - quarter_chord_sweep_angle)
 
 
 def calculate_wing_span(wing_area: float, aspect_ratio: float) -> float:
@@ -127,10 +127,10 @@ def main():
     wing_area = (root_chord + tip_chord) * (wing_span / 2)
 
     # print(f"quarter chord sweep angle = {math.degrees(quarter_chord_sweep_angle)} [deg]")
-    # print(f"taper ratio = {taper_ratio} [-]")
+    print(f"taper ratio = {taper_ratio} [-]")
     print(f"wing half span = {wing_span / 2:.2f} [m]")
-    print(f"root chord = {root_chord / 2:.2f} [m]")
-    print(f"tip chord = {tip_chord / 2:.2f} [m]")
+    print(f"root chord = {root_chord:.2f} [m]")
+    print(f"tip chord = {tip_chord:.2f} [m]")
 
     print(f"full wing area = {wing_area:.2f} [m^2]")
 
