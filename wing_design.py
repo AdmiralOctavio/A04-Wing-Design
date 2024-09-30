@@ -169,9 +169,10 @@ def main():
     camera = (-350, -50)
     dragging = False
 
-    print(f"Airfoil\t\t\tWing Volume\n{'-' * 50}")
+    print(f"{'Airfoil':<20} {'Wing Volume [m^3]':<20}")
+    print("-" * 41)
     for i in range(len(wing_volumes)):
-        print(f"{airfoil_names[i]}\t\t\t{wing_volumes[i]}")
+        print(f"{airfoil_names[i]:<20} {wing_volumes[i]:<20.10f}")
 
     while running:
         for event in pygame.event.get():
@@ -309,5 +310,5 @@ def evaluate_sample_count():
 
 
 if __name__ == "__main__":
-    # main()
-    evaluate_sample_count()
+    main()
+    # evaluate_sample_count()
