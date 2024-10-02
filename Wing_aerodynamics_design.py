@@ -11,10 +11,10 @@ Sw = MTOW * g / Wing_load
 AR = 7.5
 
 
-Sweep = math.acos(1.16/(Mcr+0.5))
-print(Sweep * 180 / math.pi, 'degrees')
+Sweep_quartchord = math.acos(1.16/(Mcr+0.5))
+print(Sweep_quartchord * 180 / math.pi, 'degrees')
 
-Taper = 0.2 * (2 - Sweep)
+Taper = 0.2 * (2 - Sweep_quartchord)
 print(Taper)
 
 Span = math.sqrt(Sw*AR)
@@ -26,7 +26,7 @@ print(Root_chord,Tip_chord, 'metres')
 
 print(MTOW,'kg', nj)
 
-dihedral = 3 - Sweep * 180 / math.pi / 10 - 2
+dihedral = 3 - Sweep_quartchord * 180 / math.pi / 10 - 2
 print(dihedral, 'degrees')
 
 
@@ -39,3 +39,10 @@ def MAC_flap(Wf):
 
     return root_chord, TF * root_chord
 
+def quartchordsweeptoLEsweep(Sweepquartchord, c_r, b, tr ):
+    Lambda_LE = math.atan(math.tan(Sweepquartchord) - c_r*(tr-1)/(2*b))
+    return Lambda_LE
+
+LE_sweep = math.degrees(quartchordsweeptoLEsweep(Sweep_quartchord,Root_chord, Span, Taper))
+
+print(LE_sweep)

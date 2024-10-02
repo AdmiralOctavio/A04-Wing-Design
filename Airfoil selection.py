@@ -58,7 +58,10 @@ def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Cl_alpha):
 Cr = Wing_aerodynamics_design.Root_chord
 Ct = Wing_aerodynamics_design.Tip_chord
 mach_infty = 0.77
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 b = Wing_aerodynamics_design.Span
 Clalpha_airfoil = 0.11211*180/math.pi  # 1/rad
 print('Clalpha airfoil [1/rad]', Clalpha_airfoil)
