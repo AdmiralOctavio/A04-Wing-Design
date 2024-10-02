@@ -149,4 +149,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-print(9.17/(21.75/2))
