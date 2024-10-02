@@ -58,9 +58,9 @@ def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Cl_alpha):
 Cr = Wing_aerodynamics_design.Root_chord
 Ct = Wing_aerodynamics_design.Tip_chord
 mach_infty = 0.77
-LEsweep = Wing_aerodynamics_design.Sweep
+
 b = Wing_aerodynamics_design.Span
-Clalpha_airfoil = 0.11511*180/math.pi  # 1/rad
+Clalpha_airfoil = 0.11211*180/math.pi  # 1/rad
 print('Clalpha airfoil [1/rad]', Clalpha_airfoil)
 
 CLalpha = dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Clalpha_airfoil)  # 1/rad
@@ -93,11 +93,13 @@ factor = HighLowAR(C1, LEsweep) # factor = 2.91954 < A so high AR wings
 alpha_Cruise = (CL_cruise + CLalpha * alphaZeroLift)/CLalpha  # radians
 alpha_trim = alpha_Cruise/math.pi *180  # deg
 Cl_cruise_airfoil = CL_cruise / (math.cos(LEsweep)**2)  # slide 14 ADSEE ppt 2 notes
-Cd_cruise = 0.005149
+Cl_cruise_airfoil_zeroM  = Cl_cruise_airfoil*(1-0.77*0.77)**0.5
+print('Cl mach 0 and Cl mach 0.77', Cl_cruise_airfoil_zeroM, Cl_cruise_airfoil)
+Cd_cruise = 0.00484
 
 # finding CLmax high AR wings 
 CLClRatio = 0.8  # from graph ADSEE ppt 2 slide 22 with sharpness factor >2.5
-Clmax = 1.6
+Clmax = 1.73/((1-0.2*0.2)**0.5)  # 1.73 at M=0, but for calculations correct for M=0.2
 def CLmaxWing(CLClRatio, Clmax):
     CLmax = CLClRatio*Clmax
 
@@ -123,8 +125,9 @@ print('alpha stall at M=0.2 [deg]:', alphaStall)
 e = 4.61*(1-0.045*A**0.68)*(math.cos(LEsweep))**0.15 -3.1
 
 # Mcrit
-Mcrit_unswept = 1
-Mcrit_swept = Mcrit_unswept*math.cos(LEsweep)
+Mcrit_unswept = 0.81333
+Mcrit_swept = Mcrit_unswept/math.cos(LEsweep)
+print('Crit mach', Mcrit_swept)
 print('span efficiency factor:', e)
 print('alpha zero lift [deg]:', alphaZeroLift/math.pi*180)
 print('Cd cruise', Cd_cruise)
