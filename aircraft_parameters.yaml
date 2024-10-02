@@ -49,6 +49,7 @@ engine:
 
 wing:
   wing_area: 63.1  # [m^2]
+  wing_configuration: 1  # 1 = High Wing; 2 = Mid Wing; 3 = Low Wing;
   airfoil:
     name: "NASA SC(2)-0714"
     file: "airfoils/nasasc2-0714.dat"

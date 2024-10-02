@@ -10,6 +10,12 @@ class FlightConfiguration(Enum):
     Landing = "landing"
 
 
+class WingConfiguration(Enum):
+    HighWing = 1
+    LowWing = 2
+    MidWing = 3
+
+
 def convert_square_meters_to_square_feet(square_meters: float) -> float:
     return square_meters * 10.76391  # [sq. ft]
 
