@@ -1,4 +1,5 @@
 from math import sqrt, cos, pi, radians
+import numpy as np
 # import Airfoil selection
 
 M_cruise = 0.77
@@ -103,3 +104,47 @@ print(CL_cruise/CD_2)
 print(CL_cruise/CD_3)
 
 print(M_DD, Mcr_swept)
+
+n = 0
+i = 10**(-n)
+AR_lower= 5
+AR_upper =10
+sweep_lower = 5*pi/180
+sweep_upper = 30*pi/180
+AR_list = []
+sweep_list = []
+for j in np.arange(AR_lower,AR_upper+i,i):
+    AR_list.append(round(j,n))
+for j in np.arange(sweep_lower,sweep_upper+i,i):
+    sweep_list.append(j)
+dim_x = len(AR_list)
+dim_y = len(sweep_list)
+B = np.zeros((dim_x,dim_y))
+C=np.zeros((dim_x,dim_y))
+
+
+for b1 in AR_list:
+    for b2 in sweep_list:
+        #print(b1, b2)
+        e_initial = 4.61 * (1-0.045*(b1+delta_AR)**0.68)*(cos(b2))**0.15 - 3.1
+        K_initial = 1/(pi * e_initial * (b1+delta_AR))
+        efficiency=CL_cruise/(C_D0_1stestimation + K_initial * CL_cruise**2)
+        #if p > P_needed:
+        x = AR_list.index(b1)
+        y = sweep_list.index(b2)
+        
+        B[x,y] = efficiency
+
+
+np.set_printoptions(threshold = np.inf)
+#print(B) - B contains the values
+b_max = np.max(B)
+A = np.where((B >= b_max)) #contains indices
+print(np.transpose(A))
+print(round(b_max,3))
+#print(AR_list[[-1,0]], sweep_list[A[-1,1]])
+print(B[4,0])
+print(AR_list[4],180/pi*sweep_list[0])
+
+#for i in range (100):
+   # print(': ',round(AR_list[np.transpose(A)[i,0]],3),'b2: ',round(sweep_list[np.transpose(A)[i,1]],3))
