@@ -5,6 +5,9 @@ import yaml
 import Wing_aerodynamics_design as W
 #Go to bottom of program if you want to check different configurations
 
+Cr = 4.41 #m
+Ct = 1.39 #m
+
 #Taken from ADSEE II Slides
 #Delta Cl (For airfoil!):
 Plain = (0.9, "Plain")
@@ -47,39 +50,54 @@ e = ZL['euler_efficiency']
     Af = dc/cf * Wf (maybe?? probably not???)
 '''
 
-def LiftCoefficient(Slat, Flap, Cl):
+def LiftCoefficient(Slat, Flap, alpha):
     os.makedirs("output/hld", exist_ok=True)
     f = open("output/hld/HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
-    f.write(" CL:          Wf:       W. Area Ratio:       Delta Chord:        Flap Root Chord:      Flap Tip Chord: \n")
-
-    for Wf in range(50, 100, 5):
+    f.write(" CL:          Wf:       Alpha Stall:       Alpha:        Flap Root Chord:      Flap Tip Chord: \n")
+    CLValues = [] 
+    Cl = alpha * (1.0918 - 0.1143)/8.5 + 0.1143
+    for Wf in range(50,100,1):
         #ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths
-        dCl =  Slat[0] + (Flap[0] * Wf/100)
-        CLValues = [] 
-        Swf = []
-        for i in range (10):
-            Swf.append((i / 100) + 1)
-            CLValues.append( ( dCl / ( 1 + dCl/( AR * math.pi * e ) ) ) * Swf[i] * math.cos(math.radians(16.9)) + (Cl/(1+Cl/( AR * math.pi * e ))) )  #Also maths 
+        SwfS_TE = (2*Cr - (Wf/100)*(Cr-Ct))/(Cr+Ct) * (Wf/100)
+        SwfS_LE = 0.97
+
+
+
+        dCL_TE = 0.9 * SwfS_TE * Flap[0] * math.cos(math.radians(16.9))
+        dCL_LE = 0.9 * SwfS_LE * Slat[0] * math.cos(math.radians(24))
+
+        dCL = dCL_LE + dCL_TE
+        CL_wing = Cl / (1 + (Cl)/(math.pi * AR * e))
+        CL_max = CL_wing + dCL
+        CLValues.append(CL_max)
+        
+        dAlpha_L = -15 * SwfS_TE * math.cos(math.radians(16.9))
+
+        Alpha_stall = 19.32 + dAlpha_L
+        #print(str(dAlpha_L) + "  " + str(Wf) + "   " + str(17.5 + dAlpha_L))
+
+        #dCL_max = 0.9 * dCl_max * Swf/S * Cos(Lambda) for FULLY deployed flaps
+
         #This is just for a nice output
-        for j in range(10):
+        ind = Wf-50
+        CL = ("%.4f" % round(CLValues[ind],3))
+        WF = ("%.0f" % round(Wf,3))
+        FCHORD =("%.3f" % (W.MAC_flap(Wf/100)[0]*0.35) )
+        FCHORD_2 = ("%.3f" % (W.MAC_flap(Wf/100 + 0.5)[1]*0.35) )
+        DC = ("%.3f" % (float(FCHORD) * 0.5))
+        A = ("%.3f" % (float(Alpha_stall)))
 
-            CL = ("%.3f" % round(CLValues[j], 3))
-            WF = ("%.0f" % round(Wf,3))
-            SWF = ("%.2f" % round(Swf[j],3))
-            FCHORD =("%.3f" % (W.MAC_flap(Wf/100)[0]*0.35) )
-            FCHORD_2 = ("%.3f" % (W.MAC_flap(Wf/100)[1]*0.35) )
-            DC = ("%.3f" % (float(FCHORD) * 0.5))
+        if round(CLValues[ind], 3) >= 2.3:
+            full = CL + "*       " + WF + "%           " + A +  "             "+ str(alpha) + "deg              " + FCHORD + "m                " + FCHORD_2 + "m \n"
 
-            if round(CLValues[j], 3) >= 2.3:
-                full = CL + "*        " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD + "m                " + FCHORD_2 + "m \n"
+        else: full = CL + "        " + WF + "%           " + A + "             "+ str(alpha) + "deg              " + FCHORD +  "m                " + FCHORD_2 + "m \n"
 
-            else: full = CL + "         " + WF + "%           " + SWF +"               "+ DC + "m                " + FCHORD +  "m                " + FCHORD_2 + "m \n"
+        f.writelines(full) 
 
-            f.writelines(full) 
+LiftCoefficient(Slat, Double_Slotted, 8.2)
 
-        f.write("\n" * 2)
+#Cl at a = 7.75deg = 1.06225
 
-LiftCoefficient(Slat, Double_Slotted, 0.7980)
 #Just input configuration here! ^^^^
 #Check HLD_Data.txt for results 
 
