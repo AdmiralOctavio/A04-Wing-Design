@@ -65,7 +65,7 @@ def main():
     aileron_deflection = math.radians(
         0.5 * (deflection_angle_up + deflection_angle_down))  # [rad]
 
-    airfoil_lift_curve_slope = (1.279 - 1.229) / math.radians(5)
+    airfoil_lift_curve_slope = 6.595#(1.279 - 1.229) / math.radians(5)
     # [-]
     airfoil_zero_lift_drag_coefficient = airfoil_parameters["zero_lift_drag_coefficient"]
     aileron_effectiveness = aileron_parameters["aileron_effectiveness"]  # [-]

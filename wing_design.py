@@ -8,7 +8,7 @@ import pygame.freetype
 
 import matplotlib.pyplot as plt
 
-from utils import load_airfoil_data, polygon_area, lerp
+from utils import load_airfoil_data, polygon_area, lerp, WingConfiguration
 
 WING_VOLUME_SAMPLE_COUNT = 10000
 
@@ -23,7 +23,7 @@ def calculate_quarter_chord_sweep_angle(cruise_mach: float) -> float:
 
 def calculate_taper_ratio(quarter_chord_sweep_angle: float) -> float:
     # Eq. 8.3 in ADSEE I reader
-    return 0.2 * (2 - math.radians(quarter_chord_sweep_angle))
+    return 0.2 * (2 - quarter_chord_sweep_angle)
 
 
 def calculate_wing_span(wing_area: float, aspect_ratio: float) -> float:
@@ -39,6 +39,20 @@ def calculate_root_chord(wing_area: float, taper_ratio: float, wing_span: float)
 def calculate_tip_chord(taper_ratio: float, root_chord: float) -> float:
     # Eq. 8.6 in ADSEE I reader
     return taper_ratio * root_chord
+
+
+def calculate_dihedral_angle(
+        quarter_chord_sweep_angle: float, # [deg]
+        wing_configuration: WingConfiguration = WingConfiguration.MidWing
+) -> float:
+    sweep_contribution = quarter_chord_sweep_angle / 10  # [deg]
+
+    if wing_configuration == WingConfiguration.HighWing:
+        return 1 - sweep_contribution
+    elif wing_configuration == WingConfiguration.MidWing:
+        return 3 - sweep_contribution
+    elif wing_configuration == WingConfiguration.LowWing:
+        return 5 - sweep_contribution
 
 
 def calculate_chord_along_span(root_chord: float, tip_chord: float, quarter_chord_sweep_angle: float,
@@ -118,19 +132,23 @@ def main():
     wing_area = wing_parameters["wing_area"]
     aspect_ratio = aircraft_parameters["aspect_ratio"]
 
-    quarter_chord_sweep_angle = calculate_quarter_chord_sweep_angle(cruise_mach)
-    taper_ratio = calculate_taper_ratio(quarter_chord_sweep_angle)
-    wing_span = calculate_wing_span(wing_area, aspect_ratio)
-    root_chord = calculate_root_chord(wing_area, taper_ratio, wing_span)
-    tip_chord = calculate_tip_chord(taper_ratio, root_chord)
+    quarter_chord_sweep_angle = calculate_quarter_chord_sweep_angle(cruise_mach)  # [rad]
+    taper_ratio = calculate_taper_ratio(quarter_chord_sweep_angle)  # [-]
+    wing_span = calculate_wing_span(wing_area, aspect_ratio)  # [m]
+    root_chord = calculate_root_chord(wing_area, taper_ratio, wing_span)  # [m]
+    tip_chord = calculate_tip_chord(taper_ratio, root_chord)  # [m]
 
-    wing_area = (root_chord + tip_chord) * (wing_span / 2)
+    wing_area = (root_chord + tip_chord) * (wing_span / 2)  # [m^2]
 
-    # print(f"quarter chord sweep angle = {math.degrees(quarter_chord_sweep_angle)} [deg]")
-    # print(f"taper ratio = {taper_ratio} [-]")
-    print(f"wing half span = {wing_span / 2:.2f} [m]")
-    print(f"root chord = {root_chord / 2:.2f} [m]")
-    print(f"tip chord = {tip_chord / 2:.2f} [m]")
+    wing_configuration: WingConfiguration = WingConfiguration(int(wing_parameters["wing_configuration"]))
+    dihedral_angle = calculate_dihedral_angle(math.degrees(quarter_chord_sweep_angle), wing_configuration)  # [deg]
+
+    print(f"quarter chord sweep angle = {math.degrees(quarter_chord_sweep_angle)} [deg]")
+    print(f"dihedral angle = {dihedral_angle:.3f} [deg]")
+    print(f"taper ratio = {taper_ratio} [-]")
+    print(f"wing span = {wing_span} [m]")
+    print(f"root chord = {root_chord:.2f} [m]")
+    print(f"tip chord = {tip_chord:.2f} [m]")
 
     print(f"full wing area = {wing_area:.2f} [m^2]")
 
@@ -169,9 +187,10 @@ def main():
     camera = (-350, -50)
     dragging = False
 
-    print(f"Airfoil\t\t\tWing Volume\n{'-' * 50}")
+    print(f"{'Airfoil':<20} {'Wing Volume [m^3]':<20}")
+    print("-" * 41)
     for i in range(len(wing_volumes)):
-        print(f"{airfoil_names[i]}\t\t\t{wing_volumes[i]}")
+        print(f"{airfoil_names[i]:<20} {wing_volumes[i]:<20.10f}")
 
     while running:
         for event in pygame.event.get():
@@ -309,5 +328,5 @@ def evaluate_sample_count():
 
 
 if __name__ == "__main__":
-    # main()
-    evaluate_sample_count()
+    main()
+    # evaluate_sample_count()
