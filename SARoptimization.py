@@ -68,8 +68,8 @@ L_over_D_2 = CL_cruise/CD_2
 #   II. changing the sweep angle, keeping the aspect ratio constant
 
 lambda_LE_2 = radians(20)
-Mcr_unswept = 0.8133333
-Mcr_swept = Mcr_unswept /cos(lambda_LE_2)
+Mcr_unswept_3 = 0.8133333
+Mcr_swept_3 = Mcr_unswept_3 /cos(lambda_LE_2)
 
 t_over_c = 0.1
 ka = 0.935
@@ -84,6 +84,14 @@ L_over_D_3 = CL_cruise/CD_3
 
 M_DD = ka/cos(lambda_LE_2) - t_over_c / (cos(lambda_LE_2))**2 - CL_cruise / (10*(cos(lambda_LE_2))**3)
 
+#   III. changing both the sweep angle and the aspect ratio
+
+# Mcr_unswept = 
+# Mcr_swept = 
+# lambda_max = 
+
+
+
 #estimating the range factor and the SAR:
 
 RF = M_cruise * L_over_D * a_cruise / TSFC 
@@ -92,7 +100,7 @@ SAR_OE = RF / W_OE
 
 print("SAR_MTOW = ",  SAR_MTOW, "       " , "SAR_OE = " , SAR_OE, "        ", "in cursed units")
 
-print("SAR_MTOW = ",  SAR_MTOW*1000**2, "       " , "SAR_OE = " , SAR_OE*1000**2, "       " , "in m/kg")
+print("SAR_MTOW = ",  SAR_MTOW*1000, "       " , "SAR_OE = " , SAR_OE*1000, "       " , "in km/kg")
 
 print(e_initial, CD_initial)
 print(e_2, CD_2)
@@ -102,4 +110,4 @@ print(CL_cruise/CD_initial)
 print(CL_cruise/CD_2)
 print(CL_cruise/CD_3)
 
-print(M_DD, Mcr_swept)
+# print(M_DD, Mcr_swept)
