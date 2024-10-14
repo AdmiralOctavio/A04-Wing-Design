@@ -27,7 +27,12 @@ ka_SC = 0.935 #Supercritical ka
 ka_l = 0.87 # lower bound standard airfoils
 ka_u = 0.9 # upper bound standard airfoils
 
-LEsweep = math.radians(27.2)
+
+def SweepxOverc(Qcsweep, Cr, b, taper)
+    Sweep = math.atan(math.tan(Qcsweep)+0.5*Cr/b*(1-taper))
+    return Sweep
+Qcsweep = Wing_aerodynamics_design.Sweep
+LEsweep = SweepxOverc(Qcsweep, Cr, b, taper)
 tcRatio_NACA0012 = 0.12
 tcRatio_NACA2416 = 0.16
 tcRatio_NACA24012 = 0.12
