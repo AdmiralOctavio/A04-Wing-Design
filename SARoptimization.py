@@ -3,6 +3,7 @@ import numpy as np
 # import Airfoil selection
 
 M_cruise = 0.77
+M_DD_min = 1.05*0.77
 h_cruise = 35000 #ft
 T_cruise = 218.808 #K
 gamma = 1.4
@@ -18,7 +19,7 @@ W_MTOW = m_MTOW * g
 a_cruise = sqrt(gamma * T_cruise * R)
 V_cruise = M_cruise * a_cruise
 
-B = 9 
+B = 5.9
 TSFC = 22* B**(-0.19) #g s^-1 kN^-1
 
 # L_over_D = 15.9
@@ -99,17 +100,17 @@ RF = M_cruise * L_over_D * a_cruise / TSFC
 SAR_MTOW = RF / W_MTOW
 SAR_OE = RF / W_OE
 
-print("SAR_MTOW = ",  SAR_MTOW, "       " , "SAR_OE = " , SAR_OE, "        ", "in cursed units")
+# print("SAR_MTOW = ",  SAR_MTOW, "       " , "SAR_OE = " , SAR_OE, "        ", "in cursed units")
 
-print("SAR_MTOW = ",  SAR_MTOW*1000, "       " , "SAR_OE = " , SAR_OE*1000, "       " , "in km/kg")
+# print("SAR_MTOW = ",  SAR_MTOW*1000, "       " , "SAR_OE = " , SAR_OE*1000, "       " , "in km/kg")
 
-print(e_initial, CD_initial)
-print(e_2, CD_2)
-print(e_3, CD_3)
+# print(e_initial, CD_initial)
+# print(e_2, CD_2)
+# print(e_3, CD_3)
 
-print(CL_cruise/CD_initial)
-print(CL_cruise/CD_2)
-print(CL_cruise/CD_3)
+# print(CL_cruise/CD_initial)
+# print(CL_cruise/CD_2)
+# print(CL_cruise/CD_3)
 
 # print(M_DD, Mcr_swept)
 
@@ -131,17 +132,22 @@ B = np.zeros((dim_x,dim_y))
 C=np.zeros((dim_x,dim_y))
 
 
+
 for b1 in AR_list:
     for b2 in sweep_list:
         #print(b1, b2)
         e_initial = 4.61 * (1-0.045*(b1+delta_AR)**0.68)*(cos(b2))**0.15 - 3.1
         K_initial = 1/(pi * e_initial * (b1+delta_AR))
         efficiency=CL_cruise/(C_D0_1stestimation + K_initial * CL_cruise**2)
-        #if p > P_needed:
+        M_DD = ka/cos(b2) - 0.1/(cos(b2)**2) - CL_cruise/(10*cos(b2)**3)
         x = AR_list.index(b1)
         y = sweep_list.index(b2)
-        
-        B[x,y] = efficiency
+        if M_DD>=M_DD_min:
+            B[x,y] = efficiency
+        else:
+            B[x, y]=0
+            
+
 
 
 np.set_printoptions(threshold = np.inf)
@@ -151,8 +157,12 @@ A = np.where((B >= b_max)) #contains indices
 print(np.transpose(A))
 print(round(b_max,3))
 #print(AR_list[[-1,0]], sweep_list[A[-1,1]])
-print(B[4,0])
-print(AR_list[4],180/pi*sweep_list[0])
+print(B[1,1])
+print(AR_list[1],180/pi*sweep_list[1])
 
 #for i in range (100):
    # print(': ',round(AR_list[np.transpose(A)[i,0]],3),'b2: ',round(sweep_list[np.transpose(A)[i,1]],3))
+
+M_DD_1 = ka/cos(11*pi/180) - 0.1/(cos(11*pi/180)**2) - CL_cruise/(10*cos(11*pi/180)**3)
+
+print(M_DD_1, " ", M_DD_min)
