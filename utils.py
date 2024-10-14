@@ -10,6 +10,12 @@ class FlightConfiguration(Enum):
     Landing = "landing"
 
 
+class WingConfiguration(Enum):
+    HighWing = 1
+    LowWing = 2
+    MidWing = 3
+
+
 def convert_square_meters_to_square_feet(square_meters: float) -> float:
     return square_meters * 10.76391  # [sq. ft]
 
@@ -56,6 +62,7 @@ def calculate_stall_speed(weight: float, air_density: float, wing_area: float) -
 
 
 def calculate_maximum_lift_coefficient(configuration: FlightConfiguration = FlightConfiguration.Landing) -> float:
+    # TODO: These maximum lift coefficient values might change (?)
     if configuration == FlightConfiguration.Cruise:
         return 1.5
     elif configuration == FlightConfiguration.Landing:
