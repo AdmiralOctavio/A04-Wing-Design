@@ -19,7 +19,7 @@ def LESweep(Qcsweep, Cr, b, taper):
 def NCandTCLength(D, Ratio):
     return D*Ratio
 
-def SwetNacelle(d, l):
+def SwetNac(d, l):
     return math.pi()*((d**2)/2+d*l)
 
 # flight conditions
@@ -60,7 +60,7 @@ e = 0.0  # m nose gear strut length
 DeltaCD_s = 0.0  # from graph for nose gear
 
 # Tail
-A_HT = Tail_sizing_WP3.A_h  # AR
+A_HT = float(Tail_sizing_WP3.A_h)  # AR
 A_VT = Tail_sizing_WP3.A_v  # AR
 xc_m_HT = 0.3  # NACA0012
 xc_m_VT = 0.3
@@ -68,9 +68,9 @@ tc_HT = 0.12
 tc_VT = 0.12
 taper_HT = Tail_sizing_WP3.taper_h  # m
 taper_VT = Tail_sizing_WP3.taper_v  # m
-b_HT = 1.0  # m
-b_VT = 1.0  # m
-S_HT = Sref(A_HT, b_HT)  # m^2
+b_HT = 0.0  # m
+b_VT = 0.0  # m
+S_HT = Sref(A_HT, b_HT)  # m^2 
 S_VT = Sref(A_VT, b_VT)  # m^2
 Cr_HT = Croot(taper_HT, b_HT, A_HT)  # m
 Cr_VT = Croot(taper_VT, b_VT, A_VT)  # m
@@ -84,7 +84,7 @@ LESweep_VT = LESweep(cOver4LEsweep_VT, Cr_VT, b_VT, taper_VT)  # rad
 # Nacelle
 l = 1.9  # m nacelle langth
 d_nacelle = 1.08  # m max diameter
-Swet_nacelle = SwetNacelle(d_nacelle, l)  # m^2
+Swet_nacelle = SwetNac(d_nacelle, l)  # m^2
 
 # Friction coefficients
 Cf_wing = 0.0  
