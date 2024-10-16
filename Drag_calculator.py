@@ -104,7 +104,13 @@ L_eng = 1.9*scaling
 a = 4*L1/D
 L_tail = sqrt(L3**2 + D**2/4)
 
-for case in range(0,2):#0 for cruise, 1 for TO/L
+
+
+case = 1 #0 for cruise, 1 for TO/L
+
+
+
+for case in range(case,case+1):
     mu = mu_v[case]
     V  = V_v[case]
     rho= rho_v[case]/scaling
