@@ -132,7 +132,7 @@ W_air_conditioning=14*(19.44**1.28)
 
 W_misc=0.01*OEW
 
-W_airframe_services=W_ba+W_APU+W_INE_1+W_EL+W_furnish+W_air_conditioning+W_misc  #Excludes fuel and passengers
+W_airframe_services=W_ba+W_APU+W_INE_2+W_EL+W_furnish+W_air_conditioning+W_misc  #Excludes fuel and passengers
 
 
 W_fuel=0.804*3.8*1000   #kg
