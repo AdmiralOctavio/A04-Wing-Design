@@ -2,14 +2,14 @@ import math
 import Tail_sizing_WP3
 import fuselage_sizing
 
-def Cr(taper, b, A):
+def Croot(taper, b, A):
     return 2*b/(A*(1+taper))
 
-def Ct(Cr, taper):
+def Ctip(Cr, taper):
     return Cr*taper
 
 
-def S(A, b):
+def Sref(A, b):
     return b**2/A
 
 def LESweep(Qcsweep, Cr, b, taper):
@@ -31,7 +31,7 @@ taper = 0.35286100000000004
 Ct = 1.4130122697722916  # m
 b = 23.295063854816966  # m
 AR = 8.4
-S = S(AR, b)  # m^2
+S = Sref(AR, b)  # m^2
 tcRatio = 0.1
 xc_mRatio = 0.35   # wing maximum thickness position
 LEsweep = math.radians(16.459155902616462)  # converted to rad
@@ -68,14 +68,14 @@ tc_HT = 0.12
 tc_VT = 0.12
 taper_HT = Tail_sizing_WP3.taper_h  # m
 taper_VT = Tail_sizing_WP3.taper_v  # m
-b_HT = 0.0  # m
-b_VT = 0.0  # m
-S_HT = S(A_HT, b_HT)  # m^2 
-S_VT = S(A_VT, b_VT)  # m^2
-Cr_HT = Cr(taper_HT, b_HT, A_HT)  # m
-Cr_VT = Cr(taper_VT, b_VT, A_VT)  # m
-Ct_HT = Ct(Cr_HT, taper_HT)  # m
-Ct_VT = Ct(Cr_VT, taper_VT)  # m
+b_HT = 1.0  # m
+b_VT = 1.0  # m
+S_HT = Sref(A_HT, b_HT)  # m^2
+S_VT = Sref(A_VT, b_VT)  # m^2
+Cr_HT = Croot(taper_HT, b_HT, A_HT)  # m
+Cr_VT = Croot(taper_VT, b_VT, A_VT)  # m
+Ct_HT = Ctip(Cr_HT, taper_HT)  # m
+Ct_VT = Ctip(Cr_VT, taper_VT)  # m
 cOver4LEsweep_HT = math.radians(Tail_sizing_WP3.sweep_htail_c_over_4)  # rad
 cOver4LEsweep_VT = math.radians(Tail_sizing_WP3.sweep_vtail_c_over_4)  # rad
 LESweep_HT = LESweep(cOver4LEsweep_HT, Cr_HT, b_HT, taper_HT)  # rad
