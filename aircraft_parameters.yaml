@@ -43,7 +43,7 @@ requirements:
   loiter_time: 2700  # [secs]
 
 engine:
-  bypass_ratio: 9  # [-]
+  bypass_ratio: 6  # [-]
   specific_energy: 44  # [MJ/kg]
   num_engines: 2  # [-]
 
