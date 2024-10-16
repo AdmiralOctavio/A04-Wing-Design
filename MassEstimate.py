@@ -10,7 +10,7 @@ tE = 2700 #loiter time
 hCR = 10668 #m, cruise height
 Mpl = 7200 #kg, design payload mass
 
-B = 9 #Bypass Ratio
+B = 6 #Bypass Ratio
 
 
 TSFC = 22*B**(-.19) #Thrust specific fuel consumption
@@ -81,7 +81,7 @@ MTOW = 7200 / p_MTOW
 
 fuel = MTOW * f_MTOW #kg, fuel mass 
 structure = MTOW * OE_MTOW #kg, structural mass / operating empty
-#print(fuel, structure, MTOW)
+print(fuel, structure, MTOW)
 
 f_landing = 1 - Rnom/Req * f_MTOW
 #print(f_landing)

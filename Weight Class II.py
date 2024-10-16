@@ -3,9 +3,11 @@ from math import sqrt,atan,tan,radians,cos
 MTOW=23173 #kg
 OEW=13127 #kg
 M_fuel=2845 #kg
-MAC=3.16 #m
-c_r=3.87 #m
-taper=0.4
+MAC=2.915 #m
+yMAC=4.895 #m
+xMAC=1.446 #m
+c_r=4.00 #m
+taper=0.352
 b=23.3 #m
 t_over_c=0.1
 wing_area=63.1 #m^2
@@ -14,6 +16,10 @@ t_r=c_r*t_over_c
 Lambda_LE=4.6 #deg
 Lambda_halfc=atan(tan(radians(Lambda_LE))-c_r/b*(1-taper))
 MZFW=MTOW-M_fuel
+
+
+R_D= 2963 #km
+sweep_le=16.46 #deg
 
 
 b_s=b/cos(Lambda_halfc)
@@ -90,15 +96,68 @@ W_sc=0.64*1.2*0.768*MTOW**0.666667
 W_n=0.065*0.453592*0.4*MTOW
 
 #PROPULSION GROUP
-W_e=1724 #kg
+W_e=1040 #kg
 N_e=2
 W_prop=1.15*1.18*N_e*W_e*0.453592**2
+
+#AIRFRAME SERVICES AND EQUIPMENT
+W_ba=0.4*85.34
+W_APU=11.7*(W_ba**0.6)
+
+        #LOW_SUBSONIC
+W_INE_1=54.4+9.1*2+0.006*MTOW
+
+        #HIGH_SUBSONIC
+W_INE_2=0.347*OEW**(5/9)*R_D**0.25
+
+W_HPE=0.011*OEW+181 
+
+W_EL=0.02*MTOW+181
+
+W_furnish=0.196*(MTOW-M_fuel)**0.91
+
+W_air_conditioning=14*(19.44**1.28)
+
+W_misc=0.01*OEW
+
+W_airframe_services=W_ba+W_APU+W_INE_1+W_EL+W_furnish+W_air_conditioning+W_misc  #Excludes fuel and passengers
+
+
+W_fuel=0.804*3.8*1000   #kg
+
+W_pax=(75+18)*72  #kg
+
+print("W_pay/W_OEW",7255/OEW)
+
+
+#CG POSITION
+x_f=0.435*l_f
+x_tail=0.9*l_f #Subject to change
+x_nose=0.5*MAC
+x_airframe_services=x_f
+x_wing=0.07*b/2*tan(radians(sweep_le))+(0.2+0.7*0.4)*(c_r-c_r*(1-taper)*0.35)
+l_nacelle=1.90 #m
+x_nacelle=-0.1*l_nacelle #w.r.t. the xLEMAC
+x_prop=-0.4*l_nacelle
+
+W_fuselage_group=W_f+W_nose+W_tail+W_airframe_services #Excludes main LG
+X_fuselage_group=(W_f*x_f+x_tail*W_tail+x_nose*W_nose+x_airframe_services*W_airframe_services)/W_fuselage_group
+W_wing_group=W_w+W_n+W_prop
+X_wing_group=(W_w*x_wing+W_n*x_nacelle+W_prop*x_prop)/W_wing_group
+
+
+X_OE=0.225*MAC
+X_LEMAC=X_fuselage_group-X_OE+W_wing_group/W_fuselage_group*((X_wing_group-X_OE))
+print("X_LEMAC: ",X_LEMAC)
+print('Wing c.g. position w.r.t the fuselage nose: ',X_wing_group+X_LEMAC)
+print('OEW c.g. position w.r.t. the fuselage nose: ',X_OE+X_LEMAC)
+x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
+
 
 
 
 print(MTOW*2.20462)
 print(2.1+24000/(MTOW*2.20462+10000))
-
 print(n_max)
 print('M_s/MTOW: ',M_s/MTOW)
 print('Half-chord sweep angle: ',Lambda_halfc*180/3.14)

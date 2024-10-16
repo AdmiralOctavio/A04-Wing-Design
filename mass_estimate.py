@@ -1,5 +1,4 @@
 import math
-
 import yaml
 
 from drag_polar import calculate_zero_lift_drag_coefficient, calculate_oswald_efficiency_factor
