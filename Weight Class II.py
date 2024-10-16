@@ -31,15 +31,27 @@ h_f=2.90
 fineness=4.5
 l_f=31.93
 
-l_t= 15 #m  #distance from wing root quarter-point to horizontal tail root
+
+#horizontal tail
+c_r_horizontal=2.56 #m
+c_t_horizontal=1.1 #m
+b_horizontal=7.86 #m
+sweep_le_horizontal=26.6 #deg
+taper=c_t_horizontal/c_r_horizontal
+x_38_horizontal=0.38*b_horizontal/2*tan(radians(sweep_le_horizontal))
+
+
+position=x_38_horizontal+0.42*c_r_horizontal*(1-(1-taper)*0.38)-0.25*c_r_horizontal #m, w.r.t. the root quarter-chord
+print(position)
+l_t= (0.9*l_f-position) -(13.5288-0.42*b/2*tan(radians(sweep_le))+0.25*MAC) #m  #distance from wing root quarter point to horizontal tail root quarter point
 
 ft_per_meter=0.3048
 
 ro=0.379597 #kg/m^3
-V=0.77*sqrt(1.4*287*218.8)
+V=0.77*296.535
 V_dive_EAS=166.89*1.5 #m/s #NOTE: Subject to change
 CL_alpha=5.76 #1/rad
-W_over_S=MTOW/63.1 #kg/m^2
+W_over_S=MTOW/63.1*9.81 #kg/m^2
 
 A_main=40
 A_nose=20
@@ -50,7 +62,7 @@ C_nose=0
 D_main=1.5*10**(-5)
 D_nose=2*10**(-6)
 
-u_hat=38*ft_per_meter #m/s
+u_hat=66*ft_per_meter #m/s
 
 mu=2*W_over_S/ro/9.81/CL_alpha/MAC
 
@@ -60,12 +72,13 @@ u=K*u_hat
 
 
 #MAXIMUM LOAD FACTOR
-n_max=1+ro*V*CL_alpha*u/2/W_over_S
+n_max=2.5 #(more than 51000 lbs)
+n_max=1+ro*V*CL_alpha*u/2/W_over_S #From gusts
 n_ult=1.5*n_max
 
-
+print('n_ult:',n_ult)
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
-M_s=MTOW*sqrt(1.5*n_max)*((b_f*h_f*l_f)/MTOW)**0.24
+M_s=MTOW*sqrt(1.5*2)*((b_f*h_f*l_f)/MTOW)**0.24
 
 
 #WING GROUP
@@ -120,7 +133,7 @@ W_air_conditioning=14*(19.44**1.28)
 
 W_misc=0.01*OEW
 
-W_airframe_services=W_ba+W_APU+W_INE_1+W_EL+W_furnish+W_air_conditioning+W_misc  #Excludes fuel and passengers
+W_airframe_services=W_ba+W_APU+W_INE_2+W_EL+W_furnish+W_air_conditioning+W_misc  #Excludes fuel and passengers
 
 
 W_fuel=0.804*3.8*1000   #kg
@@ -149,13 +162,14 @@ X_wing_group=(W_w*x_wing+W_n*x_nacelle+W_prop*x_prop)/W_wing_group
 X_OE=0.225*MAC
 X_LEMAC=X_fuselage_group-X_OE+W_wing_group/W_fuselage_group*((X_wing_group-X_OE))
 print("X_LEMAC: ",X_LEMAC)
+print('Horizontal tail root quarter chord position with respect to wing root quarter chord: ',l_t)
 print('Wing c.g. position w.r.t the fuselage nose: ',X_wing_group+X_LEMAC)
 print('OEW c.g. position w.r.t. the fuselage nose: ',X_OE+X_LEMAC)
 x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
 
+OEW_new=W_w+W_tail+W_f+W_LG+W_sc+W_n+W_prop+W_airframe_services
 
-
-
+print('Airframe structural weight and OEW (old+updated): ',M_s,OEW,OEW_new)
 print(MTOW*2.20462)
 print(2.1+24000/(MTOW*2.20462+10000))
 print(n_max)

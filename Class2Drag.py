@@ -1,6 +1,10 @@
 import math
 import Tail_sizing_WP3
 import fuselage_sizing
+import DRAG_ESTIMATION_WP3
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 def Croot(taper, b, A):
     return 2*b/(A*(1+taper))
@@ -8,19 +12,21 @@ def Croot(taper, b, A):
 def Ctip(Cr, taper):
     return Cr*taper
 
+def span(A, S):
+    return (A*S)**0.5
 
 def Sref(A, b):
     return b**2/A
 
 def LESweep(Qcsweep, Cr, b, taper):
-    Sweep = math.atan(math.tan(Qcsweep)+0.5*Cr/b*(1-taper))
+    Sweep = math.atan(math.tan(Qcsweep)+0.5*Cr*(1-taper) / b)
     return Sweep
 
 def NCandTCLength(D, Ratio):
     return D*Ratio
 
 def SwetNac(d, l):
-    return math.pi()*((d**2)/2+d*l)
+    return math.pi*((d**2)/2+d*l)
 
 # flight conditions
 M = 0.77  # cruise
@@ -34,7 +40,7 @@ AR = 8.4
 S = Sref(AR, b)  # m^2
 tcRatio = 0.1
 xc_mRatio = 0.35   # wing maximum thickness position
-LEsweep = math.radians(16.459155902616462)  # converted to rad
+LEsweepwing = math.radians(16.459155902616462)  # converted to rad
 DeltaFlap = 35.0  # deg
 FlapAreaRatio = 0.76845689
 FlapChordRatio = 0.35
@@ -51,13 +57,13 @@ u = math.radians(10.0)  # rad (fuselage upsweep CHANGE VALUE)
 A_base = 0.0  # m^2
 
 # Landing gear
-S_A_nose = 0.0  # m^2 (frontal area of nose gear)
-S_A_gear = 0.0  # m^2 (frontal area of landing gear)
-d = 0.0  # m tire diameter
-w = 0.0  # m tire width
-a = 0.0  # m nose gear x-position
-e = 0.0  # m nose gear strut length
-DeltaCD_s = 0.0  # from graph for nose gear
+S_A_nose = 1.0  # m^2 (frontal area of nose gear)
+S_A_gear = 1.0  # m^2 (frontal area of landing gear)
+d = 1.0  # m tire diameter
+w = 1.0  # m tire width
+a = 1.0  # m nose gear x-position
+e = 1.0  # m nose gear strut length
+DeltaCD_s = 1.0  # from graph for nose gear
 
 # Tail
 A_HT = float(Tail_sizing_WP3.A_h)  # AR
@@ -68,23 +74,23 @@ tc_HT = 0.12
 tc_VT = 0.12
 taper_HT = Tail_sizing_WP3.taper_h  # m
 taper_VT = Tail_sizing_WP3.taper_v  # m
-b_HT = 0.0  # m
-b_VT = 0.0  # m
-S_HT = Sref(A_HT, b_HT)  # m^2 
-S_VT = Sref(A_VT, b_VT)  # m^2
+S_HT = Tail_sizing_WP3.S_v  # m^2 
+S_VT = Tail_sizing_WP3.S_h  # m^2
+b_HT = span(A_HT, S_HT)  # m
+b_VT = span(A_VT, S_VT)  # m
 Cr_HT = Croot(taper_HT, b_HT, A_HT)  # m
 Cr_VT = Croot(taper_VT, b_VT, A_VT)  # m
 Ct_HT = Ctip(Cr_HT, taper_HT)  # m
 Ct_VT = Ctip(Cr_VT, taper_VT)  # m
-cOver4LEsweep_HT = math.radians(Tail_sizing_WP3.sweep_htail_c_over_4)  # rad
-cOver4LEsweep_VT = math.radians(Tail_sizing_WP3.sweep_vtail_c_over_4)  # rad
-LESweep_HT = LESweep(cOver4LEsweep_HT, Cr_HT, b_HT, taper_HT)  # rad
-LESweep_VT = LESweep(cOver4LEsweep_VT, Cr_VT, b_VT, taper_VT)  # rad
+QCsweep_HT = math.radians(Tail_sizing_WP3.sweep_htail_c_over_4)  # rad
+QCsweep_VT = math.radians(Tail_sizing_WP3.sweep_vtail_c_over_4)  # rad
+LESweep_HT = LESweep(QCsweep_HT, Cr_HT, b_HT, taper_HT)  # rad
+LESweep_VT = LESweep(QCsweep_VT, Cr_VT, b_VT, taper_VT)  # rad
 
 # Nacelle
 l = 1.9  # m nacelle langth
-d_nacelle = 1.08  # m max diameter
-Swet_nacelle = SwetNac(d_nacelle, l)  # m^2
+d_nac = 1.08  # m max diameter
+Swet_nacelle = SwetNac(d_nac, l)  # m^2
 
 # Friction coefficients
 Cf_wing = 0.0  
@@ -100,7 +106,7 @@ ChordAtFuselage = ChordAtY(Cr, Ct, b, D/2)
 def S_exp(S, ChordAtIntersection, Cr, yIntersection):
     return S - (ChordAtIntersection + Cr)*yIntersection
 S_exp_w = S_exp(S, ChordAtFuselage, Cr, D/2)
-S_exp_HT = 0.0  # m^2
+S_exp_HT = S_HT  # m^2
 S_exp_VT = S_exp(S_VT, ChordAtY(Cr_VT, Ct_VT, b_VT, D/2), Cr_VT, D/4)  # m^2
 def S_wet_w(S_exp_w):
     return 1.07*2*S_exp_w
@@ -178,12 +184,15 @@ DeltaCDFlap = DeltaCD_flap(FlapChordRatio, FlapAreaRatio, DeltaFlap)
 def MiscCD(UpsweepCD, fuselageBaseCD, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap):
     return UpsweepCD + fuselageBaseCD + DeltaCDREF_1 + 2*DeltaCDREF_2 + DeltaCDFlap
 CD_misc = MiscCD(UpsweepCD, fuselageBaseCD, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap)
+def MiscCDCruise(UpsweepCD, fuselageBaseCD):
+    return UpsweepCD + fuselageBaseCD
+CD_miscCruise = MiscCDCruise(UpsweepCD, fuselageBaseCD)
 
-CD_wing = CD0_comp(S, Cf_wing, FF1(xc_mRatio, tcRatio, M, LEsweep, Cr, b, taper), IF_wing, Swet_w)
+CD_wing = CD0_comp(S, Cf_wing, FF1(xc_mRatio, tcRatio, M, LEsweepwing, Cr, b, taper), IF_wing, Swet_w)
 CD_HT = CD0_comp(S, Cf_HT, FF1(xc_m_HT, tc_HT, M, LESweep_HT, Cr_HT, b_HT, taper_HT), IF_tail, Swet_HT)
 CD_VT = CD0_comp(S, Cf_VT, FF1(xc_m_VT, tc_VT, M, LESweep_VT, Cr_VT, b_VT, taper_VT), IF_tail, Swet_VT)
 CD_fuselage = CD0_comp(S, Cf_fuselage, FF2(L, D), IF_fuselage, Fuselage_S_wet(L1, L2, L3, D))
-CD_nacelle = CD0_comp(S, Cf_nacelle, FF3(l, d_nacelle), IF_nacelle, Swet_nacelle)
+CD_nacelle = CD0_comp(S, Cf_nacelle, FF3(l, d_nac), IF_nacelle, Swet_nacelle)
 
 def SumOfCD(CD_misc, CD_wing, CD_HT, CD_VT, CD_fuselage, CD_nacelle, CD_excrescenceFrac):
     SumCD = CD_misc + CD_wing + CD_HT + CD_VT + CD_fuselage + CD_nacelle
@@ -191,7 +200,9 @@ def SumOfCD(CD_misc, CD_wing, CD_HT, CD_VT, CD_fuselage, CD_nacelle, CD_excresce
     return total
 
 CD0_total = SumOfCD(CD_misc, CD_wing, CD_HT, CD_VT, CD_fuselage, CD_nacelle, CD_excrescenceFrac)
+CD0_total_Cruise = SumOfCD(CD_miscCruise, CD_wing, CD_HT, CD_VT, CD_fuselage, CD_nacelle, CD_excrescenceFrac)
 print('CD0 total', CD0_total)
+print('CD0 total Cruise', CD0_total_Cruise)
 
 
 
@@ -211,3 +222,38 @@ def CD_iGroundEffect(h, b, AR, Delta_e, e, CL):
     Phi = 33*(h/b)**1.5/(1+33*(h/b)**1.5)
     CD_i = CL**2/(math.pi*AR*Phi*(e + Delta_e))
     return CD_i
+
+V_stall = 50.6  # m/s
+def TimeGroundEffect(b, V_stall, gamma):
+    t = b/(2*V_stall*math.sin(gamma))
+    return t
+gamma1 = math.radians(1)
+gamma3 = math.radians(3)
+gamma5 = math.radians(5)
+print('time ground effect at gamma=1deg', TimeGroundEffect(b, V_stall, gamma1))
+print('time ground effect at gamma=3deg', TimeGroundEffect(b, V_stall, gamma3))
+print('time ground effect at gamma=5deg', TimeGroundEffect(b, V_stall, gamma5))
+# Define the function
+def f(gamma):
+    return 23.295063854816966/(2*50.6*np.sin(gamma))
+
+# Generate x values
+gamma = np.linspace(-0.35, 0.35, 400)
+
+# Compute y values
+t = f(gamma)
+
+# Create the plot
+plt.plot(gamma, t, label='f(gamma) = b/(2*V_stall*sin(gamma))')
+
+# Add title and labels
+plt.title('Plot of f(gamma) = b/(2*V_stall*sin(gamma))')
+plt.xlabel('gamma')
+plt.ylabel('time for ground effect')
+
+# Add a legend
+plt.legend()
+
+# Show the plot
+plt.grid(True)
+plt.show()
