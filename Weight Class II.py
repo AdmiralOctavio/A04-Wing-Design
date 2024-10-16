@@ -31,7 +31,19 @@ h_f=2.90
 fineness=4.5
 l_f=31.93
 
-l_t= (0.9*l_f) -(13.5288-0.42*b/2*tan(radians(sweep_le))+0.25*MAC) #m  #distance from wing root quarter point to horizontal tail root quarter point
+
+#horizontal tail
+c_r_horizontal=2.56 #m
+c_t_horizontal=1.1 #m
+b_horizontal=7.86 #m
+sweep_le_horizontal=26.6 #deg
+taper=c_t_horizontal/c_r_horizontal
+x_38_horizontal=0.38*b_horizontal/2*tan(radians(sweep_le_horizontal))
+
+
+position=x_38_horizontal+0.42*c_r_horizontal*(1-(1-taper)*0.38)-0.25*c_r_horizontal #m, w.r.t. the root quarter-chord
+print(position)
+l_t= (0.9*l_f-position) -(13.5288-0.42*b/2*tan(radians(sweep_le))+0.25*MAC) #m  #distance from wing root quarter point to horizontal tail root quarter point
 
 ft_per_meter=0.3048
 
@@ -149,6 +161,7 @@ X_wing_group=(W_w*x_wing+W_n*x_nacelle+W_prop*x_prop)/W_wing_group
 X_OE=0.225*MAC
 X_LEMAC=X_fuselage_group-X_OE+W_wing_group/W_fuselage_group*((X_wing_group-X_OE))
 print("X_LEMAC: ",X_LEMAC)
+print('Horizontal tail root quarter chord position with respect to wing root quarter chord: ',l_t)
 print('Wing c.g. position w.r.t the fuselage nose: ',X_wing_group+X_LEMAC)
 print('OEW c.g. position w.r.t. the fuselage nose: ',X_OE+X_LEMAC)
 x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
