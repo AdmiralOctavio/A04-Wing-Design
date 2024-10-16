@@ -41,7 +41,7 @@ S = Sref(AR, b)  # m^2
 tcRatio = 0.1
 xc_mRatio = 0.35   # wing maximum thickness position
 LEsweepwing = math.radians(16.459155902616462)  # converted to rad
-DeltaFlap = 35.0  # deg
+DeltaFlap = 35.0  # deg 15 for TO
 FlapAreaRatio = 0.76845689
 FlapChordRatio = 0.35
 
