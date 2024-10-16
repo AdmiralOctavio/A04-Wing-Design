@@ -94,7 +94,7 @@ def calculate_wing_volume_with_airfoil(airfoil_file: str, wing_span: float,
                                                     wing_span / 2, wing_volume_sample_points)
 
     # Multiply unit area by square of chord length to get area at each span-wise position
-    wing_airfoil_area_samples = np.pow(wing_chord_samples, 2) * airfoil_unit_area
+    wing_airfoil_area_samples = np.power(wing_chord_samples, 2) * airfoil_unit_area
 
     # Multiply each span-wise area by the step between span-wise samples and sum all volumes together
     wing_volume_sample_step = (wing_span / 2) / sample_count

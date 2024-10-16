@@ -57,34 +57,34 @@ L_over_D = CL_cruise/CD_initial
 
 #   I. changing the aspect ratio, keeping the sweep angle constant
 
-AR_new = 8.15 #but same sweep - biggest jump in L/D, tested values were AR = [8, 9, 7.9, 8.1, 8.2 and 8.15] - we narrowed it down
-AR_eff_2 = AR_new + delta_AR
-e_2 = 4.61 * (1-0.045*AR_eff_2**0.68)*(cos(lambda_LE))**0.15 - 3.1
+# AR_new = 8.15 #but same sweep - biggest jump in L/D, tested values were AR = [8, 9, 7.9, 8.1, 8.2 and 8.15] - we narrowed it down
+# AR_eff_2 = AR_new + delta_AR
+# e_2 = 4.61 * (1-0.045*AR_eff_2**0.68)*(cos(lambda_LE))**0.15 - 3.1
 
-K_2 = 1/(pi * e_2 * AR_eff_2)
+# K_2 = 1/(pi * e_2 * AR_eff_2)
 
-CD_2 = C_D0_1stestimation + K_2 * CL_cruise**2
+# CD_2 = C_D0_1stestimation + K_2 * CL_cruise**2
 
-L_over_D_2 = CL_cruise/CD_2
+# L_over_D_2 = CL_cruise/CD_2
 
 #   II. changing the sweep angle, keeping the aspect ratio constant
 
-lambda_LE_2 = radians(20)
-Mcr_unswept_3 = 0.8133333
-Mcr_swept_3 = Mcr_unswept_3 /cos(lambda_LE_2)
+# lambda_LE_2 = radians(20)
+# Mcr_unswept_3 = 0.8133333
+# Mcr_swept_3 = Mcr_unswept_3 /cos(lambda_LE_2)
 
 t_over_c = 0.1
 ka = 0.935
 
-e_3 = 4.61 * (1-0.045*AR_eff**0.68)*(cos(lambda_LE_2))**0.15 - 3.1
+# e_3 = 4.61 * (1-0.045*AR_eff**0.68)*(cos(lambda_LE_2))**0.15 - 3.1
 
-K_3 = 1/(pi * e_3 * AR_eff)
+# K_3 = 1/(pi * e_3 * AR_eff)
 
-CD_3 = C_D0_1stestimation + K_3 * CL_cruise**2
+# CD_3 = C_D0_1stestimation + K_3 * CL_cruise**2
 
-L_over_D_3 = CL_cruise/CD_3
+# L_over_D_3 = CL_cruise/CD_3
 
-M_DD = ka/cos(lambda_LE_2) - t_over_c / (cos(lambda_LE_2))**2 - CL_cruise / (10*(cos(lambda_LE_2))**3)
+# M_DD = ka/cos(lambda_LE_2) - t_over_c / (cos(lambda_LE_2))**2 - CL_cruise / (10*(cos(lambda_LE_2))**3)
 
 #   III. changing both the sweep angle and the aspect ratio
 
@@ -100,9 +100,9 @@ RF = M_cruise * L_over_D * a_cruise / TSFC
 SAR_MTOW = RF / W_MTOW
 SAR_OE = RF / W_OE
 
-# print("SAR_MTOW = ",  SAR_MTOW, "       " , "SAR_OE = " , SAR_OE, "        ", "in cursed units")
+print("SAR_MTOW = ",  SAR_MTOW, "       " , "SAR_OE = " , SAR_OE, "        ", "in cursed units")
 
-# print("SAR_MTOW = ",  SAR_MTOW*1000, "       " , "SAR_OE = " , SAR_OE*1000, "       " , "in km/kg")
+print("SAR_MTOW = ",  SAR_MTOW*1000, "       " , "SAR_OE = " , SAR_OE*1000, "       " , "in km/kg")
 
 # print(e_initial, CD_initial)
 # print(e_2, CD_2)
@@ -114,7 +114,7 @@ SAR_OE = RF / W_OE
 
 # print(M_DD, Mcr_swept)
 
-n = 0
+n = 1
 i = 10**(-n)
 AR_lower= 5
 AR_upper =10
@@ -142,10 +142,10 @@ for b1 in AR_list:
         M_DD = ka/cos(b2) - 0.1/(cos(b2)**2) - CL_cruise/(10*cos(b2)**3)
         x = AR_list.index(b1)
         y = sweep_list.index(b2)
-        if M_DD>=M_DD_min:
+        if M_DD>M_DD_min:
             B[x,y] = efficiency
         else:
-            B[x, y]=0
+            B[x,y]=0
             
 
 
@@ -157,12 +157,12 @@ A = np.where((B >= b_max)) #contains indices
 print(np.transpose(A))
 print(round(b_max,3))
 #print(AR_list[[-1,0]], sweep_list[A[-1,1]])
-print(B[1,1])
-print(AR_list[1],180/pi*sweep_list[1])
+print(B[34,2])
+print(AR_list[34],180/pi*sweep_list[2])
 
 #for i in range (100):
    # print(': ',round(AR_list[np.transpose(A)[i,0]],3),'b2: ',round(sweep_list[np.transpose(A)[i,1]],3))
 
-M_DD_1 = ka/cos(11*pi/180) - 0.1/(cos(11*pi/180)**2) - CL_cruise/(10*cos(11*pi/180)**3)
+M_DD_1 = ka/cos(10.8*pi/180) - 0.1/(cos(10.8*pi/180)**2) - CL_cruise/(10*cos(10.8*pi/180)**3)
 
 print(M_DD_1, " ", M_DD_min)
