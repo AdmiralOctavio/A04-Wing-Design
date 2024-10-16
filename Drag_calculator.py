@@ -40,8 +40,15 @@ def Cf_plate_lam(L):
 
 def Cf_cone(s,L):
     ReL = Re(L)
-    r = s/L
-    Cf = 0.0592/0.72/ReL**0.2 * ((1+r)**1.8 - r**1.8 - 1.8*r**0.8)
+    #r = s/L
+    #Cf = 0.0592/0.72/ReL**0.2 * ((1+r)**1.8 - r**1.8 - 1.8*r**0.8)
+    dx = 0.0001
+    Cf = 0
+    ReL = Re(L)
+    for x in np.arange(dx,1+dx,dx):
+        Cf += sqrt(1-x)/((s/L + sqrt(1+D**2/(4*L**2))*x)**0.2) * dx
+        #print(Cf)
+    Cf *= 0.1184 * 1/ReL**0.2
     return Cf
 
 def Cf_wing(cr,ct,b):
@@ -61,11 +68,17 @@ scaling = 1
 prec1 = 5
 prec2 = 2
 
+mu_v = [1.327*10**(-5),1.7894**(-5)]
+V_v = [228.3,50.6]
+rho_v = [0.3795,1.225]
+T_v = [218.8,288.15]
 
-mu = 1.327*10**(-5)
-V  = 228.3
-rho= 0.2882/scaling
-T  = 218.8
+case = 1 #0 for cruise, 1 for TO/L
+
+mu = mu_v[case]
+V  = V_v[case]
+rho= rho_v[case]/scaling
+T  = T_v[case]
 gma= 1.4
 R  = 287
 k  = 0.634*10**(-5)
@@ -83,13 +96,13 @@ b  = 23.3*scaling
 cr = 3.87*scaling
 ct = 1.47*scaling
 
-b_HT = 8.6*scaling
-cr_HT = 2.2*scaling
-ct_HT = 1.2*scaling
+b_HT = 7.865*scaling
+cr_HT = 2.558*scaling
+ct_HT = 1.100*scaling
 
-b_VT = 3.1*scaling
-cr_VT = 3.3*scaling
-ct_VT = 2.3*scaling
+b_VT = 3.051*scaling
+cr_VT = 2.991*scaling
+ct_VT = 2.094*scaling
 
 D_eng = 1.08*scaling
 L_eng = 1.9*scaling
