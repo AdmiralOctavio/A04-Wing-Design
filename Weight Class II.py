@@ -15,6 +15,9 @@ Lambda_LE=4.6 #deg
 Lambda_halfc=atan(tan(radians(Lambda_LE))-c_r/b*(1-taper))
 MZFW=MTOW-M_fuel
 
+R_D= 2963 #km
+sweep_le=11 #deg
+
 
 b_s=b/cos(Lambda_halfc)
 b_ref=1.905 #m
@@ -90,10 +93,46 @@ W_sc=0.64*1.2*0.768*MTOW**0.666667
 W_n=0.065*0.453592*0.4*MTOW
 
 #PROPULSION GROUP
-W_e=1724 #kg
+W_e=1040 #kg
 N_e=2
 W_prop=1.15*1.18*N_e*W_e*0.453592**2
 
+#AIRFRAME SERVICES AND EQUIPMENT
+W_ba=0.4*85.34
+W_APU=11.7*(W_ba**0.6)
+
+        #LOW_SUBSONIC
+W_INE_1=54.4+9.1*2+0.006*MTOW
+
+        #HIGH_SUBSONIC
+W_INE_2=0.347*OEW**(5/9)*R_D**0.25
+
+W_HPE=0.011*OEW+181 
+
+W_EL=0.02*MTOW+181
+
+W_furnish=0.196*(MTOW-M_fuel)**0.91
+
+W_air_conditioning=14*(19.44**1.28)
+
+W_misc=0.01*OEW
+
+W_fuel=0.804*3.8*1000   #kg
+
+W_pax=(75+18)*72  #kg
+
+
+#CG POSITION
+x_fg=0.435*l_f
+x_fg=0.435*l_f
+
+X_OE=X_LEMAC+0.2*MAC
+X_LEMAC=x_fg-X_OE+W_w/W_f*((0.2))-X_OE
+
+x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
+
+
+X_LEMAC=x_fg-X_OE+W_w/W_f*(x_wg-X_OE)
 
 
 print(MTOW*2.20462)

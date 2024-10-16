@@ -166,3 +166,33 @@ print(AR_list[1],180/pi*sweep_list[1])
 M_DD_1 = ka/cos(11*pi/180) - 0.1/(cos(11*pi/180)**2) - CL_cruise/(10*cos(11*pi/180)**3)
 
 print(M_DD_1, " ", M_DD_min)
+
+#The surface area of the wing is kept constant (matching diagram).
+#Therefore,
+#AR_updated=AR_list[np.transpose(A)[0]]
+sweep_LE_updated=180/pi*sweep_list[0]
+b_updated=sqrt(AR_list[36]*wing_area)
+
+
+sweep_quarter_chord_updated=0.0007162*180/pi #deg
+dihedral_updated=3-0.1*sweep_quarter_chord_updated -2#deg
+taper_updated=0.4-0.2*sweep_quarter_chord_updated*pi/180
+root_chord_updated=2*wing_area/(1+taper_updated)/b_updated
+chord_tip_updated=taper_updated*root_chord_updated
+mac_updated=2/3*root_chord_updated*(1+taper_updated+taper_updated**2)/(1+taper_updated)
+y_mac=b_updated/6*(1+2*taper_updated)/(1+taper_updated)
+x_mac=y_mac*tan(radians(sweep_LE_updated))
+
+#sweep_LE_updated=sweep_list[np.transpose(A)[1]]*180/pi
+#sweep_quarter_chord_updated=degrees(atan(tan(radians(sweep_LE_updated))-0.4*2*/b*(1-taper))) #deg
+#print(AR_updated)root_chord_updated
+print(-1.6*wing_area/b_updated**2)
+print('Span:',b_updated)
+print('Sweep c/4: ',sweep_quarter_chord_updated )
+print('Dihedral: ',dihedral_updated )
+print('Taper: ',taper_updated)
+print('Root chord: ',root_chord_updated)
+print('Tip chord: ', chord_tip_updated)
+print('MAC: ',mac_updated)
+print('y_mac: ',y_mac)
+print('x_mac: ',x_mac)
