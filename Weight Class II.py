@@ -31,7 +31,7 @@ h_f=2.90
 fineness=4.5
 l_f=31.93
 
-l_t= 15 #m  #distance from wing root quarter-point to horizontal tail root
+l_t= (0.9*l_f) -(13.5288-0.42*b/2*tan(radians(sweep_le))+0.25*MAC) #m  #distance from wing root quarter point to horizontal tail root quarter point
 
 ft_per_meter=0.3048
 
@@ -65,7 +65,7 @@ n_ult=1.5*n_max
 
 
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
-M_s=MTOW*sqrt(1.5*n_max)*((b_f*h_f*l_f)/MTOW)**0.24
+M_s=MTOW*sqrt(1.5*2)*((b_f*h_f*l_f)/MTOW)**0.24
 
 
 #WING GROUP
@@ -153,9 +153,9 @@ print('Wing c.g. position w.r.t the fuselage nose: ',X_wing_group+X_LEMAC)
 print('OEW c.g. position w.r.t. the fuselage nose: ',X_OE+X_LEMAC)
 x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
 
+OEW_new=W_w+W_tail+W_f+W_LG+W_sc+W_n+W_prop+W_airframe_services
 
-
-
+print('Airframe structural weight and OEW (old+updated): ',M_s,OEW,OEW_new)
 print(MTOW*2.20462)
 print(2.1+24000/(MTOW*2.20462+10000))
 print(n_max)
