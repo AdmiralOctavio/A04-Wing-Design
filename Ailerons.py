@@ -11,26 +11,21 @@ def P(Clda):
     return P
 
 
-da_up = 20  #max deflection upward - deg
+da_up = 25  #max deflection upward - deg
 da_down = 0.75*da_up    #max deflection down - deg
-da = 0.5*(da_up + da_down)*pi/180/2  #effective deflection at max deflection - rad
+da = 0.5*(da_up + da_down)*pi/180  #effective deflection at max deflection - rad
 
-cla = 0.573  #airfoil lift curve slope
-cd0 = 0.0066 #airfoil zero-lift drag coefficient
+cla = 6.2832  #airfoil lift curve slope
+cd0 = 0.00486 #airfoil zero-lift drag coefficient
 tau = 0.55   #aileron effectiveness (from c_aileron/c)
 c_apc = 0.35 # -
 c_r = 3.870  #m
 c_t = 1.547  #m
 b = 23.30   #m
 S = 63.1    #m^2
-V = 1.13*50.6   #M/S
-#228.3
-#60
+V = 57.2   #M/S
 
-P_needed = 0.15    #rad/s
-#0.651
-#0.21
-
+P_needed = 0.561    #rad/s (45 deg in 1.4s)
 
 c = c_r
 d = 2*(c_r - c_t)/b
@@ -38,14 +33,12 @@ d = 2*(c_r - c_t)/b
 I = c*b**3/24 - d*b**4/64 #integral of roll damping derivative
 Clp = -4*(cla+cd0)/(S*b**2)*I
 
-#ALSO CHECK UNITS IN ALL THE CALCULATIONS ABOVE AND BELOW
-
-n = 2
+n = 3
 i = 10**(-n)
-b1min = 0.65
+b1min = 0.55
 b1max = 0.8
 b2min = 0.8
-b2max = 0.9
+b2max = 0.95
 b1_list = []
 b2_list = []
 for j in np.arange(b1min,b1max+i,i):
@@ -69,24 +62,28 @@ for b1 in b1_list:
             if p > P_needed:
                 x = b1_list.index(b1)
                 y = b2_list.index(b2)
-                B[x,y] = b2-b1
+                B[x,y] = round(b2-b1,n)
                 P_calc[x,y] = p
 
 np.set_printoptions(threshold = np.inf)
 #print(B)
-b_min = np.min(B)
-A = np.transpose(np.where((B <= b_min) & (B > 0)))
+b_min = round(np.min(B),n)
+print('Minimum size (*b/2):', round(b_min,n))
+A = np.where((B <= b_min) & (B > 0))
+#print(A)
+A = np.transpose(A)
 #print(A)
 choice = A[-1]
 #print(choice)
-#print(round(b_min,3))
 
 b1_choice = b1_list[choice[0]]
 b2_choice = b2_list[choice[1]]
-print(b1_choice,b2_choice)
+print('Starting position (*b/2):', b1_choice)
+print('Ending position (*b/2):', b2_choice)
 
 clda_choice = Clda(b1_choice*b/2,b2_choice*b/2)
 P_choice = P(clda_choice)
+print('Best:')
 print('Clda = ',clda_choice)
 print('Clp = ',Clp)
 print('P = ',P_choice)
