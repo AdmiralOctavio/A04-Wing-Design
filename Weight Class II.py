@@ -72,9 +72,9 @@ u=K*u_hat
 
 
 #MAXIMUM LOAD FACTOR
-n_max=2.5 #(more than 51000 lbs)
-n_max=1+ro*V*CL_alpha*u/2/W_over_S #From gusts
-n_ult=1.5*n_max
+n_max1=2.5 #(more than 51000 lbs)
+n_max2=1+ro*V*CL_alpha*u/2/W_over_S #From gusts
+n_ult=1.5*max(n_max1,n_max2)
 
 print('n_ult:',n_ult)
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
@@ -172,7 +172,7 @@ OEW_new=W_w+W_tail+W_f+W_LG+W_sc+W_n+W_prop+W_airframe_services
 print('Airframe structural weight and OEW (old+updated): ',M_s,OEW,OEW_new)
 print(MTOW*2.20462)
 print(2.1+24000/(MTOW*2.20462+10000))
-print(n_max)
+
 print('M_s/MTOW: ',M_s/MTOW)
 print('Half-chord sweep angle: ',Lambda_halfc*180/3.14)
 print('W_w/MTOW:',W_w/MTOW)
