@@ -79,7 +79,7 @@ n_ult=1.5*max(n_max1,n_max2)
 print('n_ult:',n_ult)
 
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
-M_structural_formula=MTOW*sqrt(1.5*2)*((b_f*h_f*l_f)/MTOW)**0.24
+M_structural_formula=MTOW*0.447*sqrt(n_ult)*((b_f*h_f*l_f)/MTOW)**0.24
 
 
 #WING GROUP
@@ -179,7 +179,9 @@ x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+
 print('Airframe structural weight (simple formula) [kg], fraction of MTOW: ',M_structural_formula,M_structural_formula/MTOW) 
 print('Airframe structural weight (from build-up) [kg], fraction of MTOW: ',M_structural_buildup,M_structural_buildup/MTOW)
 print('Operating empty weight (old+new) [kg]: ',OEW,OEW_new) 
-
+print('Maximum manoeuvre load factor: ',n_max1)
+print('Maximum gust load factor: ',n_max2)
+print('Ultimate load factor: ',n_ult)
 #print(MTOW*2.20462)
 #print(2.1+24000/(MTOW*2.20462+10000))
 
