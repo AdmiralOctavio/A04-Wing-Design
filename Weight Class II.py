@@ -48,10 +48,10 @@ l_t= (0.9*l_f-position) -(13.5288-0.42*b/2*tan(radians(sweep_le))+0.25*MAC) #m  
 ft_per_meter=0.3048
 
 ro=0.379597 #kg/m^3
-V=0.77*sqrt(1.4*287*218.8)
+V=0.77*296.535
 V_dive_EAS=166.89*1.5 #m/s #NOTE: Subject to change
 CL_alpha=5.76 #1/rad
-W_over_S=MTOW/63.1 #kg/m^2
+W_over_S=MTOW/63.1*9.81 #kg/m^2
 
 A_main=40
 A_nose=20
@@ -62,7 +62,7 @@ C_nose=0
 D_main=1.5*10**(-5)
 D_nose=2*10**(-6)
 
-u_hat=38*ft_per_meter #m/s
+u_hat=66*ft_per_meter #m/s
 
 mu=2*W_over_S/ro/9.81/CL_alpha/MAC
 
@@ -72,10 +72,11 @@ u=K*u_hat
 
 
 #MAXIMUM LOAD FACTOR
-n_max=1+ro*V*CL_alpha*u/2/W_over_S
-n_ult=1.5*n_max
+n_max1=2.5 #(more than 51000 lbs)
+n_max2=1+ro*V*CL_alpha*u/2/W_over_S #From gusts
+n_ult=1.5*max(n_max1,n_max2)
 
-
+print('n_ult:',n_ult)
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
 M_s=MTOW*sqrt(1.5*2)*((b_f*h_f*l_f)/MTOW)**0.24
 
@@ -171,7 +172,7 @@ OEW_new=W_w+W_tail+W_f+W_LG+W_sc+W_n+W_prop+W_airframe_services
 print('Airframe structural weight and OEW (old+updated): ',M_s,OEW,OEW_new)
 print(MTOW*2.20462)
 print(2.1+24000/(MTOW*2.20462+10000))
-print(n_max)
+
 print('M_s/MTOW: ',M_s/MTOW)
 print('Half-chord sweep angle: ',Lambda_halfc*180/3.14)
 print('W_w/MTOW:',W_w/MTOW)
