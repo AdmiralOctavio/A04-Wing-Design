@@ -13,16 +13,16 @@ t_over_c=0.1
 wing_area=63.1 #m^2
 tail_area=22 #m^2
 t_r=c_r*t_over_c
-Lambda_LE=4.6 #deg
-Lambda_halfc=atan(tan(radians(Lambda_LE))-c_r/b*(1-taper))
+
+
 MZFW=MTOW-M_fuel
 
 
 R_D= 2963 #km
 sweep_le=16.46 #deg
+sweep_halfc=atan(tan(radians(sweep_le))-c_r/b*(1-taper))
 
-
-b_s=b/cos(Lambda_halfc)
+b_s=b/cos(sweep_halfc)
 b_ref=1.905 #m
 
 
@@ -174,7 +174,7 @@ print(MTOW*2.20462)
 print(2.1+24000/(MTOW*2.20462+10000))
 
 print('M_s/MTOW: ',M_s/MTOW)
-print('Half-chord sweep angle: ',Lambda_halfc*180/3.14)
+print('Half-chord sweep angle: ',sweep_halfc*180/3.14)
 print('W_w/MTOW:',W_w/MTOW)
 print('EAS: ',EAS)
 print('W_tail/MTOW: ',W_tail/MTOW)
