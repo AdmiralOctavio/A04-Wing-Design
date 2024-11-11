@@ -3,6 +3,7 @@ import os
 
 import yaml
 import Wing_aerodynamics_design as W
+'''Dependencies: Wing Aerodynamics Design for Flap MAC calculation'''
 #Go to bottom of program if you want to check different configurations
 
 Cr = 4.41 #m
