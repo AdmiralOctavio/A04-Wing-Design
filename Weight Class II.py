@@ -187,10 +187,10 @@ print('Ultimate load factor: ',n_ult)
 
 
 
-print('W_w/MTOW:',W_w/MTOW)
-print('W_tail/MTOW: ',W_tail/MTOW)
-print('W_f/MTOW ',W_f/MTOW)
-print('W_LG/MTOW: ', W_LG/MTOW)
-print('W_sc/MTOW ',W_sc/MTOW)
-print('W_n/MTOW: ',W_n/MTOW)
-print('W_prop/MTOW: ',W_prop/MTOW)
+print('W_w/MTOW:',W_w)
+print('W_tail/MTOW: ',W_tail)
+print('W_f/MTOW ',W_f)
+print('W_LG/MTOW: ', W_LG)
+print('W_sc/MTOW ',W_sc)
+print('W_n/MTOW: ',W_n)
+print('W_prop/MTOW: ',W_prop)

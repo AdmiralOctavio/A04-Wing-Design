@@ -1,4 +1,4 @@
-from math import sqrt,atan,tan,radians,cos
+from math import sqrt,atan,tan,radians,cos,pi
 
 import WeightParameters
 Weight = WeightParameters.Weight()
@@ -18,6 +18,6 @@ class Planform:
             self.b_s = self.b/cos(self.sweep_half)
             self.b_ref = 1.905
             self.WingLoading = Weight.MTOW/63.1*9.81
-            self.CL_alpha = 5.76
             self.tail_area = 22 #m^2
+            self.AR = 7.5
 
