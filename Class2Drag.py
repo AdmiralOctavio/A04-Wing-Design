@@ -76,12 +76,14 @@ u = math.radians(8.641)  # rad (fuselage upsweep)
 A_base = D*math.pi/4  # m^2
 
 # Landing gear
-S_A_nose = 1.0  # m^2 (frontal area of nose gear)
-S_A_gear = 1.0  # m^2 (frontal area of landing gear)
-d = 0.8382  # m tire diameter
-w = 1.0  # m tire width
-a = 1.0  # m nose gear x-position
-e = 1.0  # m nose gear strut length
+S_A_nose = 0.26711  # m^2 (frontal area of nose gear)
+S_A_gear = 0.80149  # m^2 (frontal area of landing gear)
+d_nose = 18*0.0254  # m tire diameter
+d_main = 33*0.0254  # m tire diameter
+w_nose = 4.25*0.0254  # m tire width
+w_main = 9.75*0.0254  # m tire width
+a = 8.06  # m nose gear x-position
+e = 1.56  # m nose gear strut length
 DeltaCD_s = 0.58  # from graph for nose gear
 
 # Tail
@@ -186,8 +188,7 @@ def DeltaCD_ref1(DeltaCD_s, w, d, S):
     # Retractable gear
 def DeltaCD_ref2(S_A_gear, d, w, S):
     DeltaCD_sClosed = 0.04955*math.exp(5.615*S_A_gear/d/w)
-    S_s = d*w
-    Delta_CD_ref = DeltaCD_sClosed*S_s/S
+    Delta_CD_ref = DeltaCD_sClosed*d*w/S
     return Delta_CD_ref
 
     # Flap
@@ -225,8 +226,8 @@ print('CD0 total Cruise', CD0_total_Cruise)
 
 # Approach with Flaps and Gear
 fuselageBaseCD_app = CD_fuselageBase(M_app, A_base, S)
-DeltaCDREF_1 = DeltaCD_ref1(DeltaCD_s, w, d, S)
-DeltaCDREF_2 = DeltaCD_ref2(S_A_gear, d, w, S)
+DeltaCDREF_1 = DeltaCD_ref1(DeltaCD_s, w_nose, d_nose, S)
+DeltaCDREF_2 = DeltaCD_ref2(S_A_gear, e, 3*w_main, S)
 DeltaCDFlap_app = DeltaCD_flap(FlapChordRatio, FlapAreaRatio, DeltaFlap_app)
 
 CD_misc_app = MiscCD(UpsweepCD, fuselageBaseCD_app, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_app)
@@ -237,13 +238,14 @@ CD_VT_app = CD0_comp(S, Cf_VT_app, FF1(xc_m_VT, tc_VT, M_app, LESweep_VT, Cr_VT,
 CD_fuselage_app = CD0_comp(S, Cf_fuselage_app, FF2(L, D), IF_fuselage, Fuselage_S_wet(L1, L2, L3, D))
 CD_nacelle_app = CD0_comp(S, Cf_nacelle_app, FF3(l, d_nac), IF_nacelle, Swet_nacelle)
 
+print(UpsweepCD, fuselageBaseCD_app, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_app)
+print(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app)
+
 CD0_total_app = SumOfCD(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app, CD_excrescenceFrac)
 print('CD0 total approach with flaps and gear', CD0_total_app)
 
 # Take-off with Flaps and Gear
 fuselageBaseCD_to = CD_fuselageBase(M_to, A_base, S)
-DeltaCDREF_1 = DeltaCD_ref1(DeltaCD_s, w, d, S)
-DeltaCDREF_2 = DeltaCD_ref2(S_A_gear, d, w, S)
 DeltaCDFlap_to = DeltaCD_flap(FlapChordRatio, FlapAreaRatio, DeltaFlap_to)
 
 CD_misc_to = MiscCD(UpsweepCD, fuselageBaseCD_to, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_to)
@@ -253,6 +255,9 @@ CD_HT_to = CD0_comp(S, Cf_HT_app, FF1(xc_m_HT, tc_HT, M_to, LESweep_HT, Cr_HT, b
 CD_VT_to = CD0_comp(S, Cf_VT_app, FF1(xc_m_VT, tc_VT, M_to, LESweep_VT, Cr_VT, b_VT, taper_VT), IF_tail, Swet_VT)
 CD_fuselage_to = CD0_comp(S, Cf_fuselage_app, FF2(L, D), IF_fuselage, Fuselage_S_wet(L1, L2, L3, D))
 CD_nacelle_to = CD0_comp(S, Cf_nacelle_app, FF3(l, d_nac), IF_nacelle, Swet_nacelle)
+
+print(UpsweepCD, fuselageBaseCD_to, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_to)
+print(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to)
 
 CD0_total_to = SumOfCD(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to, CD_excrescenceFrac)
 print('CD0 total take-off with flaps and gear', CD0_total_to)
