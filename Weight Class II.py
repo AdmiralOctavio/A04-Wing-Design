@@ -13,19 +13,19 @@ t_over_c=0.1
 wing_area=63.1 #m^2
 tail_area=22 #m^2
 t_r=c_r*t_over_c
-Lambda_LE=4.6 #deg
-Lambda_halfc=atan(tan(radians(Lambda_LE))-c_r/b*(1-taper))
+
+
 MZFW=MTOW-M_fuel
 
 
-R_D= 2963 #km
+R_D= 2963 #km #ferry range (our interpretation of the 'maximum range')
 sweep_le=16.46 #deg
+sweep_halfc=atan(tan(radians(sweep_le))-c_r/b*(1-taper))
 
+b_s=b/cos(sweep_halfc)
+b_ref=1.905 #m #from Torenbeek
 
-b_s=b/cos(Lambda_halfc)
-b_ref=1.905 #m
-
-
+#Fuselage dimensions
 b_f=2.90
 h_f=2.90
 fineness=4.5
@@ -48,10 +48,10 @@ l_t= (0.9*l_f-position) -(13.5288-0.42*b/2*tan(radians(sweep_le))+0.25*MAC) #m  
 ft_per_meter=0.3048
 
 ro=0.379597 #kg/m^3
-V=0.77*296.535
-V_dive_EAS=166.89*1.5 #m/s #NOTE: Subject to change
+V_cruise=0.77*296.535
+V_dive_EAS=166.89*1.5 #m/s #NOTE: 1.5 is chosen as the safety factor
 CL_alpha=5.76 #1/rad
-W_over_S=MTOW/63.1*9.81 #kg/m^2
+W_over_S=MTOW/63.1*9.81 #N/m^2
 
 A_main=40
 A_nose=20
@@ -73,12 +73,13 @@ u=K*u_hat
 
 #MAXIMUM LOAD FACTOR
 n_max1=2.5 #(more than 51000 lbs)
-n_max2=1+ro*V*CL_alpha*u/2/W_over_S #From gusts
+n_max2=1+ro*V_cruise*CL_alpha*u/2/W_over_S #From gusts
 n_ult=1.5*max(n_max1,n_max2)
 
 print('n_ult:',n_ult)
+
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
-M_s=MTOW*sqrt(1.5*2)*((b_f*h_f*l_f)/MTOW)**0.24
+M_structural_formula=MTOW*0.447*sqrt(n_ult)*((b_f*h_f*l_f)/MTOW)**0.24
 
 
 #WING GROUP
@@ -86,7 +87,7 @@ W_w=(MZFW*6.67/1000*b_s**0.75*(1+sqrt(b_ref/b_s))*n_ult**0.55*(b_s/t_r*wing_area
 
 
 #TAIL GROUP
-EAS=V/sqrt(1.225/ro)
+#EAS=V_cruise/sqrt(1.225/ro)
 W_tail=0.64*(n_ult*tail_area**2)**0.75
 
 
@@ -108,10 +109,15 @@ W_sc=0.64*1.2*0.768*MTOW**0.666667
 #NACELLE GROUP
 W_n=0.065*0.453592*0.4*MTOW
 
+M_structural_buildup=W_w+W_tail+W_f+W_LG+W_sc+W_n
+
+
 #PROPULSION GROUP
 W_e=1040 #kg
 N_e=2
 W_prop=1.15*1.18*N_e*W_e*0.453592**2
+
+
 
 #AIRFRAME SERVICES AND EQUIPMENT
 W_ba=0.4*85.34
@@ -134,6 +140,8 @@ W_air_conditioning=14*(19.44**1.28)
 W_misc=0.01*OEW
 
 W_airframe_services=W_ba+W_APU+W_INE_2+W_EL+W_furnish+W_air_conditioning+W_misc  #Excludes fuel and passengers
+
+OEW_new=M_structural_buildup+W_prop+W_airframe_services
 
 
 W_fuel=0.804*3.8*1000   #kg
@@ -161,26 +169,26 @@ X_wing_group=(W_w*x_wing+W_n*x_nacelle+W_prop*x_prop)/W_wing_group
 
 X_OE=0.225*MAC
 X_LEMAC=X_fuselage_group-X_OE+W_wing_group/W_fuselage_group*((X_wing_group-X_OE))
+x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
+
+
+
 print("X_LEMAC: ",X_LEMAC)
 print('Horizontal tail root quarter chord position with respect to wing root quarter chord: ',l_t)
 print('Wing c.g. position w.r.t the fuselage nose: ',X_wing_group+X_LEMAC)
 print('OEW c.g. position w.r.t. the fuselage nose: ',X_OE+X_LEMAC)
-x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
 
-OEW_new=W_w+W_tail+W_f+W_LG+W_sc+W_n+W_prop+W_airframe_services
+print('Airframe structural weight (simple formula) [kg], fraction of MTOW: ',M_structural_formula,M_structural_formula/MTOW) 
+print('Airframe structural weight (from build-up) [kg], fraction of MTOW: ',M_structural_buildup,M_structural_buildup/MTOW)
+print('Operating empty weight (old+new) [kg]: ',OEW,OEW_new) 
+print('Maximum manoeuvre load factor: ',n_max1)
+print('Maximum gust load factor: ',n_max2)
+print('Ultimate load factor: ',n_ult)
 
-print('Airframe structural weight and OEW (old+updated): ',M_s,OEW,OEW_new)
-print(MTOW*2.20462)
-print(2.1+24000/(MTOW*2.20462+10000))
 
-print('M_s/MTOW: ',M_s/MTOW)
-print('Half-chord sweep angle: ',Lambda_halfc*180/3.14)
+
 print('W_w/MTOW:',W_w/MTOW)
-print('EAS: ',EAS)
 print('W_tail/MTOW: ',W_tail/MTOW)
-print('W_tail [kg]: ',W_tail)
-print('Cruise speed: ', V)
-print("Fuselage weight [kg]: ",W_f)
 print('W_f/MTOW ',W_f/MTOW)
 print('W_LG/MTOW: ', W_LG/MTOW)
 print('W_sc/MTOW ',W_sc/MTOW)
