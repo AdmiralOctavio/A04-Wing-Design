@@ -1,3 +1,5 @@
+def SAR(wing_area,OEW,MTOW,)
+
 from math import sqrt, cos, pi, radians, tan, atan
 import numpy as np
 # import Airfoil selection
@@ -9,17 +11,14 @@ T_cruise = 218.808 #K
 gamma = 1.4
 R = 8.31446261815324 #J
 rho_cruise = 0.3796 #kg/m^3
-S = 63.1 #m^2
+wing_area = 63.1 #m^2
 g = 9.80665
 m_OE = 13127 
 m_MTOW = 23173
 W_OE = m_OE * g
 W_MTOW = m_MTOW * g
-
 a_cruise = sqrt(gamma * T_cruise * R)
 V_cruise = M_cruise * a_cruise
-wing_area = 63.1
-
 B = 5.9
 TSFC = 22* B**(-0.19) #g s^-1 kN^-1
 
