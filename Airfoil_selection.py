@@ -2,6 +2,11 @@ import math
 import Wing_aerodynamics_design
 
 A = Wing_aerodynamics_design.AR
+Cr = Wing_aerodynamics_design.Root_chord
+Ct = Wing_aerodynamics_design.Tip_chord
+mach_infty = 0.77
+b = Wing_aerodynamics_design.Span
+taper = 0.316
 
 def MachDD(ka, LEsweep, tcRatio, Clwing):
     MDD = ka/(math.cos(LEsweep)) - tcRatio/((math.cos(LEsweep))**2) - Clwing/(10*(math.cos(LEsweep))**3)
@@ -28,7 +33,7 @@ ka_l = 0.87 # lower bound standard airfoils
 ka_u = 0.9 # upper bound standard airfoils
 
 
-def SweepxOverc(Qcsweep, Cr, b, taper)
+def SweepxOverc(Qcsweep, Cr, b, taper):
     Sweep = math.atan(math.tan(Qcsweep)+0.5*Cr/b*(1-taper))
     return Sweep
 Qcsweep = Wing_aerodynamics_design.Sweep
@@ -60,11 +65,9 @@ def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Cl_alpha):
     
     return CLalpha
 
-Cr = Wing_aerodynamics_design.Root_chord
-Ct = Wing_aerodynamics_design.Tip_chord
-mach_infty = 0.77
 
-b = Wing_aerodynamics_design.Span
+
+
 Clalpha_airfoil = 0.11211*180/math.pi  # 1/rad
 print('Clalpha airfoil [1/rad]', Clalpha_airfoil)
 

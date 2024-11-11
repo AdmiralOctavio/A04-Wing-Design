@@ -13,7 +13,7 @@ t_over_c=0.1
 wing_area=63.1 #m^2
 tail_area=22 #m^2
 t_r=c_r*t_over_c
-
+l_nacelle=1.90 #m
 
 MZFW=MTOW-M_fuel
 
@@ -76,7 +76,7 @@ n_max1=2.5 #(more than 51000 lbs)
 n_max2=1+ro*V_cruise*CL_alpha*u/2/W_over_S #From gusts
 n_ult=1.5*max(n_max1,n_max2)
 
-print('n_ult:',n_ult)
+
 
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
 M_structural_formula=MTOW*0.447*sqrt(n_ult)*((b_f*h_f*l_f)/MTOW)**0.24
@@ -156,8 +156,8 @@ x_f=0.435*l_f
 x_tail=0.9*l_f #Subject to change
 x_nose=0.5*MAC
 x_airframe_services=x_f
+
 x_wing=0.07*b/2*tan(radians(sweep_le))+(0.2+0.7*0.4)*(c_r-c_r*(1-taper)*0.35)
-l_nacelle=1.90 #m
 x_nacelle=-0.1*l_nacelle #w.r.t. the xLEMAC
 x_prop=-0.4*l_nacelle
 
