@@ -81,5 +81,6 @@ def LiftCoefficient(Slat, Flap, alpha, Cr, Ct):
             break
 
 LiftCoefficient(Slat, Double_Slotted, 8.2, Cr, Ct)
+print(LiftCoefficient(Slat, Double_Slotted, 8.2, Cr, Ct)[6])
 #Just input configuration here! ^^^^
 '''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)'''
