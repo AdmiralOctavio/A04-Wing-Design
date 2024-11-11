@@ -103,7 +103,7 @@ L_tail = sqrt(L3**2 + D**2/4)
 
 
 
-case = 0 #0 for cruise, 1 for TO/L
+case = 1 #0 for cruise, 1 for TO/L
 
 #Loop in case we change our mind and make both cases in a single run
 for case in range(case,case+1):
@@ -124,6 +124,13 @@ for case in range(case,case+1):
     Cf_HT = Cf_wing(cr_HT,ct_HT,b_HT)
     Cf_VT = Cf_wing(cr_VT,ct_VT,b_VT*2)/2
     Cf_eng = 2*Cf_cyl(0,L_eng)
+
+    # printing to check
+    print('engine', Cf_eng)
+    print('fuselage', Cf_fus)
+    print('HT', Cf_HT)
+    print('VT', Cf_VT)
+    print('wing', Cf_W)
 
     #S calculation for all parts
     S_nose = pi*D**2/(6*a**2) * ((1+a**2)**1.5-1)
