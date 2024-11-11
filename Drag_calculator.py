@@ -18,7 +18,7 @@ def CF_nose(a,L):
     Cf *= 0.1776*a**0.4/((1+a**2)**1.5-1) * 1/ReL**0.2
     s = (a*sqrt(a**2+1) + log(a+sqrt(a**2+1)))/a**2
     return Cf, s
-def Cf_cyl(s,L):
+def CF_cyl(s,L):
     ReL = Re(L)
     r = s/L
     Cf = 0.074/ReL**0.2 * ((1+r)**0.8-r**0.8)
@@ -79,9 +79,9 @@ L3 = 7.26*scaling
 D  = 2.90*scaling
 
 #Wing
-b  = 23.3*scaling
-cr = 3.87*scaling
-ct = 1.47*scaling
+b  = 23.295*scaling
+cr = 4.004*scaling
+ct = 1.413*scaling
 
 #Horizontal tail
 b_HT = 7.865*scaling
@@ -106,7 +106,7 @@ L_tail = sqrt(L3**2 + D**2/4)
 case = 1 #0 for cruise, 1 for TO/L
 
 #Loop in case we change our mind and make both cases in a single run
-for case in range(case,case+1):
+for case in range(0,2):
     mu = mu_v[case]
     V  = V_v[case]
     rho= rho_v[case]/scaling
@@ -117,48 +117,73 @@ for case in range(case,case+1):
     #Cf calculation for all parts
     Cf_nose, s1 = CF_nose(a,L1)
     s = s1*L1
-    Cf_fus = Cf_cyl(s,L2)
+    Cf_cyl = CF_cyl(s,L2)
     s += L2
     Cf_cone = CF_cone(s,L_tail)
     Cf_W = Cf_wing(cr,ct,b)
     Cf_HT = Cf_wing(cr_HT,ct_HT,b_HT)
     Cf_VT = Cf_wing(cr_VT,ct_VT,b_VT*2)/2
-    Cf_eng = 2*Cf_cyl(0,L_eng)
-
-    # printing to check
-    print('engine', Cf_eng)
-    print('fuselage', Cf_fus)
-    print('HT', Cf_HT)
-    print('VT', Cf_VT)
-    print('wing', Cf_W)
+    Cf_eng = 2*CF_cyl(0,L_eng)
 
     #S calculation for all parts
     S_nose = pi*D**2/(6*a**2) * ((1+a**2)**1.5-1)
-    S_fus = pi*D*L2
+    S_cyl = pi*D*L2
     S_cone = pi*D*L_tail/2
     S_W = S_wing(cr,ct,b)
     S_HT = S_wing(cr_HT,ct_HT,b_HT)
     S_VT = S_wing(cr_VT,ct_VT,b_VT*2)/2
     S_eng = 2*pi*D_eng*L_eng
-    S_wet = S_nose + S_fus + S_cone + S_W + S_HT + S_VT + S_eng
+    S_tot = S_nose + S_cyl + S_cone + S_W + S_HT + S_VT + S_eng
+
+    S_fus = S_nose + S_cyl + S_cone
+    Cf_fus = (Cf_nose*S_nose + Cf_cyl*S_cyl + Cf_cone*S_cone)/S_fus
 
     #Printing
-    print('\t','Cf\t\t','Swet')
+    print('\n')
+    if case == 0:
+        print('Cruise','Cf\t\t','Swet')
+    if case == 1:
+        print('Approach','Cf\t\t','Swet')
+    print('\n')
     print('Nose\t',round(Cf_nose,prec1), '\t', round(S_nose,prec2))
-    print('Fuselage',round(Cf_fus,prec1), '\t', round(S_fus,prec2))
+    print('Cylinder',round(Cf_cyl,prec1), '\t', round(S_cyl,prec2))
     print('Cone\t',round(Cf_cone,prec1), '\t', round(S_cone,prec2))
+    print('Fuselage',round(Cf_fus,prec1), '\t', round(S_fus,prec2))
     print('Wing\t',round(Cf_W,prec1), '\t', round(S_W,prec2))
     print('H tail\t',round(Cf_HT,prec1), '\t', round(S_HT,prec2))
     print('V tail\t',round(Cf_VT,prec1), '\t', round(S_VT,prec2))
     print('Engines\t',round(Cf_eng,prec1), '\t', round(S_eng,prec2))
-    print('Swet =', round(S_wet,prec2))
+    print('Stot =', round(S_tot,prec2))
 
     #Check overal values
     S_ref = (cr+ct)*b/2
-    Cf = (S_nose*Cf_nose + S_fus*Cf_fus + S_cone*Cf_cone + S_W*Cf_W + S_HT*Cf_HT + S_VT*Cf_VT + S_eng*Cf_eng)/S_wet
-    CD = Cf*S_wet/S_ref
+    Cf = (S_nose*Cf_nose + S_fus*Cf_fus + S_cone*Cf_cone + S_W*Cf_W + S_HT*Cf_HT + S_VT*Cf_VT + S_eng*Cf_eng)/S_tot
+    CD = Cf*S_tot/S_ref
     print('Cf =', round(Cf,prec1))
     print('CD0 =', round(CD,prec1))
+
+    if case == 1:
+        Cf_nose_app = Cf_nose
+        Cf_cyl_app = Cf_cyl
+        Cf_cone_app = Cf_cone
+        Cf_fus_app = Cf_fus
+        Cf_W_app = Cf_W
+        Cf_HT_app = Cf_HT
+        Cf_VT_app = Cf_VT
+        Cf_eng_app = Cf_eng
+        Cf_tot_app = Cf
+
+    elif case == 0:
+        Cf_nose_cr = Cf_nose
+        Cf_cyl_cr = Cf_cyl
+        Cf_cone_cr = Cf_cone
+        Cf_fus_cr = Cf_fus
+        Cf_W_cr = Cf_W
+        Cf_HT_cr = Cf_HT
+        Cf_VT_cr = Cf_VT
+        Cf_eng_cr = Cf_eng
+        Cf_tot_cr = Cf
+
 
 #Note on the obtained values
 '''
