@@ -240,18 +240,21 @@ def CD_iGroundEffect(h, b, AR, Delta_e, e, CL):
     CD_i = CL**2/(math.pi*AR*Phi*(e + Delta_e))
     return CD_i
 
-def CLCDmax(A, e, CD0, CD):
-    return (math.pi*A*e*CD0)**0.5/CD
+def CLCDmax(A, e, CD0):
+    return (math.pi*A*e/4/CD0)**0.5
 
 def CD(CD0, CDi):
     return CD0+CDi
+def CLopt(A, e, CD0):
+    return (math.pi*A*e*CD0)**0.5
 Oswald = oswaldEfficiency(AR, LEsweepwing)
 deltaOswald = changeOswaldFlapDeflection(math.radians(DeltaFlap))
 CL_cruise = Airfoil_selection.CL_cruise
+
 CDi_cruise = CD_i(CL_cruise, AR, Oswald, Delta_e=0.0)
 CD_cruise = CD(CD0_total_Cruise, CDi_cruise)
-CLCD_max_cruise = CLCDmax(AR, Oswald, CD0_total_Cruise, CD_cruise)
-print('max L/D cruise', CLCD_max_cruise)
+CLCD_max = CLCDmax(AR, Oswald, CD0_total_Cruise)
+print('max L/D cruise', CLCD_max)
 
 V_stall = 50.6  # m/s
 def TimeGroundEffect(b, V_stall, gamma):
