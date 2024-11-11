@@ -76,7 +76,7 @@ n_max1=2.5 #(more than 51000 lbs)
 n_max2=1+ro*V_cruise*CL_alpha*u/2/W_over_S #From gusts
 n_ult=1.5*max(n_max1,n_max2)
 
-print('n_ult:',n_ult)
+
 
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
 M_structural_formula=MTOW*0.447*sqrt(n_ult)*((b_f*h_f*l_f)/MTOW)**0.24
