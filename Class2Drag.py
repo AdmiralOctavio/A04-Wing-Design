@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import Airfoil_selection
 
-# change landing gear dimensions and fuselage upsweep angle and fuselage base area
+# change landing gear dimensions and fuselage upsweep angle
 # calculate separately for landing by changing mach and Cf values
 
 
@@ -57,7 +57,7 @@ tailconeRatio = fuselage_sizing.tc_ratio  # ratio of tc length/fuselage diameter
 L1 = NCandTCLength(D, ncRatio)  # m fuselage nose cone
 L2 = fuselage_sizing.l_cabin  # m fuselage cylindrical section length
 L3 = NCandTCLength(D, tailconeRatio)  # m fuselage tail cone length
-u = math.radians(10.0)  # rad (fuselage upsweep CHANGE VALUE)
+u = math.radians(8.641)  # rad (fuselage upsweep CHANGE VALUE)
 A_base = 0.0225*math.pi  # m^2
 
 # Landing gear
@@ -253,8 +253,8 @@ CL_cruise = Airfoil_selection.CL_cruise
 
 CDi_cruise = CD_i(CL_cruise, AR, Oswald, Delta_e=0.0)
 CD_cruise = CD(CD0_total_Cruise, CDi_cruise)
-CLCD_max = CLCDmax(AR, Oswald, CD0_total_Cruise)
-print('max L/D cruise', CLCD_max)
+CLCD_max_cruise = CLCDmax(AR, Oswald, CD0_total_Cruise)
+print('max L/D cruise', CLCD_max_cruise)
 
 V_stall = 50.6  # m/s
 def TimeGroundEffect(b, V_stall, gamma):
