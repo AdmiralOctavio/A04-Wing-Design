@@ -85,4 +85,14 @@ def LiftCoefficient(Slat, Flap, alpha, Cr, Ct):
 
 LiftCoefficient(Slat, Double_Slotted, 8.2, Cr, Ct)
 #Just input configuration here! ^^^^
-'''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)'''
+'''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)
+
+If you want to use a value from the HLD sizing, the output of the function is a tuple, so:
+[0] = CL max
+[1] = Wing Fraction
+[2] = Stalling AOA
+[3] = AOA at CL max
+[4] = Flap root chord
+[5] = Flap tip chord
+[6] = Trailing edge SwfS
+'''
