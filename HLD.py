@@ -3,6 +3,7 @@ import os
 
 import yaml
 import Wing_aerodynamics_design as W
+'''Dependencies: Wing Aerodynamics Design for Flap MAC calculation'''
 #Go to bottom of program if you want to check different configurations
 
 Cr = 4.41 #m
@@ -35,33 +36,16 @@ AR = aircraft_parameters['aspect_ratio']
 ZL = aircraft_parameters['zero_lift_drag_coefficient_estimation']
 e = ZL['euler_efficiency']
 
-'''
-    Flap dCl is localised to the region where its acting, S'/S fraction has to be included (Sf).
-    Official eq: dCL = 0.9 * dCl * Swf/Sw * cos(HingeAngle)
-    Interpreted: CL = [ 1 + ClTot/(AR * math.pi * e) ] * ClTot * Swf/Sw * cos(HingeAngle)
-    0.9 coefficient is probably from 1 + ClTot/(AR * math.pi * e)
-'''
-
-'''
-    dc / cf = 0.5 for Double slotted and 0.7 for Fowler
-    Calculate cf??
-    Surface area of wings = 63.1m^2
-    Extra area required by flaps = 63.1 * (1-Sf)
-    Af = dc/cf * Wf (maybe?? probably not???)
-'''
-
-def LiftCoefficient(Slat, Flap, alpha):
+def LiftCoefficient(Slat, Flap, alpha, Cr, Ct):
     os.makedirs("output/hld", exist_ok=True)
-    f = open("output/hld/HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
-    f.write(" CL:          Wf:       Alpha Stall:       Alpha:        Flap Root Chord:      Flap Tip Chord: \n")
+    #f = open("output/hld/HLD_Data_" + str(Slat[1]) + str(Flap[1]) + ".txt", "w")
+    #f.write(" CL:          Wf:       Alpha Stall:       Alpha:        Flap Root Chord:      Flap Tip Chord: \n")
     CLValues = [] 
     Cl = alpha * (1.0918 - 0.1143)/8.5 + 0.1143
     for Wf in range(50,100,1):
         #ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths
         SwfS_TE = (2*Cr - (Wf/100)*(Cr-Ct))/(Cr+Ct) * (Wf/100)
         SwfS_LE = 0.97
-
-
 
         dCL_TE = 0.9 * SwfS_TE * Flap[0] * math.cos(math.radians(16.9))
         dCL_LE = 0.9 * SwfS_LE * Slat[0] * math.cos(math.radians(24))
@@ -72,11 +56,7 @@ def LiftCoefficient(Slat, Flap, alpha):
         CLValues.append(CL_max)
         
         dAlpha_L = -15 * SwfS_TE * math.cos(math.radians(16.9))
-
         Alpha_stall = 19.32 + dAlpha_L
-        #print(str(dAlpha_L) + "  " + str(Wf) + "   " + str(17.5 + dAlpha_L))
-
-        #dCL_max = 0.9 * dCl_max * Swf/S * Cos(Lambda) for FULLY deployed flaps
 
         #This is just for a nice output
         ind = Wf-50
@@ -84,25 +64,21 @@ def LiftCoefficient(Slat, Flap, alpha):
         WF = ("%.0f" % round(Wf,3))
         FCHORD =("%.3f" % (W.MAC_flap(Wf/100)[0]*0.35) )
         FCHORD_2 = ("%.3f" % (W.MAC_flap(Wf/100 + 0.5)[1]*0.35) )
-        DC = ("%.3f" % (float(FCHORD) * 0.5))
+        DC = ("%.3f" % (float(FCHORD) * 0.5)) #I forgot what this does but dont delete it
         A = ("%.3f" % (float(Alpha_stall)))
 
+        '''Legacy code, dont remove probably idk
         if round(CLValues[ind], 3) >= 2.3:
             full = CL + "*       " + WF + "%           " + A +  "             "+ str(alpha) + "deg              " + FCHORD + "m                " + FCHORD_2 + "m \n"
 
         else: full = CL + "        " + WF + "%           " + A + "             "+ str(alpha) + "deg              " + FCHORD +  "m                " + FCHORD_2 + "m \n"
 
         f.writelines(full) 
+        '''
+        if round(CLValues[ind], 3) >= 2.375 and Alpha_stall < alpha:
+            print("Max CL = " + CL + ",  Wing Fraction = " + WF + "%,  Stalling AOA = " + A +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
+            break
 
-LiftCoefficient(Slat, Double_Slotted, 8.2)
-
-#Cl at a = 7.75deg = 1.06225
-
+LiftCoefficient(Slat, Double_Slotted, 8.2, Cr, Ct)
 #Just input configuration here! ^^^^
-#Check HLD_Data.txt for results 
-
-'''
-Alpha = 6 -> Cl = 0.7980
-Alpha = 5.5 -> Cl = 0.7417
-Alpha = 5 -> Cl = 0.6845
-'''
+'''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)'''
