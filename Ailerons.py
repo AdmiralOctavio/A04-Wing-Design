@@ -11,7 +11,7 @@ def P(Clda,Clp,da,V,b):
     return P
 
 
-def Ailerons():
+def AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     da_up = 25  #max deflection upward - deg
     da_down = 0.75*da_up    #max deflection down - deg
     da = 0.5*(da_up + da_down)*pi/180  #effective deflection at max deflection - rad
@@ -91,4 +91,4 @@ def Ailerons():
 
     return b1_choice, b2_choice
 
-Ailerons()
+#AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
