@@ -1,4 +1,4 @@
-from math import sqrt, atan, tan, radians, cos, pi
+from math import sqrt, atan, tan, radians, cos, pi,degrees
 
 import WeightParameters
 Weight = WeightParameters.Weight()
@@ -16,12 +16,14 @@ class Planform:
         self.b = 23.3
         self.t_over_c = 0.1
         self.t_r = self.c_r * self.t_over_c
-        self.sweep_le = 16.46
-        self.sweep_half = atan(tan(radians(self.sweep_le)) - self.c_r / self.b * (1 - self.taper))
-        self.b_s = self.b / cos(self.sweep_half)
+        self.sweep_le = 16.46 #deg
+        self.sweep_half = degrees(atan(tan(radians(self.sweep_le)) - self.c_r / self.b * (1 - self.taper))) #deg
+        self.sweep_quarter_chord=degrees(atan(tan(radians(self.sweep_le))-self.c_r/2/self.b*(1-self.taper))) #deg
+        self.b_s = self.b / cos(radians(self.sweep_half))
         self.b_ref = 1.905
         self.tail_area = 22  # m^2
         self.AR = 7.5
+        self.dihedral=3-0.1*self.sweep_quarter_chord-2 #deg
 
     def updateC_r(self, c_r): self.c_r = c_r
 
