@@ -6,9 +6,16 @@ import numpy as np
 import Airfoil_selection
 import PlanformParameters as PP
 import Drag_calculator as DC
+import WeightParameters as WP
+import SpeedsAndRange 
+import AerodynamicParameters
+import FuselageParameters
 import HLD
 
 planform = PP.Planform()
+Misc = SpeedsAndRange.Miscellaneous()
+DRAG = AerodynamicParameters.DragBuildup()
+FUS = FuselageParameters.Fuselage()
 # change landing gear dimensions
 # Change Mach app and to
 # HLD ref values
@@ -37,31 +44,30 @@ def SwetNac(d, l):
     return math.pi*((d**2)/2+d*l)
 
 # flight conditions
-M = 0.77  # cruise
+M = Misc.VcrM  # cruise
 M_app = 0.1  # landing
 M_to = 0.1  # take-off
 
 # Interference factors IF
-IF_tail = 1.04
-IF_wing = 1.0
-IF_fuselage = 1.0
-IF_nacelle = 1.3
-
+IF_tail = DRAG.IFtail
+IF_wing = DRAG.IFwing
+IF_fuselage = DRAG.IFfuselage
+IF_nacelle = DRAG.IFnacelle
 
 # Wing dimensions and HLD
 Cr = planform.c_r  # m
 taper = planform.taper 
-Ct = Ctip(Cr, taper)  # m
+Ct = Ctip(planform.c_r, planform.taper)  # m
 b = planform.b  # m
 S = planform.wing_area  # m^2
-AR = AspectR(S, b)
-tcRatio = 0.1  # airfoil property
-xc_mRatio = 0.35   # wing maximum thickness position (airfoil property)
+AR = AspectR(planform.wing_area, planform.b)
+tcRatio = planform.t_over_c  # airfoil property
+xc_mRatio = planform.xc_m   # wing maximum thickness position (airfoil property)
 LEsweepwing = math.radians(planform.sweep_le)  # converted to rad
-DeltaFlap_app = 35.0  # deg 15 
+DeltaFlap_app = 35.0  # deg 
 DeltaFlap_to = 15  # deg
-FlapAreaRatio = 0.7768427586206897 
-# FlapAreaRatio = HLD.LiftCoefficient(HLD.Slat[0], HLD.Double_Slotted[0], 8.2, Cr, Ct)[6]
+#FlapAreaRatio = 0.7768427586206897 
+FlapAreaRatio = HLD.LiftCoefficient(HLD.Slat[0], HLD.Double_Slotted[0], 8.2, Cr, Ct)[6]
 FlapChordRatio = 0.35
 
 # Fuselage dimensions
@@ -69,40 +75,40 @@ D = fuselage_sizing.d_fus_outer  # m (fuselage diameter)
 L = fuselage_sizing.l_fus  # m (fuselage length)
 ncRatio = fuselage_sizing.nc_ratio  # ratio of nc length/fuselage diameter
 tailconeRatio = fuselage_sizing.tc_ratio  # ratio of tc length/fuselage diameter
-L1 = NCandTCLength(D, ncRatio)  # m fuselage nose cone
+L1 = NCandTCLength(fuselage_sizing.d_fus_outer, fuselage_sizing.nc_ratio)  # m fuselage nose cone
 L2 = fuselage_sizing.l_cabin  # m fuselage cylindrical section length
-L3 = NCandTCLength(D, tailconeRatio)  # m fuselage tail cone length
-u = math.radians(8.641)  # rad (fuselage upsweep)
-A_base = D*math.pi/4  # m^2
+L3 = NCandTCLength(fuselage_sizing.d_fus_outer, fuselage_sizing.tc_ratio)  # m fuselage tail cone length
+u = FUS.upsweep  # rad (fuselage upsweep)
+A_base = fuselage_sizing.d_fus_outer*math.pi/4  # m^2
 
 # Landing gear
-S_A_nose = 0.26711  # m^2 (frontal area of nose gear)
-S_A_gear = 0.80149  # m^2 (frontal area of landing gear)
-d_nose = 18*0.0254  # m tire diameter
-d_main = 33*0.0254  # m tire diameter
-w_nose = 4.25*0.0254  # m tire width
-w_main = 9.75*0.0254  # m tire width
-a = 8.06  # m nose gear x-position
-e = 1.56  # m nose gear strut length
-DeltaCD_s = 0.58  # from graph for nose gear
+S_A_nose = DRAG.S_Anose  # m^2 (frontal area of nose gear)
+S_A_gear = DRAG.S_Agear  # m^2 (frontal area of landing gear)
+d_nose = DRAG.D_nose  # m tire diameter
+d_main = DRAG.D_main  # m tire diameter
+w_nose = DRAG.W_nose  # m tire width
+w_main = DRAG.W_main  # m tire width
+a = DRAG.Nose_x  # m nose gear x-position
+e = DRAG.strut # m nose gear strut length
+DeltaCD_s = DRAG.DeltaCDs  # from graph for nose gear
 
 # Tail
 A_HT = float(Tail_sizing_WP3.A_h)  # AR
 A_VT = Tail_sizing_WP3.A_v  # AR
-xc_m_HT = 0.3  # NACA0012
-xc_m_VT = 0.3
-tc_HT = 0.12
-tc_VT = 0.12
+xc_m_HT = planform.xc_mHT  # NACA0012
+xc_m_VT = planform.xc_mVT
+tc_HT = planform.t_c_HT
+tc_VT = planform.t_c_VT
 taper_HT = Tail_sizing_WP3.taper_h  # m
 taper_VT = Tail_sizing_WP3.taper_v  # m
-S_HT = Tail_sizing_WP3.S_v  # m^2 
-S_VT = Tail_sizing_WP3.S_h  # m^2
-b_HT = span(A_HT, S_HT)  # m
-b_VT = span(A_VT, S_VT)  # m
-Cr_HT = Croot(taper_HT, b_HT, A_HT)  # m
-Cr_VT = Croot(taper_VT, b_VT, A_VT)  # m
-Ct_HT = Ctip(Cr_HT, taper_HT)  # m
-Ct_VT = Ctip(Cr_VT, taper_VT)  # m
+S_HT = Tail_sizing_WP3.S_h  # m^2 
+S_VT = Tail_sizing_WP3.S_v  # m^2
+b_HT = span(float(Tail_sizing_WP3.A_h), Tail_sizing_WP3.S_h)  # m
+b_VT = span(Tail_sizing_WP3.A_v, Tail_sizing_WP3.S_v)  # m
+Cr_HT = Croot(Tail_sizing_WP3.taper_h, span(float(Tail_sizing_WP3.A_h), Tail_sizing_WP3.S_h), float(Tail_sizing_WP3.A_h))  # m
+Cr_VT = Croot(Tail_sizing_WP3.taper_v, span(Tail_sizing_WP3.A_v, Tail_sizing_WP3.S_v), Tail_sizing_WP3.A_v)  # m
+Ct_HT = Ctip(Cr_HT, Tail_sizing_WP3.taper_h)  # m
+Ct_VT = Ctip(Cr_VT, Tail_sizing_WP3.taper_v)  # m
 QCsweep_HT = math.radians(Tail_sizing_WP3.sweep_htail_c_over_4)  # rad
 QCsweep_VT = math.radians(Tail_sizing_WP3.sweep_vtail_c_over_4)  # rad
 LESweep_HT = LESweep(QCsweep_HT, Cr_HT, b_HT, taper_HT)  # rad

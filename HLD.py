@@ -11,7 +11,7 @@ Planform = PlanformParameters.Planform()
 
 
 Cr = Planform.c_r #m
-Ct = Planform.c_t #m
+Ct = Planform.t_r #m
 
 #Taken from ADSEE II Slides
 #Delta Cl (For airfoil!):
