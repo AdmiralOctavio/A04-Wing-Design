@@ -20,4 +20,5 @@ class Planform:
             self.WingLoading = Weight.MTOW/63.1*9.81
             self.CL_alpha = 5.76
             self.tail_area = 22 #m^2
+            self.AR = self.b**2 / self.wing_area
 
