@@ -14,6 +14,8 @@ class Propulsion:
         self.nj = Miscellaneous.Velocity / self.TSFC / self.ef  # Jet efficiency
         self.Thrust_to_Weight = 0.4
         self.Thrust = (self.Thrust_to_Weight*9.80665)*Weight.MTOW
+        self.l_nac = 1.9  # m nacelle length
+        self.d_nacelle = 1.08  # m max diameter
 
     def updateTtoW(self,Thrust_to_Weight):
         self.Thrust_to_Weight = Thrust_to_Weight

@@ -11,20 +11,20 @@ def P(Clda,Clp,da,V,b):
     return P
 
 
-def Ailerons():
+def AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     da_up = 25  #max deflection upward - deg
     da_down = 0.75*da_up    #max deflection down - deg
     da = 0.5*(da_up + da_down)*pi/180  #effective deflection at max deflection - rad
 
-    cla = 6.2832  #airfoil lift curve slope
-    cd0 = 0.00486 #airfoil zero-lift drag coefficient
+    cla = 2*pi  #airfoil lift curve slope
+    cd0 = Aerodynamics.cd0airfoil #airfoil zero-lift drag coefficient
     tau = 0.55   #aileron effectiveness (from c_aileron/c)
     c_apc = 0.35 # -
-    c_r = 4.004  #m
-    c_t = 1.413  #m
-    b = 23.295   #m
-    S = 63.1    #m^2
-    V = 57.2   #M/S
+    c_r = Planform.c_r  #m
+    c_t = Planform.c_t  #m
+    b = Planform.b   #m
+    S = Planform.wing_area    #m^2
+    V = 1.13*Miscellaneous.V_stall   #M/S
 
     P_needed = 0.561    #rad/s (45 deg in 1.4s)
 
@@ -69,7 +69,7 @@ def Ailerons():
     np.set_printoptions(threshold = np.inf)
     #print(B)
     b_min = round(np.min(B),n)
-    print('Minimum size (*b/2):', round(b_min,n))
+    # print('Minimum size (*b/2):', round(b_min,n))
     A = np.where((B <= b_min) & (B > 0))
     #print(A)
     A = np.transpose(A)
@@ -79,16 +79,19 @@ def Ailerons():
 
     b1_choice = b1_list[choice[0]]
     b2_choice = b2_list[choice[1]]
-    print('Starting position (*b/2):', b1_choice)
-    print('Ending position (*b/2):', b2_choice)
+    # print('Starting position (*b/2):', b1_choice)
+    # print('Ending position (*b/2):', b2_choice)
 
     clda_choice = Clda(b1_choice*b/2,b2_choice*b/2,c,d,cla,tau,S,b)
     P_choice = P(clda_choice,Clp,da,V,b)
-    print('Best:')
-    print('Clda = ',clda_choice)
-    print('Clp = ',Clp)
-    print('P = ',P_choice)
+    # print('Best:')
+    # print('Clda = ',clda_choice)
+    # print('Clp = ',Clp)
+    # print('P = ',P_choice)
+
+    Planform.updatey1ail(b1_choice)
+    Planform.updatey2ail(b2_choice)
 
     return b1_choice, b2_choice
 
-Ailerons()
+#AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
