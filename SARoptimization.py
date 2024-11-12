@@ -1,8 +1,11 @@
-def SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2):
-
-    from math import sqrt, cos, pi, radians, tan, atan
+import PlanformParameters
+import WeightParameters
+def SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
+    #wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2
+    from math import sqrt, cos, radians, tan, atan,degrees,pi
     import numpy as np
     import Airfoil_selection
+    
 
     #Constants
     M_cruise = 0.77
@@ -13,9 +16,9 @@ def SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2):
     R = 8.31446261815324 #J
     rho_cruise = 0.3796 #kg/m^3
     g = 9.80665 
-    m_MTOW = 23173
-    W_OE = OEW * g
-    W_MTOW = MTOW * g
+    m_MTOW = Weight.MTOW
+    W_OE = Weight.OEW * g
+    W_MTOW = Weight.MTOW * g
     a_cruise = sqrt(gamma * T_cruise * R)
     V_cruise = M_cruise * a_cruise
     Swet_over_S = 6
@@ -25,7 +28,7 @@ def SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2):
     t_over_c = 0.1
     ka = 0.935
 
-    taper=0.35 #TAPER IS NOW FIXED
+    taper=Planform.taper #TAPER IS NOW FIXED
     Cd_cruise = Airfoil_selection.Cd_cruise
     C_d0 = 0.0065#Constant
     Cl_cruise = Airfoil_selection.Cl_cruise_airfoil
@@ -39,8 +42,8 @@ def SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2):
     delta_AR = 0.04 #adsee lecture 2 slide 66, NOT 65
     #clean config:
 
-    AR_eff = AR + delta_AR
-    e_initial = 4.61 * (1-0.045*AR_eff**0.68)*(cos(lambda_LE))**0.15 - 3.1
+    AR_eff = Planform.AR + delta_AR
+    e_initial = 4.61 * (1-0.045*AR_eff**0.68)*(cos(radians(Planform.sweep_le)))**0.15 - 3.1
 
     K_initial = 1/(pi * e_initial * AR_eff)
 
@@ -62,8 +65,8 @@ def SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2):
     i = 10**(-n)
     AR_lower= 5
     AR_upper =10
-    sweep_lower = 5*pi/180
-    sweep_upper = 30*pi/180
+    sweep_lower = radians(5)
+    sweep_upper = radians(30)
     AR_list = []
     sweep_list = []
     for j in np.arange(AR_lower,AR_upper+i,i):
@@ -73,9 +76,7 @@ def SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2):
     dim_x = len(AR_list)
     dim_y = len(sweep_list)
     B = np.zeros((dim_x,dim_y))
-    C=np.zeros((dim_x,dim_y))
-
-
+    
 
     for b1 in AR_list:
         for b2 in sweep_list:
@@ -102,35 +103,36 @@ def SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2):
     position1 = A[0] #the index of the aspect ratio
     position2 = A[1] #the index of the sweep angle
     print(B[position1, position2])
-    print(AR_list[int(position1)],180/pi*sweep_list[int(position2)])
+    print(AR_list[int(position1)],degrees(sweep_list[int(position2)]))
 
-    M_DD_1 = ka/cos(10.8*pi/180) - 0.1/(cos(10.8*pi/180)**2) - CL_cruise/(10*cos(10.8*pi/180)**3)
+    M_DD_1 = ka/cos(radians(10.8)) - 0.1/(cos(radians(10.8))**2) - CL_cruise/(10*cos(radians(10.8))**3)
 
     print(M_DD_1, " ", M_DD_min)
 
    
-    #Therefore,
-    #AR_updated=AR_list[np.transpose(A)[0]]
 
     #UPDATING ALL WING PARAMETERS!!!!!
-    sweep_LE_updated=180/pi*sweep_list[position2]
-    AR_updated=AR_list[position1]
-    b_updated=sqrt(AR_updated*wing_area)
-
-    #sweep_quarter_chord_updated = 0.235695 * 180/pi #from function intersection
+    sweep_LE_updated=degrees(sweep_list[int(position2)])
+    AR_updated=AR_list[int(position1)]
+    b_updated=sqrt(AR_updated*Planform.wing_area)
+    root_chord_updated=2*Planform.wing_area/(1+taper)/b_updated
+    tip_chord_updated=taper*root_chord_updated
+    sweep_quarter_chord_updated = degrees(atan(tan(radians(sweep_LE_updated))-root_chord_updated/2/b_updated*(1-taper)))
     dihedral_updated=3-0.1*sweep_quarter_chord_updated -2#deg
-    
-    root_chord_updated=2*wing_area/(1+taper)/b_updated
-    chord_tip_updated=taper*root_chord_updated
     mac_updated=2/3*root_chord_updated*(1+taper+taper**2)/(1+taper)
     y_mac=b_updated/6*(1+2*taper)/(1+taper)
     x_mac=y_mac*tan(radians(sweep_LE_updated))
-    # sweep_quarter_chord_updated= 180/pi*atan(tan(radians(sweep_LE_updated))+root_chord_updated/(2*b_updated)*()) #deg
 
-    #sweep_LE_updated=sweep_list[np.transpose(A)[1]]*180/pi
-    #sweep_quarter_chord_updated=degrees(atan(tan(radians(sweep_LE_updated))-0.4*2*/b*(1-taper))) #deg
-    print(-1.6*wing_area/b_updated**2)
-    # print('Aspect ratio: ', AR_updated)
+    Planform.updateC_r(root_chord_updated)
+    Planform.updateC_t(tip_chord_updated)
+    Planform.updateMAC(mac_updated)
+    Planform.updateyMAC(y_mac)
+    Planform.updatexMAC(x_mac)
+    Planform.updateb(b_updated)
+    Planform.updatesweep_le(sweep_LE_updated)
+    Planform.updateAR(AR_updated)
+
+    print('Aspect ratio: ', AR_updated)
     print("SAR_MTOW = ",  SAR_MTOW, "       " , "SAR_OE = " , SAR_OE, "        ", "in cursed units")
     print("SAR_MTOW = ",  SAR_MTOW*1000, "       " , "SAR_OE = " , SAR_OE*1000, "       " , "in km/kg")
     print('Max L/D: ',round(b_max,3))
@@ -138,11 +140,23 @@ def SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2):
     print('Sweep LE: ',sweep_LE_updated )
     print('Sweep c/4: ',sweep_quarter_chord_updated )
     print('Dihedral: ',dihedral_updated )
-    print('Taper: ',taper_updated)
+    print('Taper (fixed to 0.35): ',taper)
     print('Root chord: ',root_chord_updated)
-    print('Tip chord: ', chord_tip_updated)
+    print('Tip chord: ', tip_chord_updated)
     print('MAC: ',mac_updated)
     print('y_mac: ',y_mac)
     print('x_mac: ',x_mac)
 
-SAR(wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2)
+    
+
+    # Print each updated attribute to verify the values
+    print("Root Chord (C_r):", Planform.c_r)
+    print("Tip Chord (C_t):", Planform.c_t)
+    print("Mean Aerodynamic Chord (MAC):", Planform.MAC)
+    print("y-coordinate of MAC (yMAC):", Planform.yMAC)
+    print("x-coordinate of MAC (xMAC):", Planform.xMAC)
+    print("Span (b):", Planform.b)
+    print("Leading Edge Sweep (sweep_le):", Planform.sweep_le)
+    print("Aspect Ratio (AR):", Planform.AR)
+SAR(Planform=PlanformParameters.Planform(),Weight=WeightParameters.Weight(), Miscellaneous=None, Propulsion=None, Aerodynamics=None, Fuselage=None)
+
