@@ -27,3 +27,5 @@ MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 
 from Ailerons import AileronsFunction
 AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+
+print(Planform.y1ail)

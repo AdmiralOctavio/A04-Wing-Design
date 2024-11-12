@@ -24,8 +24,11 @@ class Aerodynamics:
             self.e_Takeoff = 0.892    #for different flap configurations
             self.e_Landing = 0.984
             self.e_Clean = 0.8280596821832961
+            self.cd0airfoil = 0.00486
 
             self.LD = 1 / 2 * sqrt((pi * Planform.AR * self.e_Clean) / self.CD0_Cruise)  # Lift drag ratio
+
+
 
 class DragBuildup:
     def __init__(self):
