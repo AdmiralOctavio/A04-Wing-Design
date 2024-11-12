@@ -17,7 +17,7 @@ class Planform:
             self.sweep_half = atan(tan(radians(self.sweep_le))-self.c_r/self.b*(1-self.taper))
             self.b_s = self.b/cos(self.sweep_half)
             self.b_ref = 1.905
-            self.dihedral = -1.4 #degree
-            self.WingLoading = 3600
+            self.WingLoading = Weight.MTOW/63.1*9.81
             self.tail_area = 22 #m^2
             self.AR = 7.5
+
