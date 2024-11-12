@@ -57,14 +57,14 @@ def S_wing(cr,ct,b):
     return S
 
 
-def Cf_Calculator():
+def Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     #Parameters
     scaling = 1 #For checking whether the size matters for the same RE - it should not
     prec1 = 5 #Precision for Cf
     prec2 = 2 #Precision for S
 
     mu_v = [1.327*10**(-5),1.7894*10**(-5)] #Viscosity
-    V_v = [228.3,62.24] #Velocity
+    V_v = [228.3,1.23*Miscellaneous.V_stall] #Velocity
     rho_v = [0.3795,1.225] #Density
     T_v = [218.8,288.15] #Temperature
 
@@ -75,29 +75,31 @@ def Cf_Calculator():
 
     #Sizes
     #Fuselage
-    L1 = 5.23*scaling
-    L2 = 19.44*scaling
-    L3 = 7.26*scaling
-    D  = 2.90*scaling
+    L1 = Fuselage.l_nc*scaling
+    L2 = Fuselage.l_cabin*scaling
+    L3 = Fuselage.l_tc*scaling
+    D  = Fuselage.d_fus_outer*scaling
+
+    #print(L1,L2,L3,D)
 
     #Wing
-    b  = 23.295*scaling
-    cr = 4.004*scaling
-    ct = 1.413*scaling
+    b  = Planform.b*scaling
+    cr = Planform.c_r*scaling
+    ct = Planform.c_t*scaling
 
     #Horizontal tail
-    b_HT = 7.865*scaling
-    cr_HT = 2.558*scaling
-    ct_HT = 1.100*scaling
+    b_HT = Planform.HT_span*scaling
+    cr_HT = Planform.HT_cr*scaling
+    ct_HT = Planform.HT_ct*scaling
 
     #Vertical tail
-    b_VT = 3.051*scaling
-    cr_VT = 2.991*scaling
-    ct_VT = 2.094*scaling
+    b_VT = Planform.VT_span*scaling
+    cr_VT = Planform.VT_cr*scaling
+    ct_VT = Planform.VT_ct*scaling
 
     #Engines
-    D_eng = 1.08*scaling
-    L_eng = 1.9*scaling
+    D_eng = Propulsion.d_nacelle*scaling
+    L_eng = Propulsion.l_nac*scaling
 
     #Useful constants
     a = 4*L1/D
@@ -186,6 +188,38 @@ def Cf_Calculator():
             Cf_eng_cr = Cf_eng
             Cf_tot_cr = Cf
 
+    Aerodynamics.updateCf_nose_cr(Cf_nose_cr)
+    Aerodynamics.updateCf_cyl_cr(Cf_cyl_cr)
+    Aerodynamics.updateCf_cone_cr(Cf_cone_cr)
+    Aerodynamics.updateCf_fus_cr(Cf_fus_cr)
+    Aerodynamics.updateCf_W_cr(Cf_W_cr)
+    Aerodynamics.updateCf_HT_cr(Cf_HT_cr)
+    Aerodynamics.updateCf_VT_cr(Cf_VT_cr)
+    Aerodynamics.updateCf_eng_cr(Cf_eng_cr)
+    Aerodynamics.updateCf_tot_cr(Cf_tot_cr)
+
+    Aerodynamics.updateCf_nose_app(Cf_nose_app)
+    Aerodynamics.updateCf_cyl_app(Cf_cyl_app)
+    Aerodynamics.updateCf_cone_app(Cf_cone_app)
+    Aerodynamics.updateCf_fus_app(Cf_fus_app)
+    Aerodynamics.updateCf_W_app(Cf_W_app)
+    Aerodynamics.updateCf_HT_app(Cf_HT_app)
+    Aerodynamics.updateCf_VT_app(Cf_VT_app)
+    Aerodynamics.updateCf_eng_app(Cf_eng_app)
+    Aerodynamics.updateCf_tot_app(Cf_tot_app)
+
+    Aerodynamics.updateS_nose(S_nose)
+    Aerodynamics.updateS_cyl(S_cyl)
+    Aerodynamics.updateS_cone(S_cone)
+    Aerodynamics.updateS_fus(S_fus)
+    Aerodynamics.updateS_W(S_W)
+    Aerodynamics.updateS_HT(S_HT)
+    Aerodynamics.updateS_VT(S_VT)
+    Aerodynamics.updateS_eng(S_eng)
+    Aerodynamics.updateS_tot(S_tot)
+
+
+
     return np.array([[Cf_nose_cr, Cf_nose_app, S_nose],
                      [Cf_cyl_cr, Cf_cyl_app, S_cyl],
                      [Cf_cone_cr, Cf_cone_app, S_cone],
@@ -197,7 +231,7 @@ def Cf_Calculator():
                      [Cf_tot_cr, Cf_tot_app, S_tot]])
 
             
-Cf_Calculator()
+#Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 
 
 #Note on the obtained values
