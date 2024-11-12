@@ -24,3 +24,6 @@ MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 #print(Miscellaneous.V_stall)
 #print(Planform.WingLoading)
 #print(Propulsion.Thrust_to_Weight)
+
+from Ailerons import AileronsFunction
+AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
