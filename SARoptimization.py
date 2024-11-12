@@ -29,11 +29,10 @@ def SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     ka = 0.935
 
     taper=Planform.taper #TAPER IS NOW FIXED
-    Cd_cruise = Airfoil_selection.Cd_cruise
     C_d0 = 0.0065#Constant
     Cl_cruise = Airfoil_selection.Cl_cruise_airfoil
     CL_cruise = Airfoil_selection.CL_cruise
-
+    Cd_cruise = 0.0075*Cl_cruise**2-0.0059*Cl_cruise+0.0062
     #Calculating C_D0:
 
     C_D0_1stestimation = C_fe * Swet_over_S
