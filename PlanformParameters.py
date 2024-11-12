@@ -9,8 +9,8 @@ class Planform:
             self.MAC = 2.915
             self.yMAC = 4.895
             self.xMAC = 1.446
-            self.c_r = 4.41
-            self.c_t = 1.93
+            self.c_r = 4.004
+            self.c_t = 1.413
             self.taper = 0.352
             self.b = 23.3
             self.t_over_c = 0.1
@@ -21,7 +21,6 @@ class Planform:
             self.sweep_te = degrees(atan(tan(radians(self.sweep_le)) - 2*self.c_r / self.b * (1 - self.taper)))
             self.b_s = self.b / cos(radians(self.sweep_half))
             self.b_ref = 1.905
-            self.tail_area = 22  # m^2
             self.AR = 7.5
             self.dihedral=3-0.1*self.sweep_quarter_chord-2 #deg
             self.y1ail = 0.65
@@ -33,6 +32,18 @@ class Planform:
             self.xc_mVT = 0.3
             self.t_c_HT = 0.12
             self.t_c_VT = 0.12
+
+            self.HT_area = 14.385
+            self.HT_span = 7.865
+            self.HT_cr = 2.558
+            self.HT_ct = 1.100
+            self.VT_area = 7.757
+            self.VT_span = 3.051
+            self.VT_cr = 2.991
+            self.VT_ct = 2.094
+
+
+
 
     def updateC_r(self, c_r): self.c_r = c_r
 
@@ -65,8 +76,6 @@ class Planform:
     def updateb_ref(self, b_ref): self.b_ref = b_ref
 
     def updatet_r(self, t_r): self.t_r = t_r
-
-    def updatetail_area(self, tail_area): self.tail_area = tail_area
 
     def updateAR(self, AR): self.AR = AR
 
