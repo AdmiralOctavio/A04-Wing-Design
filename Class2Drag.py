@@ -66,8 +66,8 @@ xc_mRatio = planform.xc_m   # wing maximum thickness position (airfoil property)
 LEsweepwing = math.radians(planform.sweep_le)  # converted to rad
 DeltaFlap_app = 35.0  # deg 
 DeltaFlap_to = 15  # deg
-#FlapAreaRatio = 0.7768427586206897 
-FlapAreaRatio = HLD.LiftCoefficient(HLD.Slat[0], HLD.Double_Slotted[0], 8.2, Cr, Ct)[6]
+FlapAreaRatio = 0.7768427586206897 
+#FlapAreaRatio = HLD.LiftCoefficient(HLD.Slat[0], HLD.Double_Slotted[0], 8.2, Cr, Ct)[6]
 FlapChordRatio = 0.35
 
 # Fuselage dimensions

@@ -43,3 +43,5 @@ class DragBuildup:
             self.Nose_x = 8.06  # m nose gear x-position
             self.strut = 1.56  # m nose gear strut length
             self.DeltaCDs = 0.58  # from graph for nose gear
+
+            self.CD_excrFrac = 0.05
