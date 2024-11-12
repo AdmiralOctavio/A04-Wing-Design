@@ -3,11 +3,15 @@ import os
 
 import yaml
 import Wing_aerodynamics_design as W
+import PlanformParameters
 '''Dependencies: Wing Aerodynamics Design for Flap MAC calculation'''
 #Go to bottom of program if you want to check different configurations
 
-Cr = 4.41 #m
-Ct = 1.39 #m
+Planform = PlanformParameters.Planform()
+
+
+Cr = Planform.c_r #m
+Ct = Planform.c_t #m
 
 #Taken from ADSEE II Slides
 #Delta Cl (For airfoil!):
@@ -77,8 +81,18 @@ def LiftCoefficient(Slat, Flap, alpha, Cr, Ct):
         '''
         if round(CLValues[ind], 3) >= 2.375 and Alpha_stall < alpha:
             print("Max CL = " + CL + ",  Wing Fraction = " + WF + "%,  Stalling AOA = " + A +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
-            break
+            return CL, WF, A, alpha, FCHORD, FCHORD_2, SwfS_TE
 
 LiftCoefficient(Slat, Double_Slotted, 8.2, Cr, Ct)
 #Just input configuration here! ^^^^
-'''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)'''
+'''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)
+
+If you want to use a value from the HLD sizing, the output of the function is a tuple, so:
+[0] = CL max
+[1] = Wing Fraction
+[2] = Stalling AOA
+[3] = AOA at CL max
+[4] = Flap root chord
+[5] = Flap tip chord
+[6] = Trailing edge SwfS
+'''

@@ -76,7 +76,7 @@ n_max1=2.5 #(more than 51000 lbs)
 n_max2=1+ro*V_cruise*CL_alpha*u/2/W_over_S #From gusts
 n_ult=1.5*max(n_max1,n_max2)
 
-print('n_ult:',n_ult)
+
 
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
 M_structural_formula=MTOW*0.447*sqrt(n_ult)*((b_f*h_f*l_f)/MTOW)**0.24
@@ -187,10 +187,10 @@ print('Ultimate load factor: ',n_ult)
 
 
 
-print('W_w/MTOW:',W_w/MTOW)
-print('W_tail/MTOW: ',W_tail/MTOW)
-print('W_f/MTOW ',W_f/MTOW)
-print('W_LG/MTOW: ', W_LG/MTOW)
-print('W_sc/MTOW ',W_sc/MTOW)
-print('W_n/MTOW: ',W_n/MTOW)
-print('W_prop/MTOW: ',W_prop/MTOW)
+print('W_w/MTOW:',W_w)
+print('W_tail/MTOW: ',W_tail)
+print('W_f/MTOW ',W_f)
+print('W_LG/MTOW: ', W_LG)
+print('W_sc/MTOW ',W_sc)
+print('W_n/MTOW: ',W_n)
+print('W_prop/MTOW: ',W_prop)
