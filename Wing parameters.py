@@ -1,15 +1,31 @@
 from math import sqrt, acos, atan, tan, pi
 
+import AerodynamicParameters
+import PlanformParameters
+import FuselageParameters
+import SpeedsAndRange
+import PropulsionParameters
+import AerodynamicParameters
+import WeightParameters
+from Wing_aerodynamics_design import dihedral
+
+Planform = PlanformParameters.Planform()
+Fuselage = FuselageParameters.Fuselage()
+Miscellaneous = SpeedsAndRange.Miscellaneous()
+Propulsion = PropulsionParameters.Propulsion()
+Aerodynamics = AerodynamicParameters.Aerodynamics()
+Weight = WeightParameters.Weight()
+
 def Wing_parameters():
     #input
-    S = 63.1    # wing area, m^2
-    A = 7.5     # aspect ratio, -
-    M_cr = 0.77 # critical Mach number, -
+    S = Planform.wing_area   # wing area, m^2
+    A = Planform.AR     # aspect ratio, -
+    M_cr = Miscellaneous.VcrM # critical Mach number, -
 
     #calculations
     b = sqrt(A*S)       # wingspan, m
     L_cp4 = acos(1.16/(M_cr+0.5))   # quarter-chord sweep angle, rad
-    D = 1 - 0.1*L_cp4*180/pi # dihedral angle
+    D = 1 - 0.1*L_cp4*180/pi # dihedral angle, deg
     l = 0.2*(2 - L_cp4) # taper ratio, -
     c_r = 2*S/((1+l)*b) # root chord, m
     c_t = l*c_r         # tip chord, m
@@ -29,6 +45,15 @@ def Wing_parameters():
     print('MAC = ', round(MAC,3), ' m')
     print('y_MAC = ', round(y_MAC,3), ' m')
     print('x_MAC = ', round(x_MAC,3), ' m')
+
+    Planform.updateSpan(b)
+    Planform.updateSweepLE(L_LE*180/pi)
+    Planform.updateDihedral(dihedral)
+    Planform.updateTaper(l)
+    Planform.updateCR(c_r)
+    Planform.updateMAC(MAC)
+    Planform.updateXMAC(x_MAC)
+    Planform.updateYMAC(y_MAC)
 
     return b, L_cp4, D, l, c_r, c_t, L_LE, MAC, y_MAC, x_MAC
 

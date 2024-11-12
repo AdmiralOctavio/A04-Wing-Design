@@ -17,7 +17,37 @@ class Planform:
             self.sweep_half = atan(tan(radians(self.sweep_le))-self.c_r/self.b*(1-self.taper))
             self.b_s = self.b/cos(self.sweep_half)
             self.b_ref = 1.905
-            self.WingLoading = Weight.MTOW/63.1*9.81
+            self.dihedral = -1.4 #degree
+            self.WingLoading = 3600
             self.tail_area = 22 #m^2
             self.AR = 7.5
 
+
+    def updateMAC(self,MAC):
+        self.MAC = MAC
+    def updateXMAC(self,xMAC):
+        self.xMAC = xMAC
+    def updateYMAC(self,yMAC):
+        self.yMAC = yMAC
+    def updateCR(self,c_r):
+        self.c_r = c_r
+    def updateTaper(self,taper):
+        self.taper = taper
+    def updateSpan(self,b):
+        self.b = b
+    def updateToverC(self,t_over_c):
+        self.t_over_c = t_over_c
+    def updateWingArea(self,wing_area):
+        self.wing_area = wing_area
+    def updateSweepLE(self,sweep_le):
+        self.sweep_le = sweep_le
+    def updateBref(self,b_ref):
+        self.b_ref = b_ref
+    def updateDihedral(self,dihedral):
+        self.dihedral = dihedral
+    def updateWingLoading(self,WingLoading):
+        self.WingLoading = WingLoading
+    def updateTailArea(self,tail_area):
+        self.tail_area = tail_area
+    def updateAR(self,AR):
+        self.AR = AR
