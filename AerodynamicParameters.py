@@ -57,6 +57,23 @@ class Aerodynamics:
             self.S_eng = 12.89
             self.S_tot = 438.74
 
+            self.IFtail = 1.04
+            self.IFwing = 1.0
+            self.IFfuselage = 1.0
+            self.IFnacelle = 1.3
+
+            self.S_Anose = 0.26711  # m^2 (frontal area of nose gear)
+            self.S_Agear = 0.80149  # m^2 (frontal area of landing gear)
+            self.D_nose = 18*0.0254  # m tire diameter
+            self.D_main = 33*0.0254  # m tire diameter
+            self.W_nose = 4.25*0.0254  # m tire width
+            self.W_main = 9.75*0.0254  # m tire width
+            self.Nose_x = 8.06  # m nose gear x-position
+            self.strut = 1.56  # m nose gear strut length
+            self.DeltaCDs = 0.58  # from graph for nose gear
+
+            self.CD_excrFrac = 0.05
+
             self.LD = 1 / 2 * sqrt((pi * Planform.AR * self.e_Clean) / self.CD0_Cruise)  # Lift drag ratio
 
     def updateCf_nose_cr(self,Cf_nose_cr):
@@ -116,23 +133,4 @@ class Aerodynamics:
     def updateS_tot(self, S_tot):
             self.S_tot = S_tot
 
-
-class DragBuildup:
-    def __init__(self):
-            self.IFtail = 1.04
-            self.IFwing = 1.0
-            self.IFfuselage = 1.0
-            self.IFnacelle = 1.3
-
-            self.S_Anose = 0.26711  # m^2 (frontal area of nose gear)
-            self.S_Agear = 0.80149  # m^2 (frontal area of landing gear)
-            self.D_nose = 18*0.0254  # m tire diameter
-            self.D_main = 33*0.0254  # m tire diameter
-            self.W_nose = 4.25*0.0254  # m tire width
-            self.W_main = 9.75*0.0254  # m tire width
-            self.Nose_x = 8.06  # m nose gear x-position
-            self.strut = 1.56  # m nose gear strut length
-            self.DeltaCDs = 0.58  # from graph for nose gear
-
-            self.CD_excrFrac = 0.05
 

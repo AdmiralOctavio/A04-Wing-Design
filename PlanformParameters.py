@@ -28,19 +28,35 @@ class Planform:
             self.xc_m = 0.35
             self.beta = (1 - 0.77**2)**0.5
             self.CL_alpha = 2*pi*self.AR/(2+(4+((self.AR*self.beta/0.95)**2)*(1+(tan(self.sweep_half)/self.beta)**2))**0.5)
+
             self.xc_mHT = 0.3  # NACA0012
             self.xc_mVT = 0.3
             self.t_c_HT = 0.12
             self.t_c_VT = 0.12
 
-            self.HT_area = 14.385
-            self.HT_span = 7.865
-            self.HT_cr = 2.558
-            self.HT_ct = 1.100
-            self.VT_area = 7.757
-            self.VT_span = 3.051
-            self.VT_cr = 2.991
-            self.VT_ct = 2.094
+            self.HT_area = 12.001354834160356
+            self.HT_span = 7.183719495281641
+            self.HT_cr = 2.3365488682002415
+            self.HT_ct = 1.004716013326104
+            self.HT_MAC = 1.7591108472058603
+            self.HT_AR = 4.3
+            self.HT_taper = 0.43
+            self.HT_quarter_sweep = 26.6 #deg
+
+            self.VT_area = 7.047964254292777
+            self.VT_span = 2.908187952
+            self.VT_cr = 2.8511646488775373
+            self.VT_ct = 1.995815254214276
+            self.HT_MAC = 2.4486472866830615
+            self.VT_AR = 1.2
+            self.VT_taper = 0.7
+            self.VT_quarter_sweep = 39.5 #deg
+
+            self.FlapAreaRatio = 0.7768427586206897
+            self.FlapChordRatio = 0.35
+            self.FlapDeflectionTO = 15 #deg
+            self.FlapDeflectionL = 35 #deg
+
 
 
 
