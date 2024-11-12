@@ -1,12 +1,12 @@
 from math import sqrt, atan, tan, radians, cos, pi
 
 import WeightParameters
-
 Weight = WeightParameters.Weight()
-
 
 class Planform:
     def __init__(self):
+        self.WingLoading = 3600
+        self.wing_area = Weight.MTOW/(self.WingLoading/9.80665)
         self.MAC = 2.915
         self.yMAC = 4.895
         self.xMAC = 1.446
@@ -15,13 +15,11 @@ class Planform:
         self.taper = 0.352
         self.b = 23.3
         self.t_over_c = 0.1
-        self.wing_area = 63.1
         self.t_r = self.c_r * self.t_over_c
         self.sweep_le = 16.46
         self.sweep_half = atan(tan(radians(self.sweep_le)) - self.c_r / self.b * (1 - self.taper))
         self.b_s = self.b / cos(self.sweep_half)
         self.b_ref = 1.905
-        self.WingLoading = Weight.MTOW / 63.1 * 9.81
         self.tail_area = 22  # m^2
         self.AR = 7.5
 
@@ -50,3 +48,7 @@ class Planform:
     def updatetail_area(self, tail_area): self.tail_area = tail_area
 
     def updateAR(self, AR): self.AR = AR
+
+
+    def updateWingLoading(self,WingLoading):
+        self.WingLoading = WingLoading

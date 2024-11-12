@@ -60,8 +60,8 @@ def maxspd(data,aero,misc,WpS_list):
     CLmax = data[2,3]
     Tfrac = data[2,4]
     B = data[2,5]
-    CD0 = aero[3,0]
-    e = aero[3,1]
+    CD0 = aero[6,0]
+    e = aero[6,1]
     A = misc[0]
     Bp = misc[1]
     g = misc[2]
@@ -139,7 +139,7 @@ def takofdlen(data,aero,misc,WpS_list):
     return TpW_min
 
 
-def MatchingDiagram():
+def MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     #dimension of table (entries x functions)
     limit = 7000    #maximum W/S on diagram
     step = 100
@@ -154,27 +154,28 @@ def MatchingDiagram():
     #ALL THE INPUT DATA
 
                         #value  #height     #deltaT #CLmax  #Tfrac  #mfrac
-    data = np.array([[  60,     0,          0,      2.3,    0.0,    0.926],  #approach speed
-                     [  1210,   0,          0,      2.3,    0.0,    0.926],  #landing field length
-                     [  0.77,   10668,      0,      1.5,    1.0,    0.95],  #cruise Mach number
-                     [  12.7,   0,          0,      1.5,    1.0,    0.95],  #minimum climb rate
-                     [  0.032,  0,          0,      2.3,    1.0,    1.00],  #G_119
-                     [  0,      0,          0,      1.9,    0.5,    1.00],  #G_121a
-                     [  0.024,  0,          0,      1.9,    0.5,    1.00],  #G_121b
-                     [  0.012,  0,          0,      1.5,    0.5,    1.00],  #G_121c
-                     [  0.021,  0,          0,      2.3,    0.5,    1.00],  #G_121d
-                     [  1296,   0,          0,      1.9,    0.5,    1.00]]) #take-off field length
+    data = np.array([[  1.23*Miscellaneous.V_stall,     0,          0,      Aerodynamics.CL_max_Landing,    0.0,    0.926],  #approach speed
+                     [  1210,   0,          0,      Aerodynamics.CL_max_Landing,    0.0,    0.926],  #landing field length
+                     [  0.77,   10668,      0,      Aerodynamics.CL_max_Cruise,    1.0,    0.95],  #cruise Mach number
+                     [  12.7,   0,          0,      Aerodynamics.CL_max_Cruise,    1.0,    0.95],  #minimum climb rate
+                     [  0.032,  0,          0,      Aerodynamics.CL_max_Landing,    1.0,    1.00],  #G_119
+                     [  0,      0,          0,      Aerodynamics.CL_max_Takeoff,    0.5,    1.00],  #G_121a
+                     [  0.024,  0,          0,      Aerodynamics.CL_max_Takeoff,    0.5,    1.00],  #G_121b
+                     [  0.012,  0,          0,      Aerodynamics.CL_max_Cruise,    0.5,    1.00],  #G_121c
+                     [  0.021,  0,          0,      Aerodynamics.CL_max_Landing,    0.5,    1.00],  #G_121d
+                     [  1296,   0,          0,      Aerodynamics.CL_max_Takeoff,    0.5,    1.00]]) #take-off field length
 
                         #CD_0   #e
-    aero = np.array([[  0.0822, 0.984],     #DOWN, L    - G_119
-                     [  0.0562, 0.892],     #DOWN, TO   - G_121a
-                     [  0.0387, 0.892],     #UP, TO     - G_121b
-                     [  0.0192, 0.823],     #UP, CR     - G_121c    - also for every other calculation
-                     [  0.0647, 0.984],     #UP, L      - G_121d
-                     [  0.0562, 0.892]])    #DOWN, TO   - take-off field length
+    aero = np.array([[  Aerodynamics.CD0_Landing_DOWN, Aerodynamics.e_Landing],     #DOWN, L    - G_119
+                     [  Aerodynamics.CD0_Takeoff_DOWN, Aerodynamics.e_Takeoff],     #DOWN, TO   - G_121a
+                     [  Aerodynamics.CD0_Takeoff_UP, Aerodynamics.e_Takeoff],     #UP, TO     - G_121b
+                     [  Aerodynamics.CD0_Clean_UP, Aerodynamics.e_Clean],     #UP, CR     - G_121c    - also for every other calculation
+                     [  Aerodynamics.CD0_Landing_UP, Aerodynamics.e_Landing],     #UP, L      - G_121d
+                     [  Aerodynamics.CD0_Takeoff_DOWN, Aerodynamics.e_Takeoff],
+                     [  Aerodynamics.CD0_Cruise, Aerodynamics.e_Clean]])    #DOWN, TO   - take-off field length
 
-    A = 7.5     #aspect ratio
-    Bp = 9      #bypass ratio
+    A = Planform.AR     #aspect ratio
+    Bp = Propulsion.BypassRatio      #bypass ratio
     g = 9.80665 #gravity
 
     misc = np.array([A,Bp,g])
@@ -236,7 +237,7 @@ def MatchingDiagram():
 
     WpS_list = list(WpS_list)
     TpW_max = ceil(100*max(graph[WpS_list.index(WpS_min),:]))/100
-    print(WpS_min,TpW_max)
+    #print(WpS_min,TpW_max)
     plt.plot(WpS_min, TpW_max, marker = 'o', color = 'r', label = 'design point')
 
 
@@ -248,9 +249,12 @@ def MatchingDiagram():
     plt.xlim(0,dimension*step)
     plt.ylim(0,0.5)
     plt.grid()
-    plt.show()
+    #plt.show()
     #plt.savefig('MatchingDiagram.jpg')
+
+    Planform.updateWingLoading(WpS_min)
+    Propulsion.updateTtoW(TpW_max)
 
     return WpS_min, TpW_max
 
-MatchingDiagram()
+#MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)

@@ -1,6 +1,12 @@
 from math import sqrt,atan,tan,radians,cos
+
+import PlanformParameters
 import AerodynamicParameters
+import WeightParameters
+Planform = PlanformParameters.Planform()
 Aerodynamics = AerodynamicParameters.Aerodynamics()
+Weight = WeightParameters.Weight()
+
 class Miscellaneous:
     def __init__(self):
             self.densitySL = 1.225
@@ -10,6 +16,7 @@ class Miscellaneous:
             self.Velocity = self.VcrM*296.32
             self.EASVelocity = self.Velocity/sqrt(self.densitySL/self.densityFL)
             self.V_dive_EAS=166.89*1.5
+            self.V_stall = sqrt(2*Weight.MTOW*9.80665/(1.225*Planform.wing_area*Aerodynamics.CL_max_Landing))
             self.Range = 2963
             self.fcon = 0.05  # contingency fuel ratio
             self.Rdiv = 250  # km, divergence range

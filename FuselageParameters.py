@@ -1,6 +1,8 @@
 from math import sqrt,atan,tan,radians,cos
+
 import PlanformParameters
 Planform = PlanformParameters.Planform()
+
 class Fuselage:
     def __init__(self):
             self.b_f = 2.9

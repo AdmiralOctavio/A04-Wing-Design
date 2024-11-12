@@ -1,4 +1,5 @@
 from math import sqrt,atan,tan,radians,cos
+
 class Weight:
     def __init__(self):
             self.MTOW =23173
