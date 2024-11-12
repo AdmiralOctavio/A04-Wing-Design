@@ -18,6 +18,7 @@ class Planform:
             self.sweep_le = 16.46 #deg
             self.sweep_half = degrees(atan(tan(radians(self.sweep_le)) - self.c_r / self.b * (1 - self.taper))) #deg
             self.sweep_quarter_chord=degrees(atan(tan(radians(self.sweep_le))-self.c_r/2/self.b*(1-self.taper))) #deg
+            self.sweep_te = degrees(atan(tan(radians(self.sweep_le)) - 2*self.c_r / self.b * (1 - self.taper)))
             self.b_s = self.b / cos(radians(self.sweep_half))
             self.b_ref = 1.905
             self.tail_area = 22  # m^2
@@ -56,6 +57,8 @@ class Planform:
     def updatesweep_half(self, sweep_half): self.sweep_half = sweep_half
 
     def updatesweep_quarter_chord(self, sweep_quarter_chord): self.sweep_quarter_chord = sweep_quarter_chord
+
+    def updatesweep_le(self, sweep_te): self.sweep_te = sweep_te
 
     def updateb_s(self, b_s): self.b_s = b_s
 
