@@ -12,6 +12,14 @@ ground_clearance_angle = 5  # [deg]
 compression_stroke = 0.3  # [m]
 vertical_cg_fraction = 0.6  # [-] TODO: what the fuck
 
+# Aircraft parameters
+MTOW = 23173.027059606364 # [kg]
+wing_span = 23.295063854816966  # [m]
+dihedral_angle = -0.3504328752335939  # [deg]
+engine_diameter = 1.08  # [m]
+engine_wing_position = 0.35 * wing_span / 2  # [m]
+x_cg_pos = 14.2 # [m] from nose
+
 # Fuselage Dimensions
 fuselage_diameter = 2.904633871690015  # [m]
 cabin_length = 19.44  # [m]
@@ -19,12 +27,9 @@ nose_cone_length = 1.8 * fuselage_diameter  # [m]
 tail_cone_length = 2.5 * fuselage_diameter  # [m]
 
 # Wing Dimensions
-wing_span = 23.295063854816966  # [m]
-dihedral_angle = -0.3504328752335939  # [deg]
-engine_diameter = 1.08  # [m]
-engine_wing_position = 0.35 * wing_span / 2  # [m]
 
-cg_position = shapely.Point(14.2, vertical_cg_fraction * fuselage_diameter)
+
+cg_position = shapely.Point(x_cg_pos, vertical_cg_fraction * fuselage_diameter)
 
 
 def convert_inches_to_meters(inches):
@@ -45,15 +50,15 @@ def get_angle_contraint_line_from_angle_and_point(point: shapely.Point, angle: f
 if not tip_over_angle > scrape_angle:
     raise AssertionError("The tip over angle must be greater than the scrape angle!")
 
-diameter_main = convert_inches_to_meters(33)  # [m]
-diameter_nose = convert_inches_to_meters(18)  # [m]
+diameter_main = convert_inches_to_meters(33)  # [m] MUST BE CHANGED IF CHANGING PRESSURE (FROM GRAPHS)
+diameter_nose = convert_inches_to_meters(18)  # [m] MUST BE CHANGED IF CHANGING PRESSURE (FROM GRAPHS)
 
-width_main = convert_inches_to_meters(9.75)  # [m]
-width_nose = convert_inches_to_meters(4.25)  # [m]
+width_main = convert_inches_to_meters(9.75)  # [m] MUST BE CHANGED IF CHANGING PRESSURE (FROM GRAPHS)
+width_nose = convert_inches_to_meters(4.25)  # [m] MUST BE CHANGED IF CHANGING PRESSURE (FROM GRAPHS)
 
 print(f"main tire diameter: {diameter_main} m")
 
-aircraft_weight = 23173.027059606364 * 9.80665  # [N]
+aircraft_weight = MTOW * 9.80665  # [N]
 
 n_main_wheels = max(4 * round(aircraft_weight / (120000 * 4)), 4)
 n_nose_wheels = 2
