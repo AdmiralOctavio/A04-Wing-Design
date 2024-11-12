@@ -46,14 +46,14 @@ def Wing_parameters():
     print('y_MAC = ', round(y_MAC,3), ' m')
     print('x_MAC = ', round(x_MAC,3), ' m')
 
-    Planform.updateSpan(b)
-    Planform.updateSweepLE(L_LE*180/pi)
-    Planform.updateDihedral(dihedral)
-    Planform.updateTaper(l)
-    Planform.updateCR(c_r)
-    Planform.updateMAC(MAC)
-    Planform.updateXMAC(x_MAC)
-    Planform.updateYMAC(y_MAC)
+    # Planform.updateSpan(b)
+    # Planform.updateSweepLE(L_LE*180/pi)
+    # Planform.updateDihedral(dihedral)
+    # Planform.updateTaper(l)
+    # Planform.updateCR(c_r)
+    # Planform.updateMAC(MAC)
+    # Planform.updateXMAC(x_MAC)
+    # Planform.updateYMAC(y_MAC)
 
     return b, L_cp4, D, l, c_r, c_t, L_LE, MAC, y_MAC, x_MAC
 
