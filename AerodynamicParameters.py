@@ -8,11 +8,10 @@ class Aerodynamics:
             self.cd0airfoil = 0.00486
             self.clCruiseAirfoil = 0.4756492527004301
             self.clCruise = 0.37594287624283806
-            self.CL_max_wing = 1.4921436593032642
 
             self.CL_max_Landing = 2.3
             self.CL_max_Takeoff = 1.9
-            self.CL_max_Cruise = 1.5
+            self.CL_max_Cruise = 2.291372534
 
             self.CD0_Landing_DOWN = 0.0822  #Landing = flap cnfiguration, DOWN = gear
             self.CD0_Landing_UP = 0.0647
@@ -79,8 +78,8 @@ class Aerodynamics:
 
 
 
-    def updateCL_max_wing(self, CL_max_wing):
-            self.CL_max_wing = CL_max_wing
+    def updateCL_max_Cruise(self, CL_max_Cruise):
+            self.CL_max_Cruise = CL_max_Cruise
     def updateCf_nose_cr(self,Cf_nose_cr):
             self.Cf_nose_cr = Cf_nose_cr
     def updateCf_cyl_cr(self, Cf_cyl_cr):

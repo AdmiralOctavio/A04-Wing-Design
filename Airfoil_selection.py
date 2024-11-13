@@ -108,7 +108,8 @@ def CLmaxWing(CLClRatio, Clmax):
 
 CLmax = CLmaxWing(CLClRatio, Clmax)  # at M=0.2
 print('CLmax at 0.2 Mach:', CLmax)
-print(CLmax)
+CLmax_cruise = CLmax*(1-0.2**2)**0.5/((1-0.77**2)**0.5)
+print(CLmax_cruise)
 
 # finding stall AoA using CLalpha for M=0.2
 CLalphaM02 = 2*math.pi*planform.AR/(2+(4+((planform.AR*math.sqrt(0.96)/0.95)**2)*(1+(math.tan(planform.sweep_half)/math.sqrt(0.96))**2))**0.5)
@@ -134,4 +135,4 @@ print('cruise Cl is:', Cl_cruise_airfoil)
 print('CLalpha [1/rad]', planform.CL_alpha)
 
 Aerodynamics.updatealphaStall(alphaStall)
-Aerodynamics.updateCL_max_wing(CLmax)
+Aerodynamics.updateCL_max_Cruise(CLmax_cruise)
