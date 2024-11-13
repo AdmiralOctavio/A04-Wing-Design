@@ -2,6 +2,15 @@ from math import sqrt, tan, atan, radians, pi
 import numpy as np
 import Airfoil_selection
 import PlanformParameters
+import WeightParameters
+import FuselageParameters
+
+Planform = PlanformParameters.Planform()
+Miscellaneous = SpeedsAndRange.Miscellaneous()
+Propulsion = PropulsionParameters.Propulsion()
+Aerodynamics = AerodynamicParameters.Aerodynamics()
+Fuselage = FuselageParameters.Fuselage()
+Weight = WeightParameters.Weight()
 
 # import aircraft_parameters.yaml
 
@@ -148,3 +157,5 @@ def dcm_over_dalpha_function(Planform, Miscellaneous, Propulsion, Aerodynamics, 
 
 # dcm_over_dalpha = dcm_over_dalpha_function(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight) *pi/180
 # print(dcm_over_dalpha)
+
+printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
