@@ -5,6 +5,8 @@ import AerodynamicParameters
 import FuselageParameters
 import WeightParameters
 
+import matplotlib.pyplot as plt
+
 #from Wing_parameters import Wing_parametersFunction
 
 Planform = PlanformParameters.Planform()
@@ -15,38 +17,42 @@ Fuselage = FuselageParameters.Fuselage()
 Weight = WeightParameters.Weight()
 
 
-#Wing_parametersFunction(Planform,Miscellaneous)
-#print (Planform.b)
 
-from Matching_Diagram import MatchingDiagram
-MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-#print(Miscellaneous.V_stall)
-#print(Planform.WingLoading)
-#print(Propulsion.Thrust_to_Weight)
+for i in range(1,21):
+    #Wing_parametersFunction(Planform,Miscellaneous)
+    #print (Planform.b)
+    print(i)
+    from Matching_Diagram import MatchingDiagram
+    MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    #print(Miscellaneous.V_stall)
+    #print(Planform.WingLoading)
+    #print(Propulsion.Thrust_to_Weight)
 
-from Ailerons import AileronsFunction
-AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-#print(Planform.y1ail)
+    from Ailerons import AileronsFunction
+    AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    #print(Planform.y1ail)
 
-from Drag_calculator import Cf_Calculator
-Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-#print(Aerodynamics.Cf_tot_cr,Aerodynamics.Cf_tot_app,Aerodynamics.S_tot)
+    from Drag_calculator import Cf_Calculator
+    Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    #print(Aerodynamics.Cf_tot_cr,Aerodynamics.Cf_tot_app,Aerodynamics.S_tot)
 
-from Class2Drag import Class2_Drag
-Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-#print(Aerodynamics.CD0_Cruise)
-
-
-import ClassII_Iteration
-
-ClassII_Iteration.ClassIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-ClassII_Iteration.ClassIIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-ClassII_Iteration.CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+    from Class2Drag import Class2_Drag
+    Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    #print(Aerodynamics.CD0_Cruise)
 
 
-from undercarriage import Undercarriage
-Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    import ClassII_Iteration
 
-from SARoptimization import SAR
-SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-#print(Planform.b)
+    ClassII_Iteration.ClassIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    ClassII_Iteration.ClassIIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    ClassII_Iteration.CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+
+    from undercarriage import Undercarriage
+    Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+
+    from SARoptimization import SAR
+    SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    #print(Planform.b)
+
+    plt.close()

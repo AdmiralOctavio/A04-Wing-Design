@@ -146,10 +146,8 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
     # print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
 
     # print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
-    # print ("OEWnew = ", OEWnew)
-    # print ("OEW_init = ", Weight.OEW)
-    print ("MTOWnew = ", MTOWnew)
-    # print("MTOW_init = ", Weight.MTOW)
+    print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
+
     '''ratio = fabs(OEWnew - OEW)/OEW
     if (iterationNumber <=MaxNumberOfIterations and ratio>0.0001):
         iterationNumber = iterationNumber + 1
