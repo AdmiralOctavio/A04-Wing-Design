@@ -44,7 +44,7 @@ x_38_horizontal=0.38*b_horizontal/2*tan(radians(sweep_le_horizontal))
 position=x_38_horizontal+0.42*c_r_horizontal*(1-(1-taper)*0.38)-0.25*c_r_horizontal #m, w.r.t. the root quarter-chord
 print(position)
 l_t= (0.9*l_f-position) -(13.5288-0.42*b/2*tan(radians(sweep_le))+0.25*MAC) #m  #distance from wing root quarter point to horizontal tail root quarter point
-
+print(l_t, "MUC")
 ft_per_meter=0.3048
 
 ro=0.379597 #kg/m^3
@@ -52,7 +52,7 @@ V_cruise=0.77*296.535
 V_dive_EAS=166.89*1.5 #m/s #NOTE: 1.5 is chosen as the safety factor
 CL_alpha=5.76 #1/rad
 W_over_S=MTOW/63.1*9.81 #N/m^2
-
+#11799.298864687804
 A_main=40
 A_nose=20
 B_main=0.16

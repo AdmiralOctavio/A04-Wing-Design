@@ -34,6 +34,8 @@ class Planform:
             self.t_c_HT = 0.12
             self.t_c_VT = 0.12
 
+            self.l_t = 15.96
+
             self.HT_area = 12.001354834160356
             self.HT_span = 7.183719495281641
             self.HT_cr = 2.3365488682002415
@@ -105,3 +107,4 @@ class Planform:
         self.y1ail = y1ail
     def updatey2ail(self,y2ail):
         self.y2ail = y2ail
+

@@ -1,8 +1,9 @@
 from math import sqrt,atan,tan,radians,cos
 
+
 class Weight:
     def __init__(self):
-            self.MTOW =23173
+            self.MTOW = 23173
             self.M_fuel = 2845
             self.M_Payload = 7255
             self.OE_MTOW = 0.566492308
@@ -20,8 +21,10 @@ class Weight:
             self.AirframeServicesAndEquipmentWeight = 0
             self.W_nose = 0
 
-            self.CG_OEW = 0
-            self.CG_WING = 0
+
+            self.OEWCG = 0
+            self.XLEMAC = 0
+            self.WingCG = 0
 
 
 
@@ -74,3 +77,12 @@ class Weight:
         self.MZFW = MZFW
     def updateOEW(self,OEW):
         self.OEW = OEW
+
+    def updateXLEMAC(self,XLEMAC):
+        self.XLEMAC = XLEMAC
+
+    def updateOEWCG(self,OEWCG):
+        self.OEWCG = OEWCG
+
+    def updateWingCG(self,WingCG):
+        self.WingCG = WingCG

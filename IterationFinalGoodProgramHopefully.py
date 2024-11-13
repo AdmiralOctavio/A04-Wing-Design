@@ -39,3 +39,4 @@ import ClassII_Iteration
 
 ClassII_Iteration.ClassIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 ClassII_Iteration.ClassIIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+ClassII_Iteration.CGPositions(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
