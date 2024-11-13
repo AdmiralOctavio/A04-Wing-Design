@@ -28,8 +28,8 @@ def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselag
     Weight.updateWingGroupWeight(WingWeight)
 def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-    HoriTailWeight = Planform.HT_area * ((3.81*((Planform.HT_area)**0.2)*486.611)/(1000*cos(Planform.HT_quarter_sweep)**(1/2))-0.287)
-    Weight.updateHoriTailWeight(HoriTailWeight)
+    Hori_Tail_Weight = Planform.HT_area * ((3.81*((Planform.HT_area)**0.2)*486.611)/(1000*cos(radians(Planform.HT_quarter_sweep))**(1/2)) - 0.287)
+    Weight.updateHori_Tail_Weight(Hori_Tail_Weight)
 
 def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
