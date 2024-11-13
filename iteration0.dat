@@ -46,7 +46,9 @@
  'FlapAreaRatio': 0.7768427586206897
  'FlapChordRatio': 0.35
  'FlapDeflectionTO': 15
- 'FlapDeflectionL': 35}
+ 'FlapDeflectionL': 35
+ 'CLMax_Takeoff': 1.9
+ 'CLMax_Landing': 2.375}
 
 {'densitySL': 1.225
  'densityFL': 0.379597
@@ -65,6 +67,7 @@
  'hCR': 10668
  'Mpl': 7200
  'Rlost': 296.89733946045186
+ 'nose_gear_load_ratio': 0.15
  'WingloadStartCr': 3600.0
  'WingloadEndCr': 3158.0201096103224
  'CL_cruise': 0.3761716075836646}

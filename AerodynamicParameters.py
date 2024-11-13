@@ -162,6 +162,19 @@ class Aerodynamics:
             self.alphaStall
     def updateLD(self, LD):
             self.LD = LD
+
+    def updateCL_max_Landing(self, CL_max_Landing):
+        self.CL_max_Landing = CL_max_Landing
+
+    def updateCL_max_Takeoff(self, CL_max_Takeoff):
+        self.CL_max_Takeoff = CL_max_Takeoff
+
+    def updateCL_max_Cruise(self, CL_max_Cruise):
+        self.CL_max_Cruise = CL_max_Cruise
+
+
+
+
             
 
 
