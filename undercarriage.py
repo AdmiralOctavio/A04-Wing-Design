@@ -66,8 +66,8 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
     n_main_wheels = max(4 * round(aircraft_weight / (120000 * 4)), 4)
     n_nose_wheels = 2
 
-    static_load_main = 0.92 * aircraft_weight / n_main_wheels  # [N] per tire
-    static_load_nose = 0.08 * aircraft_weight / n_nose_wheels  # [N] per tire
+    static_load_main = (1 - Miscellaneous.nose_gear_load_ratio) * aircraft_weight / n_main_wheels  # [N] per tire
+    static_load_nose = Miscellaneous.nose_gear_load_ratio * aircraft_weight / n_nose_wheels  # [N] per tire
 
     # print(f"{n_main_wheels = }")
     # print(f"{static_load_main = }")
@@ -191,6 +191,7 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
 
     ax2.fill(*left_wheels.exterior.xy, color="orange")
 
-    #plt.show()
+    # plt.show()
 
+# Undercarriage()
     #No need to update anything - only check that the chosen wheel works for the final MTOW
