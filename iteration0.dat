@@ -46,9 +46,7 @@
  'FlapAreaRatio': 0.7768427586206897
  'FlapChordRatio': 0.35
  'FlapDeflectionTO': 15
- 'FlapDeflectionL': 35
- 'CLMax_Takeoff': 1.9
- 'CLMax_Landing': 2.375}
+ 'FlapDeflectionL': 35}
 
 {'densitySL': 1.225
  'densityFL': 0.379597

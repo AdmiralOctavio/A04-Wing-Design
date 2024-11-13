@@ -1,7 +1,5 @@
 from math import sqrt,atan,tan,radians,cos,pi
 
-import PlanformParameters
-Planform = PlanformParameters.Planform()
 
 class Aerodynamics:
     def __init__(self):
