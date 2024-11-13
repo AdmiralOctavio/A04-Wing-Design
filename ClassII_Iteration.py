@@ -218,4 +218,4 @@ def CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weig
 
 
 
-print("HoriTailWeight", Weight.HoriTailWeight)
+
