@@ -17,5 +17,7 @@ class Fuselage:
             self.l_nc = self.nc_ratio*self.d_fus_outer
             self.l_cabin = self.l_f-self.l_nc-self.l_tc
             #the next 2 were chosen just because they looked good on the CAD, so this may be an issue
-            self.X_h = 31.628
-            self.X_v = 30.202
+            # self.X_h = 31.628
+            # self.X_v = 30.202
+            self.X_h = 33.333
+            self.X_v = 30.349
