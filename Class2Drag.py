@@ -382,6 +382,7 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     # Gear UP and DOWN were approximated as the same
     # CD0_Cruise and CD0_Clean_UP were approximated as the same
     # To change if there is enough time left
+
     Aerodynamics.updateCD0_Landing_UP(CD0_Landing_UP)
     Aerodynamics.updateCD0_Landing_DOWN(CD0_Landing_DOWN)
     Aerodynamics.updateCD0_Takeoff_UP(CD0_Takeoff_UP)

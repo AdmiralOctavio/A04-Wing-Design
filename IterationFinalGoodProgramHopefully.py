@@ -18,7 +18,7 @@ Fuselage = FuselageParameters.Fuselage()
 Weight = WeightParameters.Weight()
 
 
-nmax = 2
+nmax = 10
 for i in range(1,nmax+1):
     #Wing_parametersFunction(Planform,Miscellaneous)
     #print (Planform.b)
@@ -55,7 +55,10 @@ for i in range(1,nmax+1):
 
     ClassII_Iteration.ClassIIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     ClassII_Iteration.CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
-
+    
+    print("Horizontal Tail Weight: ", Weight.HoriTailWeight)
+    print("Vertical Tail Weight: ", Weight.VertTailWeight)
+    print('Total tail weight: ',Weight.HoriTailWeight+Weight.VertTailWeight)
     from Tail_sizing_WP3 import horizontal_tail, vertical_tail
 
     horizontal_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
@@ -70,8 +73,14 @@ for i in range(1,nmax+1):
 
     Class2_Drag(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
     # print(Aerodynamics.CD0_Cruise)
-    print(Aerodynamics.S_W, Aerodynamics.S_HT, Aerodynamics.S_VT)
+    # print(Aerodynamics.S_W, Aerodynamics.S_HT, Aerodynamics.S_VT)
+    print(Aerodynamics.CD0_Landing_DOWN)
+    print(Aerodynamics.CD0_Landing_UP)
+    print(Aerodynamics.CD0_Takeoff_DOWN)
+    print(Aerodynamics.CD0_Takeoff_UP)
+    print(Aerodynamics.CD0_Clean_UP)
     print(Aerodynamics.CD0_Cruise)
+
 
 
     from undercarriage import Undercarriage
