@@ -1,11 +1,15 @@
 
-from math import sqrt,atan,tan,radians,cos,fabs, e
+from math import sqrt,atan,tan,radians,degrees,cos,fabs, e
 
 
 
 MaxNumberOfIterations = 10
 meter_per_feet = 0.3048
 lbs_per_kg = 2.20462
+
+def QCSweep_to_HalfSweep(QCSweep, taper_ratio, wing_span, root_chord):
+    LESweep = degrees(atan(tan(radians(QCSweep)) + (root_chord / (2*wing_span)) * (1 - taper_ratio)))
+    return degrees(atan(tan(radians(LESweep)) - (root_chord / wing_span) * (1 - taper_ratio)))
 
 
 def ClassIWeightEstimation(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
@@ -28,13 +32,13 @@ def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselag
     Weight.updateWingGroupWeight(WingWeight)
 def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-    Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(Planform.HT_quarter_sweep))**(1/2)) - 0.287)
+    Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.HT_quarter_sweep, Planform.HT_taper, Planform.HT_span*2, Planform.HT_cr)))**(1/2)) - 0.287)
     Weight.updateHori_Tail_Weight(Hori_Tail_Weight/lbs_per_kg)
 
 def CalculateVertTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     Kv = 1 + 0.15*(Planform.HT_area*Planform.HT_span)/(Planform.VT_area*Planform.VT_span)
-    Vert_Tail_Weight = Kv *(Planform.VT_area/(meter_per_feet**2)) * ((3.81*((Planform.VT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(Planform.VT_quarter_sweep))**(1/2)) - 0.287)
+    Vert_Tail_Weight = Kv *(Planform.VT_area/(meter_per_feet**2)) * ((3.81*((Planform.VT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.VT_quarter_sweep, Planform.VT_taper, Planform.VT_span, Planform.VT_cr)))**(1/2)) - 0.287)
     Weight.updateVert_Tail_Weight(Vert_Tail_Weight/lbs_per_kg)
 
 def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
