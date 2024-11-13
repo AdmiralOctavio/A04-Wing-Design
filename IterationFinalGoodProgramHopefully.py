@@ -18,7 +18,7 @@ Weight = WeightParameters.Weight()
 
 
 
-for i in range(1,21):
+for i in range(1,11):
     #Wing_parametersFunction(Planform,Miscellaneous)
     #print (Planform.b)
     print(i)
@@ -56,3 +56,5 @@ for i in range(1,21):
     #print(Planform.b)
 
     plt.close()
+
+    print(Aerodynamics.CD0_Cruise)

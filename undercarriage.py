@@ -89,9 +89,9 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
         0.5 * diameter_main * math.sin(math.radians(scrape_angle)) - compression_stroke,
     )
 
-    scrape_constraint = get_angle_contraint_line_from_angle_and_point(adapated_scrape_position, scrape_angle, 10)
-    original_scrape_constraint = get_angle_contraint_line_from_angle_and_point(cabin_bottom_right, scrape_angle, 10)
-    tip_over_constraint = get_angle_contraint_line_from_angle_and_point(cg_position, 90 + tip_over_angle, 10)
+    scrape_constraint = get_angle_contraint_line_from_angle_and_point(adapated_scrape_position, scrape_angle, 1000)
+    original_scrape_constraint = get_angle_contraint_line_from_angle_and_point(cabin_bottom_right, scrape_angle, 1000)
+    tip_over_constraint = get_angle_contraint_line_from_angle_and_point(cg_position, 90 + tip_over_angle, 1000)
 
     main_gear_position = scrape_constraint.intersection(tip_over_constraint)
     main_gear_wheel = main_gear_position.buffer(diameter_main * 0.5)
