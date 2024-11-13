@@ -387,6 +387,7 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     Aerodynamics.updateCD0_Takeoff_UP(CD0_Takeoff_UP)
     Aerodynamics.updateCD0_Takeoff_DOWN(CD0_Takeoff_DOWN)
     Aerodynamics.updateCD0_Cruise(CD0_total_Cruise)
+    Aerodynamics.updateCD0_Clean_UP(CD0_total_Cruise)
     Aerodynamics.updatee_Clean(Oswald)
     Aerodynamics.updatee_Takeoff(Oswald_to)
     Aerodynamics.updatee_Landing(Oswald_app)

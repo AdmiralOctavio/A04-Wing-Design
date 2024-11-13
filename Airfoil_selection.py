@@ -21,12 +21,12 @@ PL_Weight = 7200*9.80665  # [N]
 hcr = 35000*0.3048 #m
 T_cr = 288.15-0.0065*hcr
 rho_cr = 1.225*((T_cr/288.15)**((9.80665/0.0065/287)-1))
-print('rho', rho_cr)
+# print('rho', rho_cr)
 Vcr = 0.77*(1.4*287*T_cr)**0.5 #m/s
 WingloadStartCr = (MTOW)/S
 WingloadEndCr = (MTOW - Fuel_Weight)/S
 CL_cruise = 1.1/(0.5*rho_cr*Vcr**2)*0.5*(WingloadStartCr + WingloadEndCr)
-print('CL cruise', CL_cruise)
+# print('CL cruise', CL_cruise)
 
 ka_SC = 0.935 #Supercritical ka
 ka_l = 0.87 # lower bound standard airfoils
@@ -50,12 +50,12 @@ Cl_NACA24012 = CL_cruise
 Cl_NASA = CL_cruise
 Cl_KC = CL_cruise
 
-print("Drag Divergence Mach Numbers:")
-print("KC-135:", MachDD(ka_SC, LEsweep, tcRatio_KC, Cl_KC))
-print("NACA0012:", MachDD(ka_l, LEsweep, tcRatio_NACA0012, Cl_NACA0012), "to", MachDD(ka_u, LEsweep, tcRatio_NACA0012, Cl_NACA0012))
-print("NACA2416:", MachDD(ka_l, LEsweep, tcRatio_NACA2416, Cl_NACA2416), "to", MachDD(ka_u, LEsweep, tcRatio_NACA2416, Cl_NACA2416))
-print("NACA24012:", MachDD(ka_l, LEsweep, tcRatio_NACA24012, Cl_NACA24012), "to", MachDD(ka_u, LEsweep, tcRatio_NACA24012, Cl_NACA24012))
-print("NASA:", MachDD(ka_SC, LEsweep, tcRatio_NASA, Cl_NASA))
+# print("Drag Divergence Mach Numbers:")
+# print("KC-135:", MachDD(ka_SC, LEsweep, tcRatio_KC, Cl_KC))
+# print("NACA0012:", MachDD(ka_l, LEsweep, tcRatio_NACA0012, Cl_NACA0012), "to", MachDD(ka_u, LEsweep, tcRatio_NACA0012, Cl_NACA0012))
+# print("NACA2416:", MachDD(ka_l, LEsweep, tcRatio_NACA2416, Cl_NACA2416), "to", MachDD(ka_u, LEsweep, tcRatio_NACA2416, Cl_NACA2416))
+# print("NACA24012:", MachDD(ka_l, LEsweep, tcRatio_NACA24012, Cl_NACA24012), "to", MachDD(ka_u, LEsweep, tcRatio_NACA24012, Cl_NACA24012))
+# print("NASA:", MachDD(ka_SC, LEsweep, tcRatio_NASA, Cl_NASA))
 
 # Finding dCL/dalpha for wing
 def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Cl_alpha):
@@ -69,7 +69,7 @@ def dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Cl_alpha):
 
 
 Clalpha_airfoil = 0.11211*180/math.pi  # 1/rad
-print('Clalpha airfoil [1/rad]', Clalpha_airfoil)
+# print('Clalpha airfoil [1/rad]', Clalpha_airfoil)
 
 CLalpha = dCLdalpha(A, mach_infty, LEsweep, Cr, Ct, b, Clalpha_airfoil)  # 1/rad
 alphaZeroLift = math.radians(-1.0)  # degrees to radians
@@ -82,7 +82,7 @@ def linearInterpolation(xUpper, xLower, x, yUpper, yLower):
     return y
 
 DeltaY = linearInterpolation(0.06767, 0.05206, 0.06, 0.04668, 0.04164) - linearInterpolation(0.00433, 0.00106, 0.0015, 0.01115, 0.00529)
-print('Delta Y as %:', DeltaY*100)  # 3.8381256714894203
+# print('Delta Y as %:', DeltaY*100)  # 3.8381256714894203
 
 # DeltaY = linearInterpolation(0.95, 0.925, 0.94, 0.00884, 0.01236) - linearInterpolation(1.0, 0.975, 0.9985, 0.0015, 0.00521)
 # print('Delta Y as %:', DeltaY*100)
@@ -102,7 +102,7 @@ alpha_Cruise = (CL_cruise + CLalpha * alphaZeroLift)/CLalpha  # radians
 alpha_trim = alpha_Cruise/math.pi *180  # deg
 Cl_cruise_airfoil = CL_cruise / (math.cos(LEsweep)**2)  # slide 14 ADSEE ppt 2 notes
 Cl_cruise_airfoil_zeroM  = Cl_cruise_airfoil*(1-0.77*0.77)**0.5
-print('Cl mach 0 and Cl mach 0.77', Cl_cruise_airfoil_zeroM, Cl_cruise_airfoil)
+# print('Cl mach 0 and Cl mach 0.77', Cl_cruise_airfoil_zeroM, Cl_cruise_airfoil)
 Cd_cruise = 0.00484
 #print(CL_cruise)
 
@@ -115,7 +115,7 @@ def CLmaxWing(CLClRatio, Clmax):
     return CLmax
 
 CLmax = CLmaxWing(CLClRatio, Clmax)  # at M=0.2
-print('CLmax at 0.2 Mach:', CLmax)
+# print('CLmax at 0.2 Mach:', CLmax)
 
 # finding stall AoA using CLalpha for M=0.2
 Mach = 0.2
@@ -128,7 +128,7 @@ def alphaStallDeg(CLmax, CLalpha, alphaZeroL, DeltaAlphaCLmax):
     return alphaS
 
 alphaStall = alphaStallDeg(CLmax, CLalphaM02, alphaZeroLift, DeltaAlphaCLmax)  # deg at M=0.2
-print('alpha stall at M=0.2 [deg]:', alphaStall)
+# print('alpha stall at M=0.2 [deg]:', alphaStall)
 
 # span efficiency factor
 e = 4.61*(1-0.045*A**0.68)*(math.cos(LEsweep))**0.15 -3.1
@@ -136,11 +136,11 @@ e = 4.61*(1-0.045*A**0.68)*(math.cos(LEsweep))**0.15 -3.1
 # Mcrit
 Mcrit_unswept = 0.81333
 Mcrit_swept = Mcrit_unswept/math.cos(LEsweep)
-print('Crit mach', Mcrit_swept)
-print('span efficiency factor:', e)
-print('alpha zero lift [deg]:', alphaZeroLift/math.pi*180)
-print('Cd cruise', Cd_cruise)
-print("Mdd:", MachDD(ka_SC, LEsweep, tcRatio_Lockheed, CL_cruise))
-print('alpha cruise/trim is [deg]:', alpha_Cruise/math.pi*180)
-print('cruise Cl is:', Cl_cruise_airfoil)
-print('CLalpha [1/rad]', CLalpha)
+# print('Crit mach', Mcrit_swept)
+# print('span efficiency factor:', e)
+# print('alpha zero lift [deg]:', alphaZeroLift/math.pi*180)
+# print('Cd cruise', Cd_cruise)
+# print("Mdd:", MachDD(ka_SC, LEsweep, tcRatio_Lockheed, CL_cruise))
+# print('alpha cruise/trim is [deg]:', alpha_Cruise/math.pi*180)
+# print('cruise Cl is:', Cl_cruise_airfoil)
+# print('CLalpha [1/rad]', CLalpha)

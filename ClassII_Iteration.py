@@ -33,7 +33,7 @@ def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselag
 def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.HT_quarter_sweep, Planform.HT_taper, Planform.HT_span*2, Planform.HT_cr)))**(1/2)) - 0.287)
-    Weight.updateHori_Tail_Weight(Hori_Tail_Weight/lbs_per_kg)
+    Weight.updateHoriTailWeight(Hori_Tail_Weight/lbs_per_kg)
 
 def CalculateVertTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
@@ -151,15 +151,15 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
     # print("WingGroupWeight", Weight.WingGroupWeight)
     # print("BodyGroupWeight", Weight.BodyGroupWeight)
-    print("HoriTailWeight", Weight.HoriTailWeight)
-    print("VertTailWeight", Weight.VertTailWeight)
+    # print("HoriTailWeight", Weight.HoriTailWeight)
+    # print("VertTailWeight", Weight.VertTailWeight)
     # print("LandingGearWeight", Weight.LandingGearWeight)
     # print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
     # print("NacelleWeight", Weight.NacelleWeight)
     # print("PropulsionWeight", Weight.PropulsionWeight)
     # print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
     # print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
-    print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
+    # print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
 
     '''ratio = fabs(OEWnew - OEW)/OEW
     if (iterationNumber <=MaxNumberOfIterations and ratio>0.0001):
