@@ -119,3 +119,5 @@ class Planform:
     def updateVT_cr(self, VT_cr): self.VT_cr = VT_cr
     def updateVT_ct(self, VT_ct): self.VT_ct = VT_ct
     def updateVT_MAC(self, VT_MAC): self.VT_MAC = VT_MAC
+
+    def updateFlapAreaRatio(self, FlapAreaRatio): self.FlapAreaRatio = FlapAreaRatio

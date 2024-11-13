@@ -46,6 +46,9 @@ def LiftCoefficient(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
         FCHORD_2 = ("%.3f" % (W.MAC_flap(Wf/100 + 0.5)[1]*0.35) )
         DC = ("%.3f" % (float(FCHORD) * 0.5)) #I forgot what this does but dont delete it
         A = ("%.3f" % (float(Alpha_stall)))
+
+        Planform.updateFlapAreaRatio(SwfS_TE)
+
         if round(CLValues[ind], 3) >= 2.375 and Alpha_stall < alpha:
             print("Max CL = " + CL + ",  Wing Fraction = " + WF + "%,  Stalling AOA = " + A +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
             return CL, WF, A, alpha, FCHORD, FCHORD_2, SwfS_TE
