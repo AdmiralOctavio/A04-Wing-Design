@@ -49,7 +49,7 @@ class Planform:
             self.VT_span = 2.908187952 #m
             self.VT_cr = 2.8511646488775373 #m
             self.VT_ct = 1.995815254214276 #m
-            self.HT_MAC = 2.4486472866830615 #m
+            self.VT_MAC = 2.4486472866830615 #m
             self.VT_AR = 1.2 #-
             self.VT_taper = 0.7 #-
             self.VT_quarter_sweep = 39.5 #deg
@@ -108,3 +108,14 @@ class Planform:
     def updatey2ail(self,y2ail):
         self.y2ail = y2ail
 
+    def updateHT_area(self, HT_area): self.HT_area = HT_area
+    def updateHT_span(self, HT_span): self.HT_span = HT_span
+    def updateHT_cr(self, HT_cr): self.HT_cr = HT_cr
+    def updateHT_ct(self, HT_ct): self.HT_ct = HT_ct
+    def updateHT_MAC(self,HT_MAC): self.HT_MAC = HT_MAC
+
+    def updateVT_area(self, VT_area): self.VT_area = VT_area
+    def updateVT_span(self, VT_span): self.VT_span = VT_span
+    def updateVT_cr(self, VT_cr): self.VT_cr = VT_cr
+    def updateVT_ct(self, VT_ct): self.VT_ct = VT_ct
+    def updateVT_MAC(self, VT_MAC): self.VT_MAC = VT_MAC

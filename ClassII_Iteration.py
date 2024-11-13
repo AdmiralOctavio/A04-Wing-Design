@@ -5,7 +5,7 @@ from math import sqrt,atan,tan,radians,cos,fabs, e
 
 MaxNumberOfIterations = 10
 meter_per_feet = 0.3048
-lbs_per_kg = 1
+lbs_per_kg = 2.20462
 
 
 
@@ -30,7 +30,7 @@ def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselag
 def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(Planform.HT_quarter_sweep))**(1/2)) - 0.287)
-    Weight.updateHori_Tail_Weight(Hori_Tail_Weight)
+    Weight.updateHori_Tail_Weight(Hori_Tail_Weight/lbs_per_kg)
 
 def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
