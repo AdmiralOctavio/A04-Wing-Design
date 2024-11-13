@@ -249,7 +249,7 @@ def MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weig
     plt.xlim(0,dimension*step)
     plt.ylim(0,0.5)
     plt.grid()
-    plt.show()
+    #plt.show()
     #plt.savefig('MatchingDiagram.jpg')
 
     Planform.updateWingLoading(WpS_min)
