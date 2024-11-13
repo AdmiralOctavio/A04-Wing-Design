@@ -136,20 +136,20 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
 
 
-    print("WingGroupWeight", Weight.WingGroupWeight)
-    print("BodyGroupWeight", Weight.BodyGroupWeight)
-    print("TailGroupWeight", Weight.TailGroupWeight)
-    print("LandingGearWeight", Weight.LandingGearWeight)
-    print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
-    print("NacelleWeight", Weight.NacelleWeight)
-    print("PropulsionWeight", Weight.PropulsionWeight)
-    print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
+    # print("WingGroupWeight", Weight.WingGroupWeight)
+    # print("BodyGroupWeight", Weight.BodyGroupWeight)
+    # print("TailGroupWeight", Weight.TailGroupWeight)
+    # print("LandingGearWeight", Weight.LandingGearWeight)
+    # print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
+    # print("NacelleWeight", Weight.NacelleWeight)
+    # print("PropulsionWeight", Weight.PropulsionWeight)
+    # print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
 
-    print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
-    print ("OEWnew = ", OEWnew)
-    print ("OEW_init = ", Weight.OEW)
+    # print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
+    # print ("OEWnew = ", OEWnew)
+    # print ("OEW_init = ", Weight.OEW)
     print ("MTOWnew = ", MTOWnew)
-    print("MTOW_init = ", Weight.MTOW)
+    # print("MTOW_init = ", Weight.MTOW)
     '''ratio = fabs(OEWnew - OEW)/OEW
     if (iterationNumber <=MaxNumberOfIterations and ratio>0.0001):
         iterationNumber = iterationNumber + 1
@@ -187,9 +187,9 @@ def CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weig
     Weight.updateWingCG(X_wing_group+X_LEMAC)
     Weight.updateOEWCG(X_OE+X_LEMAC)
 
-    print("XLEMAC", Weight.XLEMAC)
-    print("WingCG", Weight.WingCG)
-    print("OEWCG",Weight.OEWCG)
+    # print("XLEMAC", Weight.XLEMAC)
+    # print("WingCG", Weight.WingCG)
+    # print("OEWCG",Weight.OEWCG)
 
 
 
