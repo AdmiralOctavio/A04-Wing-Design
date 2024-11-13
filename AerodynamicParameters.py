@@ -6,9 +6,10 @@ Planform = PlanformParameters.Planform()
 class Aerodynamics:
     def __init__(self):
             self.CL_alpha = 5.76
-            #self.Cd0clean = 0.0192  # zero lift drag coef AT CRUISE
-            #self.OswaldEfficiencyclean = 0.8280596821832961  # Oswald
-            #self.LD = 1 / 2 * sqrt((pi * Planform.AR * self.OswaldEfficiencyclean) / self.Cd0clean)  # Lift drag ratio
+
+            self.cd0airfoil = 0.00486
+            self.clCruiseAirfoil = 0.4756492527004301
+            self.clCruise = 0.37594287624283806
 
             self.CL_max_Landing = 2.3
             self.CL_max_Takeoff = 1.9
@@ -24,8 +25,6 @@ class Aerodynamics:
             self.e_Takeoff = 0.892    #for different flap configurations
             self.e_Landing = 0.984
             self.e_Clean = 0.8280596821832961
-
-            self.cd0airfoil = 0.00486
 
             self.Cf_nose_app = 0.00454
             self.Cf_cyl_app = 0.00165

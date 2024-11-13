@@ -41,3 +41,11 @@ import ClassII_Iteration
 
 ClassII_Iteration.ClassIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 ClassII_Iteration.ClassIIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+
+
+from undercarriage import Undercarriage
+Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+
+from SARoptimization import SAR
+SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+#print(Planform.b)

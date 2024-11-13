@@ -104,6 +104,7 @@ Cl_cruise_airfoil = CL_cruise / (math.cos(LEsweep)**2)  # slide 14 ADSEE ppt 2 n
 Cl_cruise_airfoil_zeroM  = Cl_cruise_airfoil*(1-0.77*0.77)**0.5
 print('Cl mach 0 and Cl mach 0.77', Cl_cruise_airfoil_zeroM, Cl_cruise_airfoil)
 Cd_cruise = 0.00484
+#print(CL_cruise)
 
 # finding CLmax high AR wings 
 CLClRatio = 0.8  # from graph ADSEE ppt 2 slide 22 with sharpness factor >2.5

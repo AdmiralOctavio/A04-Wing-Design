@@ -22,6 +22,7 @@ class Weight:
 
             self.CG_OEW = 0
             self.CG_WING = 0
+            self.OEWCG = 14.2
 
 
 

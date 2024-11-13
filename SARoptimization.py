@@ -1,10 +1,10 @@
-import PlanformParameters
-import WeightParameters
+from math import sqrt, cos, radians, tan, atan, degrees, pi
+import numpy as np
+
 def SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     #wing_area=63.1,OEW=13127,MTOW=23173,AR=7.5,lambda_LE=27.2
-    from math import sqrt, cos, radians, tan, atan,degrees,pi
-    import numpy as np
-    import Airfoil_selection
+
+    #import Airfoil_selection
     
 
     #Constants
@@ -13,7 +13,7 @@ def SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     h_cruise = 35000 #ft
     T_cruise = 218.808 #K
     gamma = 1.4
-    R = 8.31446261815324 #J
+    R = 287 #J
     rho_cruise = 0.3796 #kg/m^3
     g = 9.80665 
     m_MTOW = Weight.MTOW
@@ -21,21 +21,23 @@ def SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     W_MTOW = Weight.MTOW * g
     a_cruise = sqrt(gamma * T_cruise * R)
     V_cruise = M_cruise * a_cruise
-    Swet_over_S = 6
-    B = 5.9
-    C_fe = 0.0026
+    Swet_over_S = Aerodynamics.S_tot/Planform.wing_area
+    B = Propulsion.BypassRatio
+    C_fe = Aerodynamics.Cf_tot_cr
     TSFC = 22* B**(-0.19) #g s^-1 kN^-1
     t_over_c = 0.1
     ka = 0.935
 
     taper=Planform.taper #TAPER IS NOW FIXED
     C_d0 = 0.0065#Constant
-    Cl_cruise = Airfoil_selection.Cl_cruise_airfoil
-    CL_cruise = Airfoil_selection.CL_cruise
-    Cd_cruise = 0.0075*Cl_cruise**2-0.0059*Cl_cruise+0.0062
+    Cl_cruise = Aerodynamics.clCruiseAirfoil
+    CL_cruise = Aerodynamics.clCruise
+    Cd_cruise = 0.0075*Cl_cruise**2-0.0059*Cl_cruise+0.0062   #Where are the constants taken from?
+
     #Calculating C_D0:
 
-    C_D0_1stestimation = C_fe * Swet_over_S
+    C_D0_1stestimation = Aerodynamics.CD0_Cruise
+    #(C_fe * Swet_over_S)
 
     #Calculating the induced drag:
     delta_AR = 0.04 #adsee lecture 2 slide 66, NOT 65
@@ -101,12 +103,12 @@ def SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     
     position1 = A[0] #the index of the aspect ratio
     position2 = A[1] #the index of the sweep angle
-    print(B[position1, position2])
-    print(AR_list[int(position1)],degrees(sweep_list[int(position2)]))
+    # print(B[position1, position2])
+    # print(AR_list[int(position1)],degrees(sweep_list[int(position2)]))
 
     M_DD_1 = ka/cos(radians(10.8)) - 0.1/(cos(radians(10.8))**2) - CL_cruise/(10*cos(radians(10.8))**3)
 
-    print(M_DD_1, " ", M_DD_min)
+    # print(M_DD_1, " ", M_DD_min)
 
    
 
@@ -131,31 +133,47 @@ def SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     Planform.updatesweep_le(sweep_LE_updated)
     Planform.updateAR(AR_updated)
 
-    print('Aspect ratio: ', AR_updated)
-    print("SAR_MTOW = ",  SAR_MTOW, "       " , "SAR_OE = " , SAR_OE, "        ", "in cursed units")
-    print("SAR_MTOW = ",  SAR_MTOW*1000, "       " , "SAR_OE = " , SAR_OE*1000, "       " , "in km/kg")
-    print('Max L/D: ',round(b_max,3))
-    print('Span:',b_updated)
-    print('Sweep LE: ',sweep_LE_updated )
-    print('Sweep c/4: ',sweep_quarter_chord_updated )
-    print('Dihedral: ',dihedral_updated )
-    print('Taper (fixed to 0.35): ',taper)
-    print('Root chord: ',root_chord_updated)
-    print('Tip chord: ', tip_chord_updated)
-    print('MAC: ',mac_updated)
-    print('y_mac: ',y_mac)
-    print('x_mac: ',x_mac)
+    # print('Aspect ratio: ', AR_updated)
+    # print("SAR_MTOW = ",  SAR_MTOW, "       " , "SAR_OE = " , SAR_OE, "        ", "in cursed units")
+    # print("SAR_MTOW = ",  SAR_MTOW*1000, "       " , "SAR_OE = " , SAR_OE*1000, "       " , "in km/kg")
+    # print('Max L/D: ',round(b_max,3))
+    # print('Span:',b_updated)
+    # print('Sweep LE: ',sweep_LE_updated )
+    # print('Sweep c/4: ',sweep_quarter_chord_updated )
+    # print('Dihedral: ',dihedral_updated )
+    # print('Taper (fixed to 0.35): ',taper)
+    # print('Root chord: ',root_chord_updated)
+    # print('Tip chord: ', tip_chord_updated)
+    # print('MAC: ',mac_updated)
+    # print('y_mac: ',y_mac)
+    # print('x_mac: ',x_mac)
 
     
 
     # Print each updated attribute to verify the values
-    print("Root Chord (C_r):", Planform.c_r)
-    print("Tip Chord (C_t):", Planform.c_t)
-    print("Mean Aerodynamic Chord (MAC):", Planform.MAC)
-    print("y-coordinate of MAC (yMAC):", Planform.yMAC)
-    print("x-coordinate of MAC (xMAC):", Planform.xMAC)
-    print("Span (b):", Planform.b)
-    print("Leading Edge Sweep (sweep_le):", Planform.sweep_le)
-    print("Aspect Ratio (AR):", Planform.AR)
-SAR(Planform=PlanformParameters.Planform(),Weight=WeightParameters.Weight(), Miscellaneous=None, Propulsion=None, Aerodynamics=None, Fuselage=None)
+    # print("Root Chord (C_r):", Planform.c_r)
+    # print("Tip Chord (C_t):", Planform.c_t)
+    # print("Mean Aerodynamic Chord (MAC):", Planform.MAC)
+    # print("y-coordinate of MAC (yMAC):", Planform.yMAC)
+    # print("x-coordinate of MAC (xMAC):", Planform.xMAC)
+    # print("Span (b):", Planform.b)
+    # print("Leading Edge Sweep (sweep_le):", Planform.sweep_le)
+    # print("Aspect Ratio (AR):", Planform.AR)
+
+    Planform.updateC_r(root_chord_updated)
+    Planform.updateC_t(tip_chord_updated)
+    Planform.updateMAC(mac_updated)
+    Planform.updatexMAC(x_mac)
+    Planform.updateyMAC(y_mac)
+    Planform.updateb(b_updated)
+    Planform.updatesweep_le(sweep_LE_updated)
+    Planform.updateAR(AR_updated)
+    Planform.updatedihedral(dihedral_updated)
+    Planform.updatesweep_quarter_chord(sweep_quarter_chord_updated)
+
+
+
+
+
+#SAR(Planform=PlanformParameters.Planform(),Weight=WeightParameters.Weight(), Miscellaneous=None, Propulsion=None, Aerodynamics=AerodynamicParameters.Aerodynamics(), Fuselage=None)
 
