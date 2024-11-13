@@ -1,11 +1,15 @@
 
-from math import sqrt,atan,tan,radians,cos,fabs, e
+from math import sqrt,atan,tan,radians,degrees,cos,fabs, e
 
 
 
 MaxNumberOfIterations = 10
 meter_per_feet = 0.3048
 lbs_per_kg = 2.20462
+
+def QCSweep_to_HalfSweep(QCSweep, taper_ratio, wing_span, root_chord):
+    LESweep = degrees(atan(tan(radians(QCSweep)) + (root_chord / (2*wing_span)) * (1 - taper_ratio)))
+    return degrees(atan(tan(radians(LESweep)) - (root_chord / wing_span) * (1 - taper_ratio)))
 
 
 def ClassIWeightEstimation(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
@@ -28,13 +32,13 @@ def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselag
     Weight.updateWingGroupWeight(WingWeight)
 def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-    Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(Planform.HT_quarter_sweep))**(1/2)) - 0.287)
+    Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.HT_quarter_sweep, Planform.HT_taper, Planform.HT_span*2, Planform.HT_cr)))**(1/2)) - 0.287)
     Weight.updateHori_Tail_Weight(Hori_Tail_Weight/lbs_per_kg)
 
 def CalculateVertTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     Kv = 1 + 0.15*(Planform.HT_area*Planform.HT_span)/(Planform.VT_area*Planform.VT_span)
-    Vert_Tail_Weight = Kv *(Planform.VT_area/(meter_per_feet**2)) * ((3.81*((Planform.VT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(Planform.VT_quarter_sweep))**(1/2)) - 0.287)
+    Vert_Tail_Weight = Kv *(Planform.VT_area/(meter_per_feet**2)) * ((3.81*((Planform.VT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.VT_quarter_sweep, Planform.VT_taper, Planform.VT_span, Planform.VT_cr)))**(1/2)) - 0.287)
     Weight.updateVert_Tail_Weight(Vert_Tail_Weight/lbs_per_kg)
 
 def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
@@ -80,7 +84,7 @@ def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsio
     W_APU = 11.7 * (W_ba ** 0.6)
 
     # LOW_SUBSONIC
-    W_INE_1 = 54.4 + 9.1 * 2 + 0.006 * Weight.MTOW
+    #W_INE_1 = 54.4 + 9.1 * 2 + 0.006 * Weight.MTOW
 
     # HIGH_SUBSONIC
     W_INE_2 = 0.347 * Weight.OEW ** (5 / 9) * Miscellaneous.Range ** 0.25
@@ -95,9 +99,10 @@ def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsio
 
     W_misc = 0.01 * Weight.OEW
 
-    W_airframe_services = W_ba + W_APU + W_INE_1 + W_EL + W_furnish + W_air_conditioning + W_misc  # Excludes fuel and passengers
+    W_airframe_services = W_ba + W_APU + W_INE_2 + W_EL + W_furnish + W_air_conditioning + W_misc  # Excludes fuel and passengers
 
     Weight.updateAirframeServicesAndEquipmentWeight(W_airframe_services)
+
 def CalculateLoadFactor(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     u_hat = Miscellaneous.GustVelocity * meter_per_feet  # m/s
 
@@ -153,7 +158,6 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
     # print("NacelleWeight", Weight.NacelleWeight)
     # print("PropulsionWeight", Weight.PropulsionWeight)
     # print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
-
     # print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
     print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
 
@@ -191,7 +195,7 @@ def CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weig
 
 
     Weight.updateXLEMAC(X_LEMAC)
-    Weight.updateWingCG(X_wing_group+X_LEMAC)
+    Weight.updateWingCG(WingCG+X_LEMAC)
     Weight.updateOEWCG(X_OE+X_LEMAC)
 
     # print("XLEMAC", Weight.XLEMAC)

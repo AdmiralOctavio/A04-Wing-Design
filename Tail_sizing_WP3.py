@@ -62,6 +62,11 @@ def horizontal_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
     y_MAC_h = b_h/6 * ((1+2*taper_h)/(1+taper_h))
     sweep_htail_LE = atan(tan(radians(sweep_htail_c_over_4)) - 2*C_r_h/b_h*(taper_h-1))
     x_MAC_h = y_MAC_h * tan(sweep_htail_LE)
+
+    Planform.updateHT_area(S_h)
+    Planform.updateHT_span(b_h)
+    Planform.updateHT_cr(C_r_h)
+
     return sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h
 
 # sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h = horizontal_tail(S, C_MAC, X_OEW_CG, X_h)
@@ -97,6 +102,11 @@ def vertical_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, W
     y_MAC_v = b_v/6 * ((1+2*taper_v)/(1+taper_v))
     sweep_vtail_LE = atan(tan(radians(sweep_vtail_c_over_4)) - 2*C_r_v/b_v*(taper_v-1))
     x_MAC_v = y_MAC_v * tan(sweep_vtail_LE)
+
+    Planform.updateVT_area(S_v)
+    Planform.updateVT_span(b_v)
+    Planform.updateHT_cr(C_r_v)
+
     return sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v 
 
 # sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v = vertical_tail(S, b, X_OEW_CG, X_v)
