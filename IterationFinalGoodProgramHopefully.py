@@ -55,7 +55,10 @@ for i in range(1,nmax+1):
 
     ClassII_Iteration.ClassIIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     ClassII_Iteration.CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
-
+    
+    print("Horizontal Tail Weight: ", Weight.HoriTailWeight)
+    print("Vertical Tail Weight: ", Weight.VertTailWeight)
+    print('Total tail weight: ',Weight.HoriTailWeight+Weight.VertTailWeight)
     from Tail_sizing_WP3 import horizontal_tail, vertical_tail
 
     horizontal_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)

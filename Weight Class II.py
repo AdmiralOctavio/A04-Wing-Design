@@ -108,7 +108,7 @@ def CalculateVertTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fus
     #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     Kv = 1 + 0.15*(Planform.HT_area*Planform.HT_span)/(Planform.VT_area*Planform.VT_span)
     Vert_Tail_Weight = Kv *(Planform.VT_area/(meter_per_feet**2)) * ((3.81*((Planform.VT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.VT_quarter_sweep, Planform.VT_taper, Planform.VT_span, Planform.VT_cr)))**(1/2)) - 0.287)
-    Weight.updateVert_Tail_Weight(Vert_Tail_Weight/lbs_per_kg)
+    
     return Vert_Tail_Weight
 W_tail=CalculateHoriTailWeight(Planform=PlanformParameters.Planform(),Weight=WeightParameters.Weight(), Miscellaneous=None, Propulsion=None, Aerodynamics=None, Fuselage=None)+CalculateVertTailWeight(Planform=PlanformParameters.Planform(),Weight=WeightParameters.Weight(), Miscellaneous=None, Propulsion=None, Aerodynamics=None, Fuselage=None)
 
@@ -135,7 +135,7 @@ M_structural_buildup=W_w+W_tail+W_f+W_LG+W_sc+W_n
 #PROPULSION GROUP
 W_e=1040 #kg
 N_e=2
-W_prop=1.15*1.18*N_e*W_e*0.453592**2
+W_prop=1.15*1.18*N_e*W_e*0.453592
 
 
 
