@@ -16,8 +16,9 @@ Aerodynamics = AerodynamicParameters.Aerodynamics()
 Fuselage = FuselageParameters.Fuselage()
 Weight = WeightParameters.Weight()
 
-print(vars(Aerodynamics))
-for i in range(1,11):
+
+nmax = 2
+for i in range(1,nmax+1):
     #Wing_parametersFunction(Planform,Miscellaneous)
     #print (Planform.b)
     print(i)
@@ -42,7 +43,8 @@ for i in range(1,11):
     from Class2Drag import Class2_Drag
     Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     #print(Aerodynamics.CD0_Cruise)
-
+    print(Aerodynamics.S_W,Aerodynamics.S_HT,Aerodynamics.S_VT)
+    print(Aerodynamics.CD0_Cruise)
 
     import ClassII_Iteration
 
@@ -51,25 +53,11 @@ for i in range(1,11):
     ClassII_Iteration.CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
 
 
-    #from undercarriage import Undercarriage
-    #Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    from undercarriage import Undercarriage
+    Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 
     from SARoptimization import SAR
     SAR(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     #print(Planform.b)
 
-    from pprint import pprint
-
-    print(vars(Aerodynamics))
-    # dirWeight = dir(Weight)
-    # for j in range (0,len(dirWeight)):
-    #     if dirWeight[j].startswith('__') or dirWeight[j].startswith('update'):
-    #         continue
-    #     else:
-    #         print (Weight.dirWeight[j])
-
-
-
     plt.close()
-
-    print(Aerodynamics.CD0_Cruise)

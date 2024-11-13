@@ -151,15 +151,15 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
     # print("WingGroupWeight", Weight.WingGroupWeight)
     # print("BodyGroupWeight", Weight.BodyGroupWeight)
-    print("HoriTailWeight", Weight.HoriTailWeight)
-    print("VertTailWeight", Weight.VertTailWeight)
+    # print("HoriTailWeight", Weight.HoriTailWeight)
+    # print("VertTailWeight", Weight.VertTailWeight)
     # print("LandingGearWeight", Weight.LandingGearWeight)
     # print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
     # print("NacelleWeight", Weight.NacelleWeight)
     # print("PropulsionWeight", Weight.PropulsionWeight)
     # print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
     # print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
-    print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
+    # print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
 
     '''ratio = fabs(OEWnew - OEW)/OEW
     if (iterationNumber <=MaxNumberOfIterations and ratio>0.0001):
