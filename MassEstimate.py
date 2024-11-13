@@ -82,7 +82,7 @@ MTOW = Mpl / p_MTOW
 
 fuel = MTOW * f_MTOW #kg, fuel mass 
 structure = MTOW * OE_MTOW #kg, structural mass / operating empty
-print(fuel, structure, MTOW)
+# print(fuel, structure, MTOW)
 
 f_landing = 1 - Rnom/Req * f_MTOW
 #print(f_landing)
@@ -92,4 +92,4 @@ f_landing = 1 - Rnom/Req * f_MTOW
 #print(jetEfficiency(9))
 #print(TSFC)
 
-print(main(Rnom, Mpl))
+# print(main(Rnom, Mpl))
