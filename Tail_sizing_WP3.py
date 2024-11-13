@@ -2,6 +2,18 @@ from math import sqrt, tan, atan, radians, pi
 import numpy as np
 import Airfoil_selection
 import PlanformParameters
+import WeightParameters
+import FuselageParameters
+import SpeedsAndRange
+import PropulsionParameters
+import AerodynamicParameters
+
+Planform = PlanformParameters.Planform()
+Miscellaneous = SpeedsAndRange.Miscellaneous()
+Propulsion = PropulsionParameters.Propulsion()
+Aerodynamics = AerodynamicParameters.Aerodynamics()
+Fuselage = FuselageParameters.Fuselage()
+Weight = WeightParameters.Weight()
 
 # import aircraft_parameters.yaml
 
@@ -104,8 +116,8 @@ def vertical_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, W
 
 #printing everything nicely :)
 def printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight):
-    sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h = horizontal_tail(Planform.wing_area, Planform.MAC, Weight.OEWCG, Fuselage.X_h)
-    sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v = vertical_tail(Planform.wing_area, Planform.b, Weight.OEWCG, Fuselage.X_v)
+    sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h = horizontal_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
+    sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v = vertical_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
     print("Horizontal tail parameters:")
     print("Horizontal tail area: ", S_h)
     print("Horizontal tail span: ", b_h)
@@ -116,6 +128,8 @@ def printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, F
     print("Horizontail tail aspect ratio:", A_h, "      ","stdev: ", std_A_h)
     print("Horizontail tail taper ratio:", taper_h,"      ", "stdev: ", std_taper_h)
     print("Horizontail tail volume:", V_h,"      ", "stdev: ", std_V_h)
+    print("Horizontail tail yMAC:", y_MAC_h)
+    print("Horizontail tail xMAC:", x_MAC_h)
     print("\n")
     print("Vertical tail parameters:")
     print("Vertical tail area: ", S_v)
@@ -126,6 +140,8 @@ def printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, F
     print("Vertical tail aspect ratio:", A_v,"      ", "stdev: ", std_A_v)
     print("Vertical tail taper ratio:", taper_v,"      ", "stdev: ", std_taper_v)
     print("Vertical tail volume:", V_v,"      ", "stdev: ", std_V_v)
+    print("Vertical tail yMAC:", y_MAC_v)
+    print("Vertical tail xMAC:", x_MAC_v)
     # print(sweep_htail_LE*180/pi, x_MAC_h)
     # print(sweep_vtail_LE*180/pi, x_MAC_v)
 
@@ -148,3 +164,5 @@ def dcm_over_dalpha_function(Planform, Miscellaneous, Propulsion, Aerodynamics, 
 
 # dcm_over_dalpha = dcm_over_dalpha_function(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight) *pi/180
 # print(dcm_over_dalpha)
+
+printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)

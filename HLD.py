@@ -51,8 +51,7 @@ def LiftCoefficient(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
 
         if round(CLValues[ind], 3) >= 2.375 and Alpha_stall < alpha:
             print("Max CL = " + CL + ",  Wing Fraction = " + WF + "%,  Stalling AOA = " + A +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
-            return CL, WF, A, alpha, FCHORD, FCHORD_2, SwfS_TE
-        
+            break        
 #Just input configuration here! ^^^^
 '''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)
 
@@ -99,4 +98,7 @@ e = ZL['euler_efficiency']
         else: full = CL + "        " + WF + "%           " + A + "             "+ str(alpha) + "deg              " + FCHORD +  "m                " + FCHORD_2 + "m \n"
 
         f.writelines(full) 
+
+            return CL, WF, A, alpha, FCHORD, FCHORD_2, SwfS_TE
+
 '''
