@@ -26,10 +26,10 @@ def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselag
     WingWeight = (Weight.MZFW*6.67/1000*Planform.b_s**0.75*(1+sqrt(Planform.b_ref/Planform.b_s))*n_ult**0.55*
                   (Planform.b_s/Planform.t_r*Planform.wing_area/Weight.MZFW)**0.3)*0.9
     Weight.updateWingGroupWeight(WingWeight)
-def CalculateTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-    TailWeight = 0.64*(n_ult*(Planform.HT_area+Planform.VT_area)**2)**0.75
-    Weight.updateTailGroupWeight(TailWeight)
+    HoriTailWeight = Planform.HT_area * ((3.81*((Planform.HT_area)**0.2)*486.611)/(1000*cos(Planform.HT_quarter_sweep)**(1/2))-0.287)
+    Weight.updateHoriTailWeight(HoriTailWeight)
 
 def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
@@ -117,7 +117,7 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
     CalculateBodyWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
 
-    CalculateTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+    CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
 
     CalculateLandingGearWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
 
@@ -129,7 +129,7 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
     CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
 
-    OEWnew = (Weight.WingGroupWeight + Weight.TailGroupWeight + Weight.BodyGroupWeight + Weight.LandingGearWeight +
+    OEWnew = (Weight.WingGroupWeight + Weight.HoriTailWeight + Weight.BodyGroupWeight + Weight.LandingGearWeight +
               Weight.SurfaceControlsWeight + Weight.NacelleWeight + Weight.PropulsionWeight + Weight.AirframeServicesAndEquipmentWeight)
 
     MTOWnew = OEWnew + Weight.M_fuel + Weight.M_Payload
@@ -138,7 +138,7 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
     # print("WingGroupWeight", Weight.WingGroupWeight)
     # print("BodyGroupWeight", Weight.BodyGroupWeight)
-    # print("TailGroupWeight", Weight.TailGroupWeight)
+    # print("HoriTailWeight", Weight.HoriTailWeight)
     # print("LandingGearWeight", Weight.LandingGearWeight)
     # print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
     # print("NacelleWeight", Weight.NacelleWeight)
@@ -218,4 +218,4 @@ def CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weig
 
 
 
-
+print("HoriTailWeight", Weight.HoriTailWeight)
