@@ -74,6 +74,8 @@ class Aerodynamics:
             self.CD_cruise = 0.03267672670773851
 
             self.LD = 15.6  # Lift drag ratio
+            self.alphaStall = 19.32
+            self.alphaZeroLift = -1.0  # degrees
 
 
 
@@ -153,8 +155,11 @@ class Aerodynamics:
             self.S_tot = S_tot
 
             
+    def updatealphaStall(self, alphaStall):
+            self.alphaStall
     def updateLD(self, LD):
             self.LD = LD
+            
 
 
 
