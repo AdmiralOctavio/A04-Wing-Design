@@ -1,5 +1,6 @@
-from math import sqrt,atan,tan,radians,cos
-
+from math import sqrt,atan,tan,radians,cos,degrees
+import WeightParameters
+import PlanformParameters
 MTOW=23173 #kg
 OEW=13127 #kg
 M_fuel=2845 #kg
@@ -89,9 +90,27 @@ W_w=(MZFW*6.67/1000*b_s**0.75*(1+sqrt(b_ref/b_s))*n_ult**0.55*(b_s/t_r*wing_area
 
 #TAIL GROUP
 #EAS=V_cruise/sqrt(1.225/ro)
-W_tail=0.64*(n_ult*tail_area**2)**0.75
+#W_tail=0.64*(n_ult*tail_area**2)**0.75
+meter_per_feet=0.3048
+lbs_per_kg=2.20462
 
+def QCSweep_to_HalfSweep(QCSweep, taper_ratio, wing_span, root_chord):
+    LESweep = degrees(atan(tan(radians(QCSweep)) + (root_chord / (2*wing_span)) * (1 - taper_ratio)))
+    return degrees(atan(tan(radians(LESweep)) - (root_chord / wing_span) * (1 - taper_ratio)))
 
+def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.HT_quarter_sweep, Planform.HT_taper, Planform.HT_span*2, Planform.HT_cr)))**(1/2)) - 0.287)
+    return Hori_Tail_Weight
+    
+
+def CalculateVertTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    Kv = 1 + 0.15*(Planform.HT_area*Planform.HT_span)/(Planform.VT_area*Planform.VT_span)
+    Vert_Tail_Weight = Kv *(Planform.VT_area/(meter_per_feet**2)) * ((3.81*((Planform.VT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.VT_quarter_sweep, Planform.VT_taper, Planform.VT_span, Planform.VT_cr)))**(1/2)) - 0.287)
+    Weight.updateVert_Tail_Weight(Vert_Tail_Weight/lbs_per_kg)
+    return Vert_Tail_Weight
+W_tail=CalculateHoriTailWeight(Planform=PlanformParameters.Planform(),Weight=WeightParameters.Weight(), Miscellaneous=None, Propulsion=None, Aerodynamics=None, Fuselage=None)+CalculateVertTailWeight(Planform=PlanformParameters.Planform(),Weight=WeightParameters.Weight(), Miscellaneous=None, Propulsion=None, Aerodynamics=None, Fuselage=None)
 
 #BODY GROUP 
 S_f_wet=3.14*b_f*l_f*(1-2/fineness)**0.666667*(1+1/fineness**2)
@@ -207,6 +226,4 @@ print('W_air condtioning: ',W_air_conditioning)
 print('W_misc: ',W_misc)
 print('W_airframe_services: ',W_airframe_services)
 print('OEW_new: ',OEW_new)
-print('W_fuel: ',W_fuel)
-print('W_pax: ',W_pax)
-print('MTOW_new: ',OEW_new+W_fuel+W_pax)
+print('MTOW_new: ',OEW_new+WeightParameters.Weight().M_Payload+WeightParameters.Weight().M_fuel)

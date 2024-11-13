@@ -40,10 +40,10 @@ class Weight:
     def updateBodyGroupWeight(self,BodyGroupWeight):
         self.BodyGroupWeight = BodyGroupWeight
 
-    def updateHoriTailWeight(self,HoriTailWeight):
+    def updateHori_Tail_Weight(self,HoriTailWeight):
         self.HoriTailWeight = HoriTailWeight
 
-    def updateVertTailWeight(self,VertTailWeight):
+    def updateVert_Tail_Weight(self,VertTailWeight):
         self.VertTailWeight = VertTailWeight
 
     def updateLandingGearWeight(self,LandingGearWeight):
