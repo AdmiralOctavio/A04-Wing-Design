@@ -8,7 +8,6 @@ meter_per_feet = 0.3048
 lbs_per_kg = 2.20462
 
 
-
 def ClassIWeightEstimation(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     Req = (Miscellaneous.Rnom + Miscellaneous.Rlost)*(1+Miscellaneous.fcon) + 1.2*Miscellaneous.Rdiv + (Miscellaneous.tE*Miscellaneous.Velocity)/1000 #km, equivalent range
     f_MTOW = 1 - e **(-Req/(1000*Propulsion.nj*Propulsion.ef*Aerodynamics.LD/9.80665)) #Fuel / MTOW ratio
@@ -28,9 +27,15 @@ def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselag
                   (Planform.b_s/Planform.t_r*Planform.wing_area/Weight.MZFW)**0.3)*0.9
     Weight.updateWingGroupWeight(WingWeight)
 def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
-    n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(Planform.HT_quarter_sweep))**(1/2)) - 0.287)
     Weight.updateHori_Tail_Weight(Hori_Tail_Weight/lbs_per_kg)
+
+def CalculateVertTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    Kv = 1 + 0.15*(Planform.HT_area*Planform.HT_span)/(Planform.VT_area*Planform.VT_span)
+    Vert_Tail_Weight = Kv *(Planform.VT_area/(meter_per_feet**2)) * ((3.81*((Planform.VT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(Planform.VT_quarter_sweep))**(1/2)) - 0.287)
+    Weight.updateVert_Tail_Weight(Vert_Tail_Weight/lbs_per_kg)
 
 def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
@@ -120,6 +125,8 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
     CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
 
+    CalculateVertTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
     CalculateLandingGearWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
 
     CalculateSurfaceControlsWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
@@ -130,7 +137,7 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
     CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
 
-    OEWnew = (Weight.WingGroupWeight + Weight.HoriTailWeight + Weight.BodyGroupWeight + Weight.LandingGearWeight +
+    OEWnew = (Weight.WingGroupWeight + Weight.HoriTailWeight + Weight.VertTailWeight + Weight.BodyGroupWeight + Weight.LandingGearWeight +
               Weight.SurfaceControlsWeight + Weight.NacelleWeight + Weight.PropulsionWeight + Weight.AirframeServicesAndEquipmentWeight)
 
     MTOWnew = OEWnew + Weight.M_fuel + Weight.M_Payload
@@ -140,6 +147,7 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
     # print("WingGroupWeight", Weight.WingGroupWeight)
     # print("BodyGroupWeight", Weight.BodyGroupWeight)
     print("HoriTailWeight", Weight.HoriTailWeight)
+    print("VertTailWeight", Weight.VertTailWeight)
     # print("LandingGearWeight", Weight.LandingGearWeight)
     # print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
     # print("NacelleWeight", Weight.NacelleWeight)
@@ -173,8 +181,8 @@ def CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weig
     PropulsionCG = 0.4 * Propulsion.l_nac
     TailCG = 0.9*Fuselage.l_f
 
-    W_fuselage_group = Weight.BodyGroupWeight + Weight.W_nose + Weight.HoriTailWeight + Weight.AirframeServicesAndEquipmentWeight  # Excludes main LG
-    X_fuselage_group = (Weight.BodyGroupWeight * FuselageCG + TailCG * Weight.HoriTailWeight + NoseGearCG * Weight.W_nose + AirframeServicesCG * Weight.AirframeServicesAndEquipmentWeight) / W_fuselage_group
+    W_fuselage_group = Weight.BodyGroupWeight + Weight.W_nose + Weight.HoriTailWeight + Weight.VertTailWeight + Weight.AirframeServicesAndEquipmentWeight  # Excludes main LG
+    X_fuselage_group = (Weight.BodyGroupWeight * FuselageCG + TailCG * (Weight.HoriTailWeight + Weight.VertTailWeight) + NoseGearCG * Weight.W_nose + AirframeServicesCG * Weight.AirframeServicesAndEquipmentWeight) / W_fuselage_group
     W_wing_group = Weight.WingGroupWeight + Weight.NacelleWeight + Weight.PropulsionWeight
     X_wing_group = (Weight.WingGroupWeight * WingCG + Weight.NacelleWeight * NacellesCG + Weight.PropulsionWeight * PropulsionCG) / W_wing_group
 
