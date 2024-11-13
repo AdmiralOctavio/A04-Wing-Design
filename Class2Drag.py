@@ -2,21 +2,21 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 # import Planform
-# import PlanformParameters as PP
+import PlanformParameters as PP
 # import Drag_calculator as Aerodynamics
-# import WeightParameters as WP
-# import SpeedsAndRange
-# import AerodynamicParameters
-# import FuselageParameters
-# import PropulsionParameters
+import WeightParameters as WP
+import SpeedsAndRange
+import AerodynamicParameters
+import FuselageParameters
+import PropulsionParameters
 # import HLD
 
-# Planform = PP.Planform()
-# Miscellaneous = SpeedsAndRange.Miscellaneouse()
-# Aerodynamics = AerodynamicParameters.DragBuildup()
-# Fuselage = FuselageParameters.Fuselage()
-# Propulsion = PropulsionParameters.Propulsion()
-
+Planform = PP.Planform()
+Miscellaneous = SpeedsAndRange.Miscellaneous()
+Aerodynamics = AerodynamicParameters.Aerodynamics()
+Fuselage = FuselageParameters.Fuselage()
+Propulsion = PropulsionParameters.Propulsion()
+Weight = WP.Weight()
 # change landing gear dimensions
 # Change Mach app and to
 # HLD ref values
@@ -30,6 +30,9 @@ def Ctip(Cr, taper):
 
 def span(A, S):
     return (A*S)**0.5
+
+def AspectR(S, b):
+    return b**2/S
 
 def LESweep(Qcsweep, Cr, b, taper):
     Sweep = math.atan(math.tan(Qcsweep)+0.5*Cr*(1-taper) / b)
@@ -145,7 +148,8 @@ def CD(CD0, CDi):
 
 def CLopt(A, e, CD0):
     return (math.pi*A*e*CD0)**0.5
-
+def OswaldTot(E, deltaE):
+    return E + deltaE
 
 
 #MAIN FUNCTION
@@ -257,7 +261,7 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     UpsweepCD = CD_upsweep(Fuselage.upsweep, Fuselage.d_fus_outer, Planform.wing_area)
     fuselageBaseCD = CD_fuselageBase(Miscellaneous.VcrM, Fuselage.d_fus_outer*math.pi/4, Planform.wing_area)
     
-    CD_miscCruise = MiscellaneousCAerodynamicsruise(CD_upsweep(Fuselage.upsweep, Fuselage.d_fus_outer, Planform.wing_area), CD_fuselageBase(Miscellaneous.VcrM, Fuselage.d_fus_outer*math.pi/4, Planform.wing_area))
+    CD_miscCruise = MiscellaneousCAerodynamicsruise(CD_upsweep(Fuselage.upsweep, Fuselage.d_fus_outer, Planform.wing_area), fuselageBaseCD)
     
     CD_wing = CD0_comp(Planform.wing_area, Cf_wing, FF1(Planform.xc_m, Planform.t_over_c, Miscellaneous.VcrM, math.radians(Planform.sweep_le), Cr, Planform.b, taper), Aerodynamics.IFwing, Swet_w)
     CD_HT = CD0_comp(Planform.wing_area, Cf_HT, FF1(Planform.xc_mHT, Planform.t_c_HT, Miscellaneous.VcrM, LESweep_HT, Cr_HT, b_HT, taper_HT), Aerodynamics.IFtail, Swet_HT)
@@ -266,7 +270,9 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     CD_nacelle = CD0_comp(Planform.wing_area, Cf_nacelle, FF3(Propulsion.l_nac, Propulsion.d_nacelle), Aerodynamics.IFnacelle, SwetNac(Propulsion.d_nacelle, Propulsion.l_nac))
     
     CD0_total_Cruise = SumOfCD(CD_miscCruise, CD_wing, CD_HT, CD_VT, CD_fuselage, CD_nacelle, CD_excrescenceFrac)
-    # print('CD0 total Cruise', CD0_total_Cruise)
+    print(CD_miscCruise, CD_wing, CD_HT, CD_VT, CD_fuselage, CD_nacelle, CD_excrescenceFrac)
+    print(CD_upsweep(Fuselage.upsweep, Fuselage.d_fus_outer, Planform.wing_area), fuselageBaseCD)
+    print('CD0 total Cruise', CD0_total_Cruise)
     
     # Approach with Flaps and Gear
     fuselageBaseCD_app = CD_fuselageBase(Miscellaneous.M_app, Fuselage.d_fus_outer*math.pi/4, Planform.wing_area)
@@ -282,11 +288,18 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     CD_fuselage_app = CD0_comp(Planform.wing_area, Cf_fuselage_app, FF2(L, Fuselage.d_fus_outer), Aerodynamics.IFfuselage, Fuselage_S_wet(Fuselage.l_nc, Fuselage.l_cabin, Fuselage.l_tc, Fuselage.d_fus_outer))
     CD_nacelle_app = CD0_comp(Planform.wing_area, Cf_nacelle_app, FF3(Propulsion.l_nac, Propulsion.d_nacelle), Aerodynamics.IFnacelle, SwetNac(Propulsion.d_nacelle, Propulsion.l_nac))
     
-    # print(UpsweepCD, fuselageBaseCD_app, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_app)
-    # print(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app)
+    print(UpsweepCD, fuselageBaseCD_app, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_app)
+    print(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app)
     
-    CD0_total_app = SumOfCD(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app, CD_excrescenceFrac)
-    # print('CD0 total approach with flaps and gear', CD0_total_app)
+    CD0_Landing_DOWN = SumOfCD(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app, CD_excrescenceFrac)
+    print('CD0 total approach with flaps and gear', CD0_Landing_DOWN)
+
+    # Approach with Flaps no Gear
+    DeltaCDREF_1_up = 0.0
+    DeltaCDREF_2_up = 0.0
+    CD_misc_app_up = MiscellaneousCD(UpsweepCD, fuselageBaseCD_app, DeltaCDREF_1_up, DeltaCDREF_2_up, DeltaCD_flap(FlapChordRatio, FlapAreaRatio, DeltaFlap_app))
+    CD0_Landing_UP = SumOfCD(CD_misc_app_up, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app, CD_excrescenceFrac)
+    print('CD0 app no gear', CD0_Landing_UP)
     
     # Take-off with Flaps and Gear
     fuselageBaseCD_to = CD_fuselageBase(Miscellaneous.M_app, Fuselage.d_fus_outer*math.pi/4, Planform.wing_area)
@@ -300,23 +313,32 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     CD_fuselage_to = CD0_comp(Planform.wing_area, Cf_fuselage_app, FF2(L, Fuselage.d_fus_outer), Aerodynamics.IFfuselage, Fuselage_S_wet(Fuselage.l_nc, Fuselage.l_cabin, Fuselage.l_tc, Fuselage.d_fus_outer))
     CD_nacelle_to = CD0_comp(Planform.wing_area, Cf_nacelle_app, FF3(Propulsion.l_nac, Propulsion.d_nacelle), Aerodynamics.IFnacelle, SwetNac(Propulsion.d_nacelle, Propulsion.l_nac))
     
-    # print(UpsweepCD, fuselageBaseCD_to, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_to)
-    # print(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to)
+    print(UpsweepCD, fuselageBaseCD_to, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_to)
+    print(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to)
     
-    CD0_total_to = SumOfCD(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to, CD_excrescenceFrac)
-    # print('CD0 total take-off with flaps and gear', CD0_total_to)
+    CD0_Takeoff_DOWN = SumOfCD(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to, CD_excrescenceFrac)
+    print('CD0 total take-off with flaps and gear', CD0_Takeoff_DOWN)
+
+    # Take-off Flaps no gear
+    CD_misc_to_up = MiscellaneousCD(UpsweepCD, fuselageBaseCD_to, DeltaCDREF_1_up, DeltaCDREF_2_up, DeltaCD_flap(FlapChordRatio, FlapAreaRatio, DeltaFlap_to))
+    CD0_Takeoff_UP = SumOfCD(CD_misc_to_up, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to, CD_excrescenceFrac)
+    print('CD0 to no gear', CD0_Takeoff_UP)
+
     # Lift induced drag
-        # Normal CD_i
     
     Oswald = oswaldEfficiency(Planform.AR, math.radians(Planform.sweep_le))
-    deltaOswald = changeOswaldFlapDeflection(math.radians(DeltaFlap_app))
+    Oswald_app = OswaldTot(Oswald, changeOswaldFlapDeflection(DeltaFlap_app))
+    Oswald_to = OswaldTot(Oswald, changeOswaldFlapDeflection(DeltaFlap_to))
     CL_cruise = Miscellaneous.CL_cruise
+    print(CL_cruise, Oswald, Oswald_app, Oswald_to)
     
+    # Cruise CD total
     CDi_cruise = CD_i(CL_cruise, Planform.AR, Oswald, Delta_e=0.0)
     CD_cruise = CD(CD0_total_Cruise, CDi_cruise)
     CLCD_max_cruise = CLCDmax(Planform.AR, Oswald, CD0_total_Cruise)
-    # print('max L/D cruise', CLCD_max_cruise)
-    
+    print('CD cruise', CD_cruise)
+    print('max L/D cruise', CLCD_max_cruise)
+
     V_stall = Miscellaneous.V_stall  # m/s
     
     gamma1 = math.radians(1)
@@ -352,13 +374,16 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     # Gear UP and DOWN were approximated as the same
     # CD0_Cruise and CD0_Clean_UP were approximated as the same
     # To change if there is enough time left
-    Aerodynamics.updateCD0_Landing_UP(CD0_total_app)
-    Aerodynamics.updateCD0_Landing_DOWN(CD0_total_app)
-    Aerodynamics.updateCD0_Takeoff_UP(CD0_total_to)
-    Aerodynamics.updateCD0_Takeoff_DOWN(CD0_total_to)
-    Aerodynamics.updateCD0_Clean_UP(CD0_total_Cruise)
+    Aerodynamics.updateCD0_Landing_UP(CD0_Landing_UP)
+    Aerodynamics.updateCD0_Landing_DOWN(CD0_Landing_DOWN)
+    Aerodynamics.updateCD0_Takeoff_UP(CD0_Takeoff_UP)
+    Aerodynamics.updateCD0_Takeoff_DOWN(CD0_Takeoff_DOWN)
     Aerodynamics.updateCD0_Cruise(CD0_total_Cruise)
+    Aerodynamics.updatee_Clean(Oswald)
+    Aerodynamics.updatee_Takeoff(Oswald_to)
+    Aerodynamics.updatee_Landing(Oswald_app)
+    Aerodynamics.updateLD(CLCD_max_cruise)
 
 
-#Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 
