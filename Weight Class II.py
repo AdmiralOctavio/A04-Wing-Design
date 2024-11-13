@@ -170,14 +170,18 @@ X_wing_group=(W_w*x_wing+W_n*x_nacelle+W_prop*x_prop)/W_wing_group
 
 X_OE=0.225*MAC
 X_LEMAC=X_fuselage_group-X_OE+W_wing_group/W_fuselage_group*((X_wing_group-X_OE))
-x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
+
+x_wing_cg_absolute=X_LEMAC+x_wing
+x_OEW_cg_absolute=X_LEMAC+X_OE
+
+#x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
 
 
 
-print("X_LEMAC: ",X_LEMAC)
+print("X_LEMAC position w.r.t. the fuselage nose: ",X_LEMAC)
 print('Horizontal tail root quarter chord position with respect to wing root quarter chord: ',l_t)
-print('Wing c.g. position w.r.t the fuselage nose: ',X_wing_group+X_LEMAC)
-print('OEW c.g. position w.r.t. the fuselage nose: ',X_OE+X_LEMAC)
+print('Wing c.g. position w.r.t the fuselage nose: ',x_wing_cg_absolute)
+print('OEW c.g. position w.r.t. the fuselage nose: ',x_OEW_cg_absolute)
 
 print('Airframe structural weight (simple formula) [kg], fraction of MTOW: ',M_structural_formula,M_structural_formula/MTOW) 
 print('Airframe structural weight (from build-up) [kg], fraction of MTOW: ',M_structural_buildup,M_structural_buildup/MTOW)
