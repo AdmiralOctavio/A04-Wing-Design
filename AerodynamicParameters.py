@@ -76,6 +76,23 @@ class Aerodynamics:
 
             self.LD = 1 / 2 * sqrt((pi * Planform.AR * self.e_Clean) / self.CD0_Cruise)  # Lift drag ratio
 
+
+
+    def updateCD0_Landing_DOWN(self,CD0_Landing_DOWN):
+            self.CD0_Landing_DOWN = CD0_Landing_DOWN
+    def updateCD0_Landing_UP(self,CD0_Landing_UP):
+            self.CD0_Landing_UP = CD0_Landing_UP
+    def updateCD0_Takeoff_DOWN(self,CD0_Takeoff_DOWN):
+            self.CD0_Takeoff_DOWN = CD0_Takeoff_DOWN
+    def updateCD0_Takeoff_UP(self,CD0_Takeoff_UP):
+            self.CD0_Takeoff_UP = CD0_Takeoff_UP
+    def updateCD0_Clean_UP(self,CD0_Clean_UP):
+            self.CD0_Clean_UP = CD0_Clean_UP
+    def updateCD0_Cruise(self,CD0_Cruise):
+            self.CD0_Cruise = CD0_Cruise
+
+
+
     def updateCf_nose_cr(self,Cf_nose_cr):
             self.Cf_nose_cr = Cf_nose_cr
     def updateCf_cyl_cr(self, Cf_cyl_cr):

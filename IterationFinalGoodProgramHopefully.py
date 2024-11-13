@@ -34,6 +34,8 @@ Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 
 from Class2Drag import Class2_Drag
 Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+#print(Aerodynamics.CD0_Cruise)
+
 
 import ClassII_Iteration
 
