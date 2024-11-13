@@ -58,11 +58,6 @@ class Planform:
             self.FlapChordRatio = 0.35 #-
             self.FlapDeflectionTO = 15 #deg
             self.FlapDeflectionL = 35 #deg
-            self.CLMax_Takeoff = 1.9 #-
-            self.CLMax_Landing = 2.375 #-
-
-
-
 
     def updatePlanformDependencies(self, Weight):
         self.wing_area = Weight.MTOW / (self.WingLoading / 9.80665)
@@ -132,5 +127,3 @@ class Planform:
     def updateVT_MAC(self, VT_MAC): self.VT_MAC = VT_MAC
 
     def updateFlapAreaRatio(self, FlapAreaRatio): self.FlapAreaRatio = FlapAreaRatio
-    def updateCLMax_Takeoff(self, CLMax_Takeoff): self.CLMax_Takeoff = CLMax_Takeoff
-    def updateCLMax_Landing(self, CLMax_Landing): self.CLMax_Landing = CLMax_Landing
