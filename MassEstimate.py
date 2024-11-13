@@ -38,12 +38,13 @@ def main(Rnom, Mpl):
     fuel = MTOW * f_MTOW #kg, fuel mass 
     structure = MTOW * OE_MTOW #kg, structural mass / operating empty
     f_landing = 1 - Rnom/Req * f_MTOW #Landing mass fraction
-    return structure, fuel
+    return structure, fuel, MTOW
 
 def ferry():
     Rnom = 2963 #km
     Req = (Rnom + Rlost)*(1+fcon) + 1.2*Rdiv + (tE*Vcr)/1000
     f_MTOW = 1 - math.e **(-Req/(1000*nj*ef*LD/9.80665))
+
     OE_MTOW = 1 - f_MTOW
     OE = main(2574, 6355)[0]
     MTOW = OE/OE_MTOW
@@ -77,7 +78,7 @@ p_MTOW = 1 - OE_MTOW - f_MTOW #Payload / MTOW ratio
 
 MTOW = Mpl / p_MTOW
 
-MTOW = 7200 / p_MTOW
+#MTOW = 7200 / p_MTOW
 
 fuel = MTOW * f_MTOW #kg, fuel mass 
 structure = MTOW * OE_MTOW #kg, structural mass / operating empty
@@ -90,3 +91,5 @@ f_landing = 1 - Rnom/Req * f_MTOW
 #print(nj)
 #print(jetEfficiency(9))
 #print(TSFC)
+
+print(main(Rnom, Mpl))

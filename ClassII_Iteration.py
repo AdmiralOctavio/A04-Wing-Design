@@ -1,38 +1,44 @@
-import PlanformParameters
-import FuselageParameters
-import SpeedsAndRange
-from math import sqrt,atan,tan,radians,cos,fabs
+
+from math import sqrt,atan,tan,radians,cos,fabs, e
 
 
 
-
-OEW_init = 13127
-M_fuel_init = 2845
-M_Payload = 7255
-MTOW_init = OEW_init+M_fuel_init+M_Payload
-print("MTOW" ,MTOW_init)
-MZFW_init = MTOW_init-M_fuel_init
-MaxNumberOfIterations = 100
+MaxNumberOfIterations = 10
 ft_per_meter = 0.3048
-def CalculateWingWeight(Planform,MZFW):
-    n_ult = CalculateLoadFactor(Miscellaneous, Planform)
-    WingWeight = (MZFW*6.67/1000*Planform.b_s**0.75*(1+sqrt(Planform.b_ref/Planform.b_s))*n_ult**0.55*
-                  (Planform.b_s/Planform.t_r*Planform.wing_area/MZFW)**0.3)*0.9
 
 
-    return WingWeight
-def CalculateTailWeight(Miscellaneous,Planform):
-    n_ult = CalculateLoadFactor(Miscellaneous, Planform)
-    TailWeight = 0.64*(n_ult*Planform.tail_area**2)**0.75
-    return TailWeight
-def CalculateAirframeStructuralWeight(Miscellaneous,Planform,Fuselage,MTOW):
-    n_ult = CalculateLoadFactor(Miscellaneous, Planform)
-    StructuralWeight = MTOW*sqrt(1.5*n_ult)*(Fuselage.b_f*Fuselage.h_f*Fuselage.l_f/MTOW)**0.24*0.447
-    return StructuralWeight
-def CalculateBodyWeight(Miscellaneous,Fuselage):
-    BodyWeight = 0.23 * sqrt(Miscellaneous.V_dive_EAS * Fuselage.l_t / (Fuselage.b_f + Fuselage.h_f)) * Fuselage.S_f_wet ** 1.2
-    return BodyWeight
-def CalculateLandingGearWeight(MTOW):
+
+def ClassIWeightEstimation(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    Req = (Miscellaneous.Rnom + Miscellaneous.Rlost)*(1+Miscellaneous.fcon) + 1.2*Miscellaneous.Rdiv + (Miscellaneous.tE*Miscellaneous.Velocity)/1000 #km, equivalent range
+    f_MTOW = 1 - e **(-Req/(1000*Propulsion.nj*Propulsion.ef*Aerodynamics.LD/9.80665)) #Fuel / MTOW ratio
+    p_MTOW = 1 - Weight.OE_MTOW - f_MTOW #Payload / MTOW ratio
+    MTOW = Weight.M_Payload / p_MTOW
+    FuelMass = MTOW * f_MTOW #kg, fuel mass
+    OEW = MTOW * Weight.OE_MTOW #kg, structural mass / operating empty
+    f_landing = 1 - Miscellaneous.Rnom/Req * f_MTOW #Landing mass fraction
+    Weight.updateMTOW(MTOW)
+    Weight.updateM_fuel(FuelMass)
+    Weight.updateOEW(OEW)
+    MZFW = MTOW-FuelMass
+    Weight.updateMZFW(MZFW)
+def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    WingWeight = (Weight.MZFW*6.67/1000*Planform.b_s**0.75*(1+sqrt(Planform.b_ref/Planform.b_s))*n_ult**0.55*
+                  (Planform.b_s/Planform.t_r*Planform.wing_area/Weight.MZFW)**0.3)*0.9
+    Weight.updateWingGroupWeight(WingWeight)
+def CalculateTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    TailWeight = 0.64*(n_ult*(Planform.HT_area+Planform.VT_area)**2)**0.75
+    Weight.updateTailGroupWeight(TailWeight)
+
+def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    StructuralWeight = Weight.MTOW*sqrt(1.5*n_ult)*(Fuselage.b_f*Fuselage.h_f*Fuselage.l_f/Weight.MTOW)**0.24*0.447
+    Weight.updateAirframeStructuralWeight(StructuralWeight)
+def CalculateBodyWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    BodyWeight = 0.23 * sqrt(Miscellaneous.V_dive_EAS * Planform.l_t / (Fuselage.b_f + Fuselage.h_f)) * Fuselage.S_f_wet ** 1.2
+    Weight.updateBodyGroupWeight(BodyWeight)
+def CalculateLandingGearWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     A_main = 40
     A_nose = 20
     B_main = 0.16
@@ -41,115 +47,173 @@ def CalculateLandingGearWeight(MTOW):
     C_nose = 0
     D_main = 1.5 * 10 ** (-5)
     D_nose = 2 * 10 ** (-6)
-    W_main = 1.08 * (A_main + B_main * (MTOW / 0.453592) ** 0.75 + C_main * (MTOW / 0.453592) + D_main * (
-            MTOW / 0.453592) ** 1.5)
-    W_nose = 1.08 * (A_nose + B_nose * (MTOW / 0.453592) ** 0.75 + C_nose * MTOW / 0.453592 + D_nose * (
-                MTOW / 0.453592) ** 1.5)
+    W_main = 1.08 * (A_main + B_main * (Weight.MTOW / 0.453592) ** 0.75 + C_main * (Weight.MTOW / 0.453592) + D_main * (
+            Weight.MTOW / 0.453592) ** 1.5)
+    W_nose = 1.08 * (A_nose + B_nose * (Weight.MTOW / 0.453592) ** 0.75 + C_nose * Weight.MTOW / 0.453592 + D_nose * (
+                Weight.MTOW / 0.453592) ** 1.5)
     LandingGearWeight = (W_main+W_nose)*0.453592
-    return LandingGearWeight
+    Weight.updateLandingGearWeight(LandingGearWeight)
+    Weight.updateW_nose(W_nose)
 
-def CalculateSurfaceControlsWeight(MTOW):
-    SurfaceControlsWeight = 0.64 * 1.2 * 0.768 * MTOW ** 0.666667
-    return SurfaceControlsWeight
+def CalculateSurfaceControlsWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    SurfaceControlsWeight = 0.64 * 1.2 * 0.768 * Weight.MTOW ** 0.666667
+    Weight.updateSurfaceControlsWeight(SurfaceControlsWeight)
 
-def CalculateNacelleWeight(MTOW):
-    NacelleWeight = 0.065*0.453592*0.4*MTOW
-    return NacelleWeight
+def CalculateNacelleWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+    NacelleWeight = 0.065*0.453592*0.4*Weight.MTOW
+    Weight.updateNacelleWeight(NacelleWeight)
 
-def CalculatePropulsionGroup():
+def CalculatePropulsionGroup(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     EngineWeight = 1040
     NoEngines = 2
     PropulsionWeight = 1.15*1.18*EngineWeight * NoEngines*0.453592**2
-    return PropulsionWeight
+    Weight.updatePropulsionWeight(PropulsionWeight)
 
-def CalculateAirframeServicesAndEquipmentWeight(Miscellaneous,OEW,MTOW,M_fuel):
+def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     W_ba = 0.4 * 85.34
     W_APU = 11.7 * (W_ba ** 0.6)
 
     # LOW_SUBSONIC
-    W_INE_1 = 54.4 + 9.1 * 2 + 0.006 * MTOW
+    W_INE_1 = 54.4 + 9.1 * 2 + 0.006 * Weight.MTOW
 
     # HIGH_SUBSONIC
-    W_INE_2 = 0.347 * OEW ** (5 / 9) * Miscellaneous.Range ** 0.25
+    W_INE_2 = 0.347 * Weight.OEW ** (5 / 9) * Miscellaneous.Range ** 0.25
 
-    W_HPE = 0.011 * OEW + 181
+    W_HPE = 0.011 * Weight.OEW + 181
 
-    W_EL = 0.02 * MTOW + 181
+    W_EL = 0.02 * Weight.MTOW + 181
 
-    W_furnish = 0.196 * (MTOW - M_fuel) ** 0.91
+    W_furnish = 0.196 * Weight.MZFW ** 0.91
 
     W_air_conditioning = 14 * (19.44 ** 1.28)
 
-    W_misc = 0.01 * OEW
+    W_misc = 0.01 * Weight.OEW
 
     W_airframe_services = W_ba + W_APU + W_INE_1 + W_EL + W_furnish + W_air_conditioning + W_misc  # Excludes fuel and passengers
 
-    return W_airframe_services
-def CalculateLoadFactor(Miscellaneous, Planform):
+    Weight.updateAirframeServicesAndEquipmentWeight(W_airframe_services)
+def CalculateLoadFactor(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     u_hat = Miscellaneous.GustVelocity * ft_per_meter  # m/s
 
-    mu = 2 * Planform.WingLoading / Miscellaneous.densityFL / 9.81 / Planform.CL_alpha / Planform.MAC
+    mu = 2 * Planform.WingLoading / Miscellaneous.densityFL / 9.81 / Aerodynamics.CL_alpha / Planform.MAC
 
     K = 0.88 * mu / (5.3 + mu)
 
     u = K * u_hat
 
     # MAXIMUM LOAD FACTOR
-    n_max = 1 + Miscellaneous.densityFL * Miscellaneous.Velocity * Planform.CL_alpha * u / 2 / Planform.WingLoading
+    n_max = 1 + Miscellaneous.densityFL * Miscellaneous.Velocity * Aerodynamics.CL_alpha * u / 2 / Planform.WingLoading
     n_ult = 1.5 * n_max
 
     return n_ult
 
+def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+
+    CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculateLoadFactor(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculateBodyWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculateTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculateLandingGearWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculateSurfaceControlsWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculateNacelleWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculatePropulsionGroup(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight)
+
+    OEWnew = (Weight.WingGroupWeight + Weight.TailGroupWeight + Weight.BodyGroupWeight + Weight.LandingGearWeight +
+              Weight.SurfaceControlsWeight + Weight.NacelleWeight + Weight.PropulsionWeight + Weight.AirframeServicesAndEquipmentWeight)
+
+    MTOWnew = OEWnew + Weight.M_fuel + Weight.M_Payload
 
 
-def IterationClassII (Planform, Fuselage, MTOW, OEW, M_fuel, MZFW, Miscellaneous,iterationNumber):
-    AirframeStructuralWeight = CalculateAirframeStructuralWeight(Miscellaneous,Planform,Fuselage,MTOW)
-    n_ult = CalculateLoadFactor(Miscellaneous, Planform)
-    WingGroupWeight = CalculateWingWeight(Planform,MZFW)
-    BodyGroupWeight = CalculateBodyWeight(Miscellaneous,Fuselage)
-    TailGroupWeight = CalculateTailWeight(Miscellaneous,Planform)
-    LandingGearWeight = CalculateLandingGearWeight(MTOW)
-    SurfaceControlsWeight = CalculateSurfaceControlsWeight(MTOW)
-    NacelleWeight = CalculateNacelleWeight(MTOW)
-    PropulsionWeight = CalculatePropulsionGroup()
-    AirframeServicesAndEquipmentWeight = CalculateAirframeServicesAndEquipmentWeight(Miscellaneous,OEW,MTOW,M_fuel)
-    OEWnew = (WingGroupWeight + TailGroupWeight + BodyGroupWeight + LandingGearWeight +
-              SurfaceControlsWeight + NacelleWeight + PropulsionWeight + AirframeServicesAndEquipmentWeight)
-    MTOWnew = OEWnew + M_fuel + M_Payload
 
+    # print("WingGroupWeight", Weight.WingGroupWeight)
+    # print("BodyGroupWeight", Weight.BodyGroupWeight)
+    # print("TailGroupWeight", Weight.TailGroupWeight)
+    # print("LandingGearWeight", Weight.LandingGearWeight)
+    # print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
+    # print("NacelleWeight", Weight.NacelleWeight)
+    # print("PropulsionWeight", Weight.PropulsionWeight)
+    # print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
 
-    '''print("LoadFactor", n_ult )
-    print("WingGroupWeight", WingGroupWeight)
-    print("BodyGroupWeight", BodyGroupWeight)
-    print("TailGroupWeight", TailGroupWeight)
-    print("LandingGearWeight", LandingGearWeight)
-    print("SurfaceControlsWeight", SurfaceControlsWeight)
-    print("NacelleWeight", NacelleWeight)
-    print("PropulsionWeight", PropulsionWeight)
-    print("AirframeServices", AirframeServicesAndEquipmentWeight)'''
+    # print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
+    print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
 
-    print("Iteration Number:", iterationNumber)
-    print("RandomTorenbeekEstimate", AirframeStructuralWeight)
-    print ("OEWnew = ", OEWnew)
-    print ("OEW_init = ", OEW)
-    print ("MTOWnew = ", MTOWnew)
-    print("MTOW_init = ", MTOW)
-    ratio = fabs(OEWnew - OEW)/OEW
-    if (iterationNumber <=MaxNumberOfIterations and ratio>0.01):
+    '''ratio = fabs(OEWnew - OEW)/OEW
+    if (iterationNumber <=MaxNumberOfIterations and ratio>0.0001):
         iterationNumber = iterationNumber + 1
         MZFW = MTOWnew - M_fuel
-        IterationClassII(Planform, Fuselage, MTOWnew, OEWnew, M_fuel_init, MZFW, Miscellaneous, iterationNumber)
+        ClassIIWeightEstimation(Planform, Fuselage, MTOWnew, OEWnew, M_fuel_init, MZFW, Miscellaneous, iterationNumber)'''
+    Weight.updateMTOW(MTOWnew)
+    Weight.updateOEW(OEWnew)
+    Weight.updateMZFW(MTOWnew-Weight.M_fuel)
+    Weight.updateOE_MTOW(OEWnew/MTOWnew)
+
+
+def CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
+
+
+    FuselageCG = Fuselage.l_f * 0.435
+    NoseGearCG = 0.5 * Planform.MAC
+    AirframeServicesCG = FuselageCG
+    WingCG = 0.07 * Planform.b / 2 * tan(radians(Planform.sweep_le)) + (0.2 + 0.7 * 0.4) * (
+                Planform.c_r - Planform.c_r * (1 - Planform.taper) * 0.35)
+    X_OE = 0.225*Planform.MAC
+    NacellesCG = 0.1 * Propulsion.l_nac
+    PropulsionCG = 0.4 * Propulsion.l_nac
+    TailCG = 0.9*Fuselage.l_f
+
+    W_fuselage_group = Weight.BodyGroupWeight + Weight.W_nose + Weight.TailGroupWeight + Weight.AirframeServicesAndEquipmentWeight  # Excludes main LG
+    X_fuselage_group = (Weight.BodyGroupWeight * FuselageCG + TailCG * Weight.TailGroupWeight + NoseGearCG * Weight.W_nose + AirframeServicesCG * Weight.AirframeServicesAndEquipmentWeight) / W_fuselage_group
+    W_wing_group = Weight.WingGroupWeight + Weight.NacelleWeight + Weight.PropulsionWeight
+    X_wing_group = (Weight.WingGroupWeight * WingCG + Weight.NacelleWeight * NacellesCG + Weight.PropulsionWeight * PropulsionCG) / W_wing_group
+
+    X_LEMAC = X_fuselage_group - X_OE + W_wing_group / W_fuselage_group * (X_wing_group - X_OE )
+
+
+
+    Weight.updateXLEMAC(X_LEMAC)
+    Weight.updateWingCG(X_wing_group+X_LEMAC)
+    Weight.updateOEWCG(X_OE+X_LEMAC)
+
+    # print("XLEMAC", Weight.XLEMAC)
+    # print("WingCG", Weight.WingCG)
+    # print("OEWCG",Weight.OEWCG)
 
 
 
 
-Planform = PlanformParameters.Planform()
-Fuselage = FuselageParameters.Fuselage()
-Miscellaneous = SpeedsAndRange.Miscellaneous()
 
-IterationClassII(Planform, Fuselage, MTOW_init, OEW_init, M_fuel_init, MZFW_init, Miscellaneous, 1)
-n_ult_print = CalculateLoadFactor(Miscellaneous, Planform)
-print("n_ult", n_ult_print)
+
+
+
+
+'''def WeightIteration(iterationNumber):
+    ClassIWeightEstimation()
+    print(" ")
+    print("iterationNumber", iterationNumber)
+    ClassIIWeightEstimation()
+    if (iterationNumber <= MaxNumberOfIterations):
+        iterationNumber = iterationNumber + 1
+        WeightIteration(iterationNumber)'''
+
+
+
+
+
+
+
+#WeightIteration(1)
+
 
 
 

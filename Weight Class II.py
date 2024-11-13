@@ -44,7 +44,7 @@ x_38_horizontal=0.38*b_horizontal/2*tan(radians(sweep_le_horizontal))
 position=x_38_horizontal+0.42*c_r_horizontal*(1-(1-taper)*0.38)-0.25*c_r_horizontal #m, w.r.t. the root quarter-chord
 print(position)
 l_t= (0.9*l_f-position) -(13.5288-0.42*b/2*tan(radians(sweep_le))+0.25*MAC) #m  #distance from wing root quarter point to horizontal tail root quarter point
-
+print(l_t, "MUC")
 ft_per_meter=0.3048
 
 ro=0.379597 #kg/m^3
@@ -52,7 +52,7 @@ V_cruise=0.77*296.535
 V_dive_EAS=166.89*1.5 #m/s #NOTE: 1.5 is chosen as the safety factor
 CL_alpha=5.76 #1/rad
 W_over_S=MTOW/63.1*9.81 #N/m^2
-
+#11799.298864687804
 A_main=40
 A_nose=20
 B_main=0.16
@@ -76,7 +76,7 @@ n_max1=2.5 #(more than 51000 lbs)
 n_max2=1+ro*V_cruise*CL_alpha*u/2/W_over_S #From gusts
 n_ult=1.5*max(n_max1,n_max2)
 
-print('n_ult:',n_ult)
+
 
 #AIRFRAME STRUCTURAL WEIGHT #NOTE: n_max might be too high
 M_structural_formula=MTOW*0.447*sqrt(n_ult)*((b_f*h_f*l_f)/MTOW)**0.24
@@ -187,10 +187,10 @@ print('Ultimate load factor: ',n_ult)
 
 
 
-print('W_w/MTOW:',W_w/MTOW)
-print('W_tail/MTOW: ',W_tail/MTOW)
-print('W_f/MTOW ',W_f/MTOW)
-print('W_LG/MTOW: ', W_LG/MTOW)
-print('W_sc/MTOW ',W_sc/MTOW)
-print('W_n/MTOW: ',W_n/MTOW)
-print('W_prop/MTOW: ',W_prop/MTOW)
+print('W_w/MTOW:',W_w)
+print('W_tail/MTOW: ',W_tail)
+print('W_f/MTOW ',W_f)
+print('W_LG/MTOW: ', W_LG)
+print('W_sc/MTOW ',W_sc)
+print('W_n/MTOW: ',W_n)
+print('W_prop/MTOW: ',W_prop)
