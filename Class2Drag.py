@@ -269,7 +269,7 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     CD_nacelle = CD0_comp(Planform.wing_area, Cf_nacelle, FF3(Propulsion.l_nac, Propulsion.d_nacelle), Aerodynamics.IFnacelle, SwetNac(Propulsion.d_nacelle, Propulsion.l_nac))
     
     CD0_total_Cruise = SumOfCD(CD_miscCruise, CD_wing, CD_HT, CD_VT, CD_fuselage, CD_nacelle, CD_excrescenceFrac)
-    print('CD0 total Cruise', CD0_total_Cruise)
+    # print('CD0 total Cruise', CD0_total_Cruise)
     
     # Approach with Flaps and Gear
     fuselageBaseCD_app = CD_fuselageBase(Miscellaneous.M_app, Fuselage.d_fus_outer*math.pi/4, Planform.wing_area)
@@ -285,11 +285,11 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     CD_fuselage_app = CD0_comp(Planform.wing_area, Cf_fuselage_app, FF2(L, Fuselage.d_fus_outer), Aerodynamics.IFfuselage, Fuselage_S_wet(Fuselage.l_nc, Fuselage.l_cabin, Fuselage.l_tc, Fuselage.d_fus_outer))
     CD_nacelle_app = CD0_comp(Planform.wing_area, Cf_nacelle_app, FF3(Propulsion.l_nac, Propulsion.d_nacelle), Aerodynamics.IFnacelle, SwetNac(Propulsion.d_nacelle, Propulsion.l_nac))
     
-    print(UpsweepCD, fuselageBaseCD_app, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_app)
-    print(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app)
+    # print(UpsweepCD, fuselageBaseCD_app, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_app)
+    # print(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app)
     
     CD0_total_app = SumOfCD(CD_misc_app, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app, CD_excrescenceFrac)
-    print('CD0 total approach with flaps and gear', CD0_total_app)
+    # print('CD0 total approach with flaps and gear', CD0_total_app)
     
     # Take-off with Flaps and Gear
     fuselageBaseCD_to = CD_fuselageBase(Miscellaneous.M_app, Fuselage.d_fus_outer*math.pi/4, Planform.wing_area)
@@ -303,11 +303,11 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     CD_fuselage_to = CD0_comp(Planform.wing_area, Cf_fuselage_app, FF2(L, Fuselage.d_fus_outer), Aerodynamics.IFfuselage, Fuselage_S_wet(Fuselage.l_nc, Fuselage.l_cabin, Fuselage.l_tc, Fuselage.d_fus_outer))
     CD_nacelle_to = CD0_comp(Planform.wing_area, Cf_nacelle_app, FF3(Propulsion.l_nac, Propulsion.d_nacelle), Aerodynamics.IFnacelle, SwetNac(Propulsion.d_nacelle, Propulsion.l_nac))
     
-    print(UpsweepCD, fuselageBaseCD_to, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_to)
-    print(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to)
+    # print(UpsweepCD, fuselageBaseCD_to, DeltaCDREF_1, DeltaCDREF_2, DeltaCDFlap_to)
+    # print(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to)
     
     CD0_total_to = SumOfCD(CD_misc_to, CD_wing_to, CD_HT_to, CD_VT_to, CD_fuselage_to, CD_nacelle_to, CD_excrescenceFrac)
-    print('CD0 total take-off with flaps and gear', CD0_total_to)
+    # print('CD0 total take-off with flaps and gear', CD0_total_to)
     # Lift induced drag
         # Normal CD_i
     
@@ -318,16 +318,16 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     CDi_cruise = CD_i(CL_cruise, Planform.AR, Oswald, Delta_e=0.0)
     CD_cruise = CD(CD0_total_Cruise, CDi_cruise)
     CLCD_max_cruise = CLCDmax(Planform.AR, Oswald, CD0_total_Cruise)
-    print('max L/D cruise', CLCD_max_cruise)
+    # print('max L/D cruise', CLCD_max_cruise)
     
     V_stall = Miscellaneous.V_stall  # m/s
     
     gamma1 = math.radians(1)
     gamma3 = math.radians(3)
     gamma5 = math.radians(5)
-    print('time ground effect at gamma=1deg', TimeGroundEffect(b, V_stall, gamma1))
-    print('time ground effect at gamma=3deg', TimeGroundEffect(b, V_stall, gamma3))
-    print('time ground effect at gamma=5deg', TimeGroundEffect(b, V_stall, gamma5))
+    # print('time ground effect at gamma=1deg', TimeGroundEffect(b, V_stall, gamma1))
+    # print('time ground effect at gamma=3deg', TimeGroundEffect(b, V_stall, gamma3))
+    # print('time ground effect at gamma=5deg', TimeGroundEffect(b, V_stall, gamma5))
     
     # Generate x values
     gamma = np.linspace(-0.35, 0.35, 400)
@@ -348,7 +348,20 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     
     # Show the plot
     plt.grid(True)
-    plt.show()
-    
+    #plt.show()
+
+
+    # These are the 6 needed parameters, only 3 were calculated
+    # Gear UP and DOWN were approximated as the same
+    # CD0_Cruise and CD0_Clean_UP were approximated as the same
+    # To change if there is enough time left
+    Aerodynamics.updateCD0_Landing_UP(CD0_total_app)
+    Aerodynamics.updateCD0_Landing_DOWN(CD0_total_app)
+    Aerodynamics.updateCD0_Takeoff_UP(CD0_total_to)
+    Aerodynamics.updateCD0_Takeoff_DOWN(CD0_total_to)
+    Aerodynamics.updateCD0_Clean_UP(CD0_total_Cruise)
+    Aerodynamics.updateCD0_Cruise(CD0_total_Cruise)
+
+
 #Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 

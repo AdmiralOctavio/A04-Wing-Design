@@ -36,7 +36,7 @@ def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodyn
     StructuralWeight = Weight.MTOW*sqrt(1.5*n_ult)*(Fuselage.b_f*Fuselage.h_f*Fuselage.l_f/Weight.MTOW)**0.24*0.447
     Weight.updateAirframeStructuralWeight(StructuralWeight)
 def CalculateBodyWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
-    BodyWeight = 0.23 * sqrt(Miscellaneous.V_dive_EAS * Fuselage.l_t / (Fuselage.b_f + Fuselage.h_f)) * Fuselage.S_f_wet ** 1.2
+    BodyWeight = 0.23 * sqrt(Miscellaneous.V_dive_EAS * Planform.l_t / (Fuselage.b_f + Fuselage.h_f)) * Fuselage.S_f_wet ** 1.2
     Weight.updateBodyGroupWeight(BodyWeight)
 def CalculateLandingGearWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     A_main = 40
@@ -136,20 +136,18 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
 
 
-    print("WingGroupWeight", Weight.WingGroupWeight)
-    print("BodyGroupWeight", Weight.BodyGroupWeight)
-    print("TailGroupWeight", Weight.TailGroupWeight)
-    print("LandingGearWeight", Weight.LandingGearWeight)
-    print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
-    print("NacelleWeight", Weight.NacelleWeight)
-    print("PropulsionWeight", Weight.PropulsionWeight)
-    print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
+    # print("WingGroupWeight", Weight.WingGroupWeight)
+    # print("BodyGroupWeight", Weight.BodyGroupWeight)
+    # print("TailGroupWeight", Weight.TailGroupWeight)
+    # print("LandingGearWeight", Weight.LandingGearWeight)
+    # print("SurfaceControlsWeight", Weight.SurfaceControlsWeight)
+    # print("NacelleWeight", Weight.NacelleWeight)
+    # print("PropulsionWeight", Weight.PropulsionWeight)
+    # print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
 
-    print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
-    print ("OEWnew = ", OEWnew)
-    print ("OEW_init = ", Weight.OEW)
-    print ("MTOWnew = ", MTOWnew)
-    print("MTOW_init = ", Weight.MTOW)
+    # print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
+    print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
+
     '''ratio = fabs(OEWnew - OEW)/OEW
     if (iterationNumber <=MaxNumberOfIterations and ratio>0.0001):
         iterationNumber = iterationNumber + 1
@@ -162,24 +160,39 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
 
 
 def CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
-    x_f = 0.435 * Fuselage.l_f
-    x_tail = 0.9 * Fuselage.l_f # Subject to change
-    x_nose = 0.5 * Planform.MAC
-    x_airframe_services = x_f
 
-    x_wing = 0.07 * Planform.b / 2 * tan(radians(Planform.sweep_le)) + (0.2 + 0.7 * 0.4) * (Planform.c_r - Planform.c_r * (1 - Planform.taper) * 0.35)
-    x_nacelle = -0.1 * Propulsion.l_nac  # w.r.t. the xLEMAC
-    x_prop = -0.4 * Propulsion.l_nac
+
+    FuselageCG = Fuselage.l_f * 0.435
+    NoseGearCG = 0.5 * Planform.MAC
+    AirframeServicesCG = FuselageCG
+    WingCG = 0.07 * Planform.b / 2 * tan(radians(Planform.sweep_le)) + (0.2 + 0.7 * 0.4) * (
+                Planform.c_r - Planform.c_r * (1 - Planform.taper) * 0.35)
+    X_OE = 0.225*Planform.MAC
+    NacellesCG = 0.1 * Propulsion.l_nac
+    PropulsionCG = 0.4 * Propulsion.l_nac
+    TailCG = 0.9*Fuselage.l_f
 
     W_fuselage_group = Weight.BodyGroupWeight + Weight.W_nose + Weight.TailGroupWeight + Weight.AirframeServicesAndEquipmentWeight  # Excludes main LG
-    X_fuselage_group = ( Weight.BodyGroupWeight * x_f + x_tail * Weight.TailGroupWeight + x_nose * Weight.W_nose + x_airframe_services * Weight.AirframeServicesAndEquipmentWeight ) / W_fuselage_group
+    X_fuselage_group = (Weight.BodyGroupWeight * FuselageCG + TailCG * Weight.TailGroupWeight + NoseGearCG * Weight.W_nose + AirframeServicesCG * Weight.AirframeServicesAndEquipmentWeight) / W_fuselage_group
     W_wing_group = Weight.WingGroupWeight + Weight.NacelleWeight + Weight.PropulsionWeight
-    X_wing_group = (Weight.WingGroupWeight * x_wing + Weight.NacelleWeight * x_nacelle + Weight.PropulsionWeight * x_prop) / W_wing_group
+    X_wing_group = (Weight.WingGroupWeight * WingCG + Weight.NacelleWeight * NacellesCG + Weight.PropulsionWeight * PropulsionCG) / W_wing_group
 
-    X_OE = 0.225 * Planform.MAC
-    X_LEMAC = X_fuselage_group - X_OE + W_wing_group / W_fuselage_group * ((X_wing_group - X_OE))
-    x_wg = (0.2 + 0.7 * (0.6 - 0.2)) * Planform.MAC + tan(Planform.sweep_le * 3.14 / 180) * 0.35 * Planform.b / 2 - Planform.b / 6 * (
-                (1 + 2 * Planform.taper) / 1 + Planform.taper) * tan(Planform.sweep_le * 3.14 / 180) + X_LEMAC
+    X_LEMAC = X_fuselage_group - X_OE + W_wing_group / W_fuselage_group * (X_wing_group - X_OE )
+
+
+
+    Weight.updateXLEMAC(X_LEMAC)
+    Weight.updateWingCG(X_wing_group+X_LEMAC)
+    Weight.updateOEWCG(X_OE+X_LEMAC)
+
+    # print("XLEMAC", Weight.XLEMAC)
+    # print("WingCG", Weight.WingCG)
+    # print("OEWCG",Weight.OEWCG)
+
+
+
+
+
 
 
 

@@ -6,9 +6,10 @@ Planform = PlanformParameters.Planform()
 class Aerodynamics:
     def __init__(self):
             self.CL_alpha = 5.76
-            #self.Cd0clean = 0.0192  # zero lift drag coef AT CRUISE
-            #self.OswaldEfficiencyclean = 0.8280596821832961  # Oswald
-            #self.LD = 1 / 2 * sqrt((pi * Planform.AR * self.OswaldEfficiencyclean) / self.Cd0clean)  # Lift drag ratio
+
+            self.cd0airfoil = 0.00486
+            self.clCruiseAirfoil = 0.4756492527004301
+            self.clCruise = 0.37594287624283806
 
             self.CL_max_Landing = 2.3
             self.CL_max_Takeoff = 1.9
@@ -24,8 +25,6 @@ class Aerodynamics:
             self.e_Takeoff = 0.892    #for different flap configurations
             self.e_Landing = 0.984
             self.e_Clean = 0.8280596821832961
-
-            self.cd0airfoil = 0.00486
 
             self.Cf_nose_app = 0.00454
             self.Cf_cyl_app = 0.00165
@@ -75,6 +74,23 @@ class Aerodynamics:
             self.CD_excrFrac = 0.05
 
             self.LD = 1 / 2 * sqrt((pi * Planform.AR * self.e_Clean) / self.CD0_Cruise)  # Lift drag ratio
+
+
+
+    def updateCD0_Landing_DOWN(self,CD0_Landing_DOWN):
+            self.CD0_Landing_DOWN = CD0_Landing_DOWN
+    def updateCD0_Landing_UP(self,CD0_Landing_UP):
+            self.CD0_Landing_UP = CD0_Landing_UP
+    def updateCD0_Takeoff_DOWN(self,CD0_Takeoff_DOWN):
+            self.CD0_Takeoff_DOWN = CD0_Takeoff_DOWN
+    def updateCD0_Takeoff_UP(self,CD0_Takeoff_UP):
+            self.CD0_Takeoff_UP = CD0_Takeoff_UP
+    def updateCD0_Clean_UP(self,CD0_Clean_UP):
+            self.CD0_Clean_UP = CD0_Clean_UP
+    def updateCD0_Cruise(self,CD0_Cruise):
+            self.CD0_Cruise = CD0_Cruise
+
+
 
     def updateCf_nose_cr(self,Cf_nose_cr):
             self.Cf_nose_cr = Cf_nose_cr

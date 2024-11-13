@@ -22,6 +22,7 @@ class Weight:
 
             self.CG_OEW = 0
             self.CG_WING = 0
+            self.OEWCG = 14.2
 
 
 
@@ -74,3 +75,14 @@ class Weight:
         self.MZFW = MZFW
     def updateOEW(self,OEW):
         self.OEW = OEW
+
+
+
+    def updateXLEMAC(self,XLEMAC):
+        self.XLEMAC = XLEMAC
+
+    def updateOEWCG(self,OEWCG):
+        self.OEWCG = OEWCG
+
+    def updateWingCG(self,WingCG):
+        self.WingCG = WingCG
