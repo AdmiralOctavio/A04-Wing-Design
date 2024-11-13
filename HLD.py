@@ -20,6 +20,7 @@ def LiftCoefficient(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
     Slat = 0.4
     alpha = 8.2
     CLValues = [] 
+    CLValues_Takeoff = []
     Cl = alpha * (1.0918 - 0.1143)/8.5 + 0.1143
 
     for Wf in range(50,100,1):
@@ -30,27 +31,46 @@ def LiftCoefficient(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
         dCL_TE = 0.9 * SwfS_TE * Flap * math.cos(math.radians(TE_Sweep))
         dCL_LE = 0.9 * SwfS_LE * Slat * math.cos(math.radians(LE_Sweep))
 
+
         dCL = dCL_LE + dCL_TE
+        
+
         CL_wing = Cl / (1 + (Cl)/(math.pi * AR * e))
         CL_max = CL_wing + dCL
         CLValues.append(CL_max)
-        
         dAlpha_L = -15 * SwfS_TE * math.cos(math.radians(TE_Sweep))
         Alpha_stall = 19.32 + dAlpha_L
+
+        #Takeoff
+        dCL_TE_Takeoff = dCL_TE * 0.8
+        dCL_LE_Takeoff = dCL_LE * 0.8
+        dCL_Takeoff = dCL_TE_Takeoff + dCL_LE_Takeoff
+        CL_max_Takeoff = CL_wing + dCL_Takeoff
+        dAlpha_L_Takeoff = -10 * SwfS_TE * math.cos(math.radians(TE_Sweep))
+        Alpha_Stall_Takeoff = 19.32 + dAlpha_L_Takeoff
+        CLValues_Takeoff.append(CL_max_Takeoff)
 
         #This is just for a nice output
         ind = Wf-50
         CL = ("%.4f" % round(CLValues[ind],3))
+        CL_TF = (("%.4f" % round(CLValues_Takeoff[ind],3)))
         WF = ("%.0f" % round(Wf,3))
         FCHORD =("%.3f" % (W.MAC_flap(Wf/100)[0]*0.35) )
         FCHORD_2 = ("%.3f" % (W.MAC_flap(Wf/100 + 0.5)[1]*0.35) )
         DC = ("%.3f" % (float(FCHORD) * 0.5)) #I forgot what this does but dont delete it
         A = ("%.3f" % (float(Alpha_stall)))
+        A_TF = ("%.3f" % (float(Alpha_Stall_Takeoff)))
 
         Planform.updateFlapAreaRatio(SwfS_TE)
 
-        if round(CLValues[ind], 3) >= 2.375 and Alpha_stall > alpha:
+        if round(CLValues[ind], 3) >= 2.375 and Alpha_stall > alpha and round(CLValues_Takeoff[ind], 3) >= 1.9 and Alpha_Stall_Takeoff > alpha:
             print("Max CL = " + CL + ",  Wing Fraction = " + WF + "%,  Stalling AOA = " + A +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
+            print("Max CL(TF) = " + CL_TF + ",  Wing Fraction = " + WF + "%,  Stalling AOA (TF) = " + A_TF +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
+
+            Aerodynamics.updateCL_max_Landing(CLValues[ind])
+            Aerodynamics.updateCL_max_Takeoff(CLValues_Takeoff[ind])
+
+
             break        
 #Just input configuration here! ^^^^
 '''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)

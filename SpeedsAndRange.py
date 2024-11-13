@@ -33,3 +33,20 @@ class Miscellaneous:
             self.WingloadEndCr = (Weight.MTOW*9.80665 - Weight.M_fuel*9.80665)/Planform.wing_area
             self.CL_cruise = 1.1/(0.5*self.densityFL*self.Velocity**2)*0.5*(self.WingloadStartCr + self.WingloadEndCr)
 
+
+    def updateMiscellaneousDependencies(self, Planform, Aerodynamics, Weight):
+            self.Velocity = self.VcrM*296.32
+            self.EASVelocity = self.Velocity/sqrt(self.densitySL/self.densityFL)
+            self.V_stall = sqrt(2*Weight.MTOW*9.80665/(1.225*Planform.wing_area*Aerodynamics.CL_max_Landing))
+            self.Rlost = (1 / 0.7 * Aerodynamics.LD * (self.hCR + self.Velocity ** 2 / (2 * 9.80665))) / 1000
+            self.CL_cruise = 1.1/(0.5*self.densityFL*self.Velocity**2)*0.5*(self.WingloadStartCr + self.WingloadEndCr)
+            self.WingloadStartCr = (Weight.MTOW*9.80665)/Planform.wing_area
+            self.WingloadEndCr = (Weight.MTOW*9.80665 - Weight.M_fuel*9.80665)/Planform.wing_area
+
+
+            # km, lost range from drag
+
+
+
+
+
