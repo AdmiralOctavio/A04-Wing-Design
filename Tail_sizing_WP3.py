@@ -165,4 +165,4 @@ def dcm_over_dalpha_function(Planform, Miscellaneous, Propulsion, Aerodynamics, 
 # dcm_over_dalpha = dcm_over_dalpha_function(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight) *pi/180
 # print(dcm_over_dalpha)
 
-printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
+#printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)

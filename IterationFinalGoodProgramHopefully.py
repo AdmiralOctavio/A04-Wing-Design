@@ -76,5 +76,4 @@ for i in range(1,nmax+1):
     from undercarriage import Undercarriage
     Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 
-
     plt.close()

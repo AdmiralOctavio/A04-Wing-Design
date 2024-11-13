@@ -39,7 +39,7 @@ def CalculateVertTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fus
     #n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     Kv = 1 + 0.15*(Planform.HT_area*Planform.HT_span)/(Planform.VT_area*Planform.VT_span)
     Vert_Tail_Weight = Kv *(Planform.VT_area/(meter_per_feet**2)) * ((3.81*((Planform.VT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(QCSweep_to_HalfSweep(Planform.VT_quarter_sweep, Planform.VT_taper, Planform.VT_span, Planform.VT_cr)))**(1/2)) - 0.287)
-    Weight.updateVert_Tail_Weight(Vert_Tail_Weight/lbs_per_kg)
+    Weight.updateVertTailWeight(Vert_Tail_Weight/lbs_per_kg)
 
 def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
