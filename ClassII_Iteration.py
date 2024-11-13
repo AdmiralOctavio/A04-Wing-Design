@@ -102,6 +102,7 @@ def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsio
     W_airframe_services = W_ba + W_APU + W_INE_1 + W_EL + W_furnish + W_air_conditioning + W_misc  # Excludes fuel and passengers
 
     Weight.updateAirframeServicesAndEquipmentWeight(W_airframe_services)
+
 def CalculateLoadFactor(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     u_hat = Miscellaneous.GustVelocity * meter_per_feet  # m/s
 
@@ -157,7 +158,6 @@ def ClassIIWeightEstimation (Planform,Miscellaneous,Propulsion, Aerodynamics, Fu
     # print("NacelleWeight", Weight.NacelleWeight)
     # print("PropulsionWeight", Weight.PropulsionWeight)
     # print("AirframeServices", Weight.AirframeServicesAndEquipmentWeight)
-
     # print("RandomTorenbeekEstimate", Weight.AirframeStructuralWeight)
     print ("OEW = ", round(OEWnew,2), "MTOW = ", round(MTOWnew,2))
 
