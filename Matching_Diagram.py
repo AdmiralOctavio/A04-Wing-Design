@@ -142,7 +142,7 @@ def takofdlen(data,aero,misc,WpS_list):
 def MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     #dimension of table (entries x functions)
     limit = 7000    #maximum W/S on diagram
-    step = 100
+    step = 50
     dimension = int(limit/step)
 
     #initialize graph for matching diagram - first column is W/S
@@ -236,7 +236,7 @@ def MatchingDiagram(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weig
         WpS_min = WpS_2 - WpS_2%step
 
     WpS_list = list(WpS_list)
-    TpW_max = ceil(100*max(graph[WpS_list.index(WpS_min),:]))/100
+    TpW_max = ceil(10000/step*max(graph[WpS_list.index(WpS_min),:]))/10000*step
     #print(WpS_min,TpW_max)
     plt.plot(WpS_min, TpW_max, marker = 'o', color = 'r', label = 'design point')
 
