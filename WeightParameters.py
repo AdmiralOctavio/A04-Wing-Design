@@ -13,7 +13,6 @@ class Weight:
             self.WingGroupWeight = 0
             self.BodyGroupWeight = 0
             self.HoriTailWeight = 0
-            self.VertTailWeight = 0
             self.LandingGearWeight = 0
             self.SurfaceControlsWeight = 0
             self.NacelleWeight = 0
@@ -21,8 +20,8 @@ class Weight:
             self.AirframeServicesAndEquipmentWeight = 0
             self.W_nose = 0
 
-            self.CG_OEW = 0
-            self.CG_WING = 0
+            self.XLEMAC = 0
+            self.WingCG = 0
             self.OEWCG = 14.2
 
 
@@ -40,11 +39,8 @@ class Weight:
     def updateBodyGroupWeight(self,BodyGroupWeight):
         self.BodyGroupWeight = BodyGroupWeight
 
-    def updateHori_Tail_Weight(self,HoriTailWeight):
+    def updateHoriTailWeight(self,HoriTailWeight):
         self.HoriTailWeight = HoriTailWeight
-
-    def updateVert_Tail_Weight(self,VertTailWeight):
-        self.VertTailWeight = VertTailWeight
 
     def updateLandingGearWeight(self,LandingGearWeight):
         self.LandingGearWeight = LandingGearWeight
