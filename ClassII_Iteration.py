@@ -195,7 +195,7 @@ def CGPositions (Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weig
 
 
     Weight.updateXLEMAC(X_LEMAC)
-    Weight.updateWingCG(X_wing_group+X_LEMAC)
+    Weight.updateWingCG(WingCG+X_LEMAC)
     Weight.updateOEWCG(X_OE+X_LEMAC)
 
     # print("XLEMAC", Weight.XLEMAC)
