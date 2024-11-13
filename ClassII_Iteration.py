@@ -84,7 +84,7 @@ def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsio
     W_APU = 11.7 * (W_ba ** 0.6)
 
     # LOW_SUBSONIC
-    W_INE_1 = 54.4 + 9.1 * 2 + 0.006 * Weight.MTOW
+    #W_INE_1 = 54.4 + 9.1 * 2 + 0.006 * Weight.MTOW
 
     # HIGH_SUBSONIC
     W_INE_2 = 0.347 * Weight.OEW ** (5 / 9) * Miscellaneous.Range ** 0.25
@@ -99,7 +99,7 @@ def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsio
 
     W_misc = 0.01 * Weight.OEW
 
-    W_airframe_services = W_ba + W_APU + W_INE_1 + W_EL + W_furnish + W_air_conditioning + W_misc  # Excludes fuel and passengers
+    W_airframe_services = W_ba + W_APU + W_INE_2 + W_EL + W_furnish + W_air_conditioning + W_misc  # Excludes fuel and passengers
 
     Weight.updateAirframeServicesAndEquipmentWeight(W_airframe_services)
 
