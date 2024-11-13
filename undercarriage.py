@@ -191,6 +191,9 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
 
     ax2.fill(*left_wheels.exterior.xy, color="orange")
 
+
+    Aerodynamics.updatestrut(main_gear_position.y)
+
     # plt.show()
 
 # Undercarriage()
