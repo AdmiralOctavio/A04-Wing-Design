@@ -300,6 +300,11 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     CD_misc_app_up = MiscellaneousCD(UpsweepCD, fuselageBaseCD_app, DeltaCDREF_1_up, DeltaCDREF_2_up, DeltaCD_flap(FlapChordRatio, FlapAreaRatio, DeltaFlap_app))
     CD0_Landing_UP = SumOfCD(CD_misc_app_up, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app, CD_excrescenceFrac)
     print('CD0 app no gear', CD0_Landing_UP)
+
+    # Approach at sea-level clean
+    CD_misc_SL_clean = MiscellaneousCAerodynamicsruise(CD_upsweep(Fuselage.upsweep, Fuselage.d_fus_outer, Planform.wing_area), fuselageBaseCD_app)
+    CD0_SL_clean = SumOfCD(CD_misc_SL_clean, CD_wing_app, CD_HT_app, CD_VT_app, CD_fuselage_app, CD_nacelle_app, CD_excrescenceFrac)
+    print('Sea level approach, clean config', CD0_SL_clean)
     
     # Take-off with Flaps and Gear
     fuselageBaseCD_to = CD_fuselageBase(Miscellaneous.M_app, Fuselage.d_fus_outer*math.pi/4, Planform.wing_area)
@@ -383,6 +388,7 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     Aerodynamics.updatee_Takeoff(Oswald_to)
     Aerodynamics.updatee_Landing(Oswald_app)
     Aerodynamics.updateLD(CLCD_max_cruise)
+    Aerodynamics.updateCD0_SL_clean(CD0_SL_clean)
 
 
 Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)

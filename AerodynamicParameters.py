@@ -20,6 +20,7 @@ class Aerodynamics:
             self.CD0_Takeoff_DOWN = 0.0562
             self.CD0_Takeoff_UP = 0.0387
             self.CD0_Cruise = 0.0192 #Zero lift drag coefficient, clean, at CRUISE
+            self.CD0_SL_cruise = 0.026470848979104598
 
             self.e_Takeoff = 0.892    #for different flap configurations
             self.e_Landing = 0.984
@@ -79,24 +80,6 @@ class Aerodynamics:
 
 
 
-    def updateCD0_Landing_DOWN(self,CD0_Landing_DOWN):
-            self.CD0_Landing_DOWN = CD0_Landing_DOWN
-    def updateCD0_Landing_UP(self,CD0_Landing_UP):
-            self.CD0_Landing_UP = CD0_Landing_UP
-    def updateCD0_Takeoff_DOWN(self,CD0_Takeoff_DOWN):
-            self.CD0_Takeoff_DOWN = CD0_Takeoff_DOWN
-    def updateCD0_Takeoff_UP(self,CD0_Takeoff_UP):
-            self.CD0_Takeoff_UP = CD0_Takeoff_UP
-    def updateCD0_Cruise(self,CD0_Cruise):
-            self.CD0_Cruise = CD0_Cruise
-    def updatee_Landing(self, e_Landing):
-            self.e_Landing = e_Landing
-    def updatee_Takeoff(self, e_Takeoff):
-            self.e_Takeoff = e_Takeoff
-    def updatee_Clean(self, e_Clean):
-            self.e_clean = e_Clean
-
-
     def updateCf_nose_cr(self,Cf_nose_cr):
             self.Cf_nose_cr = Cf_nose_cr
     def updateCf_cyl_cr(self, Cf_cyl_cr):
@@ -154,6 +137,24 @@ class Aerodynamics:
     def updateS_tot(self, S_tot):
             self.S_tot = S_tot
 
+    def updateCD0_Landing_DOWN(self,CD0_Landing_DOWN):
+            self.CD0_Landing_DOWN = CD0_Landing_DOWN
+    def updateCD0_Landing_UP(self,CD0_Landing_UP):
+            self.CD0_Landing_UP = CD0_Landing_UP
+    def updateCD0_Takeoff_DOWN(self,CD0_Takeoff_DOWN):
+            self.CD0_Takeoff_DOWN = CD0_Takeoff_DOWN
+    def updateCD0_Takeoff_UP(self,CD0_Takeoff_UP):
+            self.CD0_Takeoff_UP = CD0_Takeoff_UP
+    def updateCD0_Cruise(self,CD0_Cruise):
+            self.CD0_Cruise = CD0_Cruise
+    def updateCD0_SL_clean(self, CD0_SL_clean):
+            self.CD0_SL_cruise = CD0_SL_clean
+    def updatee_Landing(self, e_Landing):
+            self.e_Landing = e_Landing
+    def updatee_Takeoff(self, e_Takeoff):
+            self.e_Takeoff = e_Takeoff
+    def updatee_Clean(self, e_Clean):
+            self.e_clean = e_Clean
             
     def updatealphaStall(self, alphaStall):
             self.alphaStall
