@@ -50,6 +50,7 @@ ft_per_meter=0.3048
 ro=0.379597 #kg/m^3
 V_cruise=0.77*296.535
 V_dive_EAS=166.89*1.5 #m/s #NOTE: 1.5 is chosen as the safety factor
+print('V_dive_EAS [kts]: ',V_dive_EAS*1.94384)
 CL_alpha=5.76 #1/rad
 W_over_S=MTOW/63.1*9.81 #N/m^2
 
