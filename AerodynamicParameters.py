@@ -19,7 +19,6 @@ class Aerodynamics:
             self.CD0_Landing_UP = 0.0647
             self.CD0_Takeoff_DOWN = 0.0562
             self.CD0_Takeoff_UP = 0.0387
-            self.CD0_Clean_UP = 0.0192 #Zero lift drag coefficient, clean, at SEA LEVEL
             self.CD0_Cruise = 0.0192 #Zero lift drag coefficient, clean, at CRUISE
 
             self.e_Takeoff = 0.892    #for different flap configurations
@@ -72,8 +71,11 @@ class Aerodynamics:
             self.DeltaCDs = 0.58  # from graph for nose gear
 
             self.CD_excrFrac = 0.05
+            self.CD_cruise = 0.03267672670773851
 
-            self.LD = 1 / 2 * sqrt((pi * Planform.AR * self.e_Clean) / self.CD0_Cruise)  # Lift drag ratio
+            self.LD = 15.6  # Lift drag ratio
+            self.alphaStall = 19.32
+            self.alphaZeroLift = -1.0  # degrees
 
 
 
@@ -85,11 +87,14 @@ class Aerodynamics:
             self.CD0_Takeoff_DOWN = CD0_Takeoff_DOWN
     def updateCD0_Takeoff_UP(self,CD0_Takeoff_UP):
             self.CD0_Takeoff_UP = CD0_Takeoff_UP
-    def updateCD0_Clean_UP(self,CD0_Clean_UP):
-            self.CD0_Clean_UP = CD0_Clean_UP
     def updateCD0_Cruise(self,CD0_Cruise):
             self.CD0_Cruise = CD0_Cruise
-
+    def updatee_Landing(self, e_Landing):
+            self.e_Landing = e_Landing
+    def updatee_Takeoff(self, e_Takeoff):
+            self.e_Takeoff = e_Takeoff
+    def updatee_Clean(self, e_Clean):
+            self.e_clean = e_Clean
 
 
     def updateCf_nose_cr(self,Cf_nose_cr):
@@ -148,5 +153,14 @@ class Aerodynamics:
             self.S_eng = S_eng
     def updateS_tot(self, S_tot):
             self.S_tot = S_tot
+
+            
+    def updatealphaStall(self, alphaStall):
+            self.alphaStall
+    def updateLD(self, LD):
+            self.LD = LD
+            
+
+
 
 

@@ -16,19 +16,19 @@ def LiftCoefficient(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
 
     e = Aerodynamics.e_Landing
 
-    FlapClIncrease = 1.6
-    SlatClIncrease = 0.4
-    ClMaxAlpha = 8.2
+    Flap =  1.6
+    Slat = 0.4
+    alpha = 8.2
     CLValues = [] 
-    Cl = ClMaxAlpha * (1.0918 - 0.1143)/8.5 + 0.1143
+    Cl = alpha * (1.0918 - 0.1143)/8.5 + 0.1143
 
     for Wf in range(50,100,1):
         #ClTot = Slat[0] + (Flap[0] * Wf/100) + Cl #Maths
         SwfS_TE = (2*Cr - (Wf/100)*(Cr-Ct))/(Cr+Ct) * (Wf/100)
         SwfS_LE = 0.97
 
-        dCL_TE = 0.9 * SwfS_TE * FlapClIncrease * math.cos(math.radians(TE_Sweep))
-        dCL_LE = 0.9 * SwfS_LE * SlatClIncrease * math.cos(math.radians(LE_Sweep))
+        dCL_TE = 0.9 * SwfS_TE * Flap * math.cos(math.radians(TE_Sweep))
+        dCL_LE = 0.9 * SwfS_LE * Slat * math.cos(math.radians(LE_Sweep))
 
         dCL = dCL_LE + dCL_TE
         CL_wing = Cl / (1 + (Cl)/(math.pi * AR * e))
@@ -46,9 +46,12 @@ def LiftCoefficient(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
         FCHORD_2 = ("%.3f" % (W.MAC_flap(Wf/100 + 0.5)[1]*0.35) )
         DC = ("%.3f" % (float(FCHORD) * 0.5)) #I forgot what this does but dont delete it
         A = ("%.3f" % (float(Alpha_stall)))
-        if round(CLValues[ind], 3) >= 2.375 and Alpha_stall < ClMaxAlpha:
-            print("Max CL = " + CL + ",  Wing Fraction = " + WF + "%,  Stalling AOA = " + A +  "deg,  AOA = "+ str(ClMaxAlpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
-            return CL, WF, A, ClMaxAlpha, FCHORD, FCHORD_2, SwfS_TE
+
+        Planform.updateFlapAreaRatio(SwfS_TE)
+
+        if round(CLValues[ind], 3) >= 2.375 and Alpha_stall < alpha:
+            print("Max CL = " + CL + ",  Wing Fraction = " + WF + "%,  Stalling AOA = " + A +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
+            return CL, WF, A, alpha, FCHORD, FCHORD_2, SwfS_TE
         
 #Just input configuration here! ^^^^
 '''For iteration, change values of Cr and Ct. You can also iterate through alpha (8.2 value)
