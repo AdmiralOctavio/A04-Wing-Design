@@ -73,8 +73,14 @@ for i in range(1,nmax+1):
 
     Class2_Drag(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
     # print(Aerodynamics.CD0_Cruise)
-    print(Aerodynamics.S_W, Aerodynamics.S_HT, Aerodynamics.S_VT)
+    # print(Aerodynamics.S_W, Aerodynamics.S_HT, Aerodynamics.S_VT)
+    print(Aerodynamics.CD0_Landing_DOWN)
+    print(Aerodynamics.CD0_Landing_UP)
+    print(Aerodynamics.CD0_Takeoff_DOWN)
+    print(Aerodynamics.CD0_Takeoff_UP)
+    print(Aerodynamics.CD0_Clean_UP)
     print(Aerodynamics.CD0_Cruise)
+
 
 
     from undercarriage import Undercarriage
