@@ -67,8 +67,8 @@ def LiftCoefficient(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
             print("Max CL = " + CL + ",  Wing Fraction = " + WF + "%,  Stalling AOA = " + A +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
             print("Max CL(TF) = " + CL_TF + ",  Wing Fraction = " + WF + "%,  Stalling AOA (TF) = " + A_TF +  "deg,  AOA = "+ str(alpha) + "deg,  Flap Cr = " + FCHORD + "m,  Flap Ct = " + FCHORD_2 + "m \n")
 
-            Planform.updateCLMax_Landing(CLValues[ind])
-            Planform.updateCLMax_Takeoff(CLValues_Takeoff[ind])
+            Aerodynamics.updateCL_max_Landing(CLValues[ind])
+            Aerodynamics.updateCL_max_Takeoff(CLValues_Takeoff[ind])
 
             break        
 #Just input configuration here! ^^^^
