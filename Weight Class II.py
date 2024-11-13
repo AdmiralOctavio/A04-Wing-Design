@@ -50,6 +50,7 @@ ft_per_meter=0.3048
 ro=0.379597 #kg/m^3
 V_cruise=0.77*296.535
 V_dive_EAS=166.89*1.5 #m/s #NOTE: 1.5 is chosen as the safety factor
+print('V_dive_EAS [kts]: ',V_dive_EAS*1.94384)
 CL_alpha=5.76 #1/rad
 W_over_S=MTOW/63.1*9.81 #N/m^2
 #11799.298864687804
@@ -123,8 +124,7 @@ W_prop=1.15*1.18*N_e*W_e*0.453592**2
 W_ba=0.4*85.34
 W_APU=11.7*(W_ba**0.6)
 
-        #LOW_SUBSONIC
-W_INE_1=54.4+9.1*2+0.006*MTOW
+
 
         #HIGH_SUBSONIC
 W_INE_2=0.347*OEW**(5/9)*R_D**0.25
@@ -169,28 +169,44 @@ X_wing_group=(W_w*x_wing+W_n*x_nacelle+W_prop*x_prop)/W_wing_group
 
 X_OE=0.225*MAC
 X_LEMAC=X_fuselage_group-X_OE+W_wing_group/W_fuselage_group*((X_wing_group-X_OE))
-x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
+
+x_wing_cg_absolute=X_LEMAC+x_wing
+x_OEW_cg_absolute=X_LEMAC+X_OE
+
+#x_wg=(0.2+0.7*(0.6-0.2))*MAC+tan(sweep_le*3.14/180)*0.35*b/2-b/6*((1+2*taper)/1+taper)*tan(sweep_le*3.14/180)+X_LEMAC
 
 
 
-print("X_LEMAC: ",X_LEMAC)
+print("X_LEMAC position w.r.t. the fuselage nose: ",X_LEMAC)
 print('Horizontal tail root quarter chord position with respect to wing root quarter chord: ',l_t)
-print('Wing c.g. position w.r.t the fuselage nose: ',X_wing_group+X_LEMAC)
-print('OEW c.g. position w.r.t. the fuselage nose: ',X_OE+X_LEMAC)
+print('Wing c.g. position w.r.t the fuselage nose: ',x_wing_cg_absolute)
+print('OEW c.g. position w.r.t. the fuselage nose: ',x_OEW_cg_absolute)
 
-print('Airframe structural weight (simple formula) [kg], fraction of MTOW: ',M_structural_formula,M_structural_formula/MTOW) 
-print('Airframe structural weight (from build-up) [kg], fraction of MTOW: ',M_structural_buildup,M_structural_buildup/MTOW)
+
 print('Operating empty weight (old+new) [kg]: ',OEW,OEW_new) 
 print('Maximum manoeuvre load factor: ',n_max1)
 print('Maximum gust load factor: ',n_max2)
 print('Ultimate load factor: ',n_ult)
 
 
-
-print('W_w/MTOW:',W_w)
-print('W_tail/MTOW: ',W_tail)
-print('W_f/MTOW ',W_f)
-print('W_LG/MTOW: ', W_LG)
-print('W_sc/MTOW ',W_sc)
-print('W_n/MTOW: ',W_n)
-print('W_prop/MTOW: ',W_prop)
+print('Airframe structural weight (simple formula) [kg], fraction of MTOW: ',M_structural_formula,M_structural_formula/MTOW) 
+print('Airframe structural weight (from build-up) [kg], fraction of MTOW: ',M_structural_buildup,M_structural_buildup/MTOW)
+print('W_wing: ',W_w,W_w/MTOW)
+print('W_tail: ',W_tail,W_tail/MTOW)
+print('W_f: ',W_f,W_f/MTOW)
+print('W_LG: ', W_LG,W_LG/MTOW)
+print('W_sc: ',W_sc,W_sc/MTOW)
+print('W_n: ',W_n,W_n/MTOW)
+print('W_prop: ',W_prop,W_prop/MTOW)
+print('W_APU: ',W_APU)
+print('W_INE: ',W_INE_2)
+print('W_HPE: ',W_HPE)
+print('W_EL: ',W_EL)
+print('W_furnish: ',W_furnish)
+print('W_air condtioning: ',W_air_conditioning)
+print('W_misc: ',W_misc)
+print('W_airframe_services: ',W_airframe_services)
+print('OEW_new: ',OEW_new)
+print('W_fuel: ',W_fuel)
+print('W_pax: ',W_pax)
+print('MTOW_new: ',OEW_new+W_fuel+W_pax)

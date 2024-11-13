@@ -28,6 +28,10 @@ for i in range(1,11):
     #print(Planform.WingLoading)
     #print(Propulsion.Thrust_to_Weight)
 
+    from Tail_sizing_WP3 import horizontal_tail, vertical_tail
+    horizontal_tail(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+    vertical_tail(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+
     from Ailerons import AileronsFunction
     AileronsFunction(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
     #print(Planform.y1ail)

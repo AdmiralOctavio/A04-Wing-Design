@@ -6,6 +6,8 @@ import PlanformParameters
 # import aircraft_parameters.yaml
 
 #parameters imported from parameter files:
+
+#FIRST ITERATION VALUES:
 # S = 63.1 #m^2
 # C_r = 4.0044 #m
 # C_t = 1.4130 #m
@@ -16,7 +18,7 @@ import PlanformParameters
 # L = 31.92992 #m - fuselage length
 
 # OEW c.g. position w.r.t. the fuselage nose:  
-X_OEW_CG = 14.18468925225589 #m
+# X_OEW_CG = 14.18468925225589 #m
 # X_h = 31.628 #m 
 # X_v = 30.202 #m
 
@@ -40,7 +42,7 @@ def horizontal_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
     V_h = np.average(V_h_list)
     std_V_h = np.std(V_h_list)
     #HORIZONTAL TAIL AREA
-    S_h = (V_h*Planform.wing_area*Planform.MAC)/(Fuselage.X_h - X_OEW_CG)
+    S_h = (V_h*Planform.wing_area*Planform.MAC)/(Fuselage.X_h - Weight.OEWCG)
     #HORIZONTAL TAIL SPAN
     b_h = sqrt(A_h * S_h)
     #HORIZONTAL TAIL CHORDS AND MAC POSITIONS
@@ -51,6 +53,11 @@ def horizontal_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage,
     y_MAC_h = b_h/6 * ((1+2*taper_h)/(1+taper_h))
     sweep_htail_LE = atan(tan(radians(sweep_htail_c_over_4)) - 2*C_r_h/b_h*(taper_h-1))
     x_MAC_h = y_MAC_h * tan(sweep_htail_LE)
+
+    Planform.updateHT_area(S_h)
+    Planform.updateHT_span(b_h)
+    Planform.updateHT_cr(C_r_h)
+
     return sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h
 
 # sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h = horizontal_tail(S, C_MAC, X_OEW_CG, X_h)
@@ -75,7 +82,7 @@ def vertical_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, W
     V_v = np.average(V_v_list)
     std_V_v = np.std(V_v_list)
     #VERTICAL TAIL AREA
-    S_v = (V_v*Planform.wing_area*Planform.b)/(Fuselage.X_v - X_OEW_CG)
+    S_v = (V_v*Planform.wing_area*Planform.b)/(Fuselage.X_v - Weight.OEWCG)
     #VERTICAL TAIL SPAN
     b_v = sqrt(A_v * S_v)
     #VERTICAL TAIL CHORDS AND MAC POSITIONS
@@ -86,14 +93,19 @@ def vertical_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, W
     y_MAC_v = b_v/6 * ((1+2*taper_v)/(1+taper_v))
     sweep_vtail_LE = atan(tan(radians(sweep_vtail_c_over_4)) - 2*C_r_v/b_v*(taper_v-1))
     x_MAC_v = y_MAC_v * tan(sweep_vtail_LE)
+
+    Planform.updateVT_area(S_v)
+    Planform.updateVT_span(b_v)
+    Planform.updateHT_cr(C_r_v)
+
     return sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v 
 
 # sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v = vertical_tail(S, b, X_OEW_CG, X_v)
 
 #printing everything nicely :)
 def printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight):
-    sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h = horizontal_tail(Planform.wing_area, Planform.MAC, X_OEW_CG, Fuselage.X_h)
-    sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v = vertical_tail(Planform.wing_area, Planform.b, X_OEW_CG, Fuselage.X_v)
+    sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h = horizontal_tail(Planform.wing_area, Planform.MAC, Weight.OEWCG, Fuselage.X_h)
+    sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v = vertical_tail(Planform.wing_area, Planform.b, Weight.OEWCG, Fuselage.X_v)
     print("Horizontal tail parameters:")
     print("Horizontal tail area: ", S_h)
     print("Horizontal tail span: ", b_h)
@@ -115,21 +127,23 @@ def printing_stuff_for_tail(Planform, Miscellaneous, Propulsion, Aerodynamics, F
     print("Vertical tail taper ratio:", taper_v,"      ", "stdev: ", std_taper_v)
     print("Vertical tail volume:", V_v,"      ", "stdev: ", std_V_v)
     # print(sweep_htail_LE*180/pi, x_MAC_h)
-    print(sweep_vtail_LE*180/pi, x_MAC_v)
+    # print(sweep_vtail_LE*180/pi, x_MAC_v)
 
 def dcm_over_dalpha_function(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight):
     #I WROTE THIS FUNCTION SO WE CAN ACTUALLY CHECK (WITH NUMERICAL EVIDENCE TO IT!!) THAT THE STABILITY REQUIREMENT IS MET
-    planform = PlanformParameters.Planform()
-    A = planform.AR
+    # planform = PlanformParameters.Planform()
+    sweep_htail_c_over_4, std_sweep_h, A_h, std_A_h, taper_h, std_taper_h, V_h, std_V_h, S_h, b_h, C_avg_h, C_r_h, C_t_h, C_MAC_h, y_MAC_h, sweep_htail_LE, x_MAC_h = horizontal_tail(Planform.wing_area, Planform.MAC, Weight.OEWCG, Fuselage.X_h)
+    sweep_vtail_c_over_4, std_sweep_v, A_v, std_A_v, taper_v, std_taper_v, V_v, std_V_v, S_v, b_v, C_avg_v, C_r_v, C_t_v, C_MAC_v, y_MAC_v, sweep_vtail_LE, x_MAC_v = vertical_tail(Planform.wing_area, Planform.b, Weight.OEWCG, Fuselage.X_v)
+    A = Planform.AR
     mach_infty = 0.77
-    LEsweep = planform.sweep_le
-    C_r = planform.c_r
-    C_t = planform.c_r * planform.taper
-    b = planform.b
+    LEsweep = Planform.sweep_le
+    C_r = Planform.c_r
+    C_t = Planform.c_t
+    b = Planform.b
     Cl_alpha = 5.76
     dcL_over_dalpha = Airfoil_selection.dCLdalpha(A, mach_infty, LEsweep, C_r, C_t, b, Cl_alpha)
     dcLH_over_dalpha = 2*pi
-    dcm_over_dalpha = dcL_over_dalpha * (X_OEW_CG - (X_LEMAC + C_MAC*0.25))/C_MAC - dcLH_over_dalpha * V_h 
+    dcm_over_dalpha = dcL_over_dalpha * (Weight.OEWCG - (Weight.XLEMAC + Planform.MAC*0.25))/Planform.MAC - dcLH_over_dalpha * V_h 
     return dcm_over_dalpha
 
 # dcm_over_dalpha = dcm_over_dalpha_function(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight) *pi/180
