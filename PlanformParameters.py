@@ -36,26 +36,26 @@ class Planform:
 
             self.l_t = 15.96
 
-            self.HT_area = 12.001354834160356
-            self.HT_span = 7.183719495281641
-            self.HT_cr = 2.3365488682002415
-            self.HT_ct = 1.004716013326104
-            self.HT_MAC = 1.7591108472058603
-            self.HT_AR = 4.3
-            self.HT_taper = 0.43
+            self.HT_area = 12.001354834160356 #m^2
+            self.HT_span = 7.183719495281641 #m
+            self.HT_cr = 2.3365488682002415 #m
+            self.HT_ct = 1.004716013326104 #m
+            self.HT_MAC = 1.7591108472058603 #m
+            self.HT_AR = 4.3 #-
+            self.HT_taper = 0.43 #-
             self.HT_quarter_sweep = 26.6 #deg
 
-            self.VT_area = 7.047964254292777
-            self.VT_span = 2.908187952
-            self.VT_cr = 2.8511646488775373
-            self.VT_ct = 1.995815254214276
-            self.HT_MAC = 2.4486472866830615
-            self.VT_AR = 1.2
-            self.VT_taper = 0.7
+            self.VT_area = 7.047964254292777 #m^2
+            self.VT_span = 2.908187952 #m
+            self.VT_cr = 2.8511646488775373 #m
+            self.VT_ct = 1.995815254214276 #m
+            self.HT_MAC = 2.4486472866830615 #m
+            self.VT_AR = 1.2 #-
+            self.VT_taper = 0.7 #-
             self.VT_quarter_sweep = 39.5 #deg
 
-            self.FlapAreaRatio = 0.7768427586206897
-            self.FlapChordRatio = 0.35
+            self.FlapAreaRatio = 0.7768427586206897 #-
+            self.FlapChordRatio = 0.35 #-
             self.FlapDeflectionTO = 15 #deg
             self.FlapDeflectionL = 35 #deg
 

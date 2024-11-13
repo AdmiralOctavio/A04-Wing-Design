@@ -4,7 +4,8 @@ from math import sqrt,atan,tan,radians,cos,fabs, e
 
 
 MaxNumberOfIterations = 10
-ft_per_meter = 0.3048
+meter_per_feet = 0.3048
+lbs_per_kg = 1
 
 
 
@@ -28,7 +29,7 @@ def CalculateWingWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselag
     Weight.updateWingGroupWeight(WingWeight)
 def CalculateHoriTailWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     n_ult = CalculateLoadFactor(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-    Hori_Tail_Weight = Planform.HT_area * ((3.81*((Planform.HT_area)**0.2)*486.611)/(1000*cos(radians(Planform.HT_quarter_sweep))**(1/2)) - 0.287)
+    Hori_Tail_Weight = (Planform.HT_area/(meter_per_feet**2)) * ((3.81*((Planform.HT_area/(meter_per_feet**2))**0.2)*486.611)/(1000*cos(radians(Planform.HT_quarter_sweep))**(1/2)) - 0.287)
     Weight.updateHori_Tail_Weight(Hori_Tail_Weight)
 
 def CalculateAirframeStructuralWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
@@ -93,7 +94,7 @@ def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsio
 
     Weight.updateAirframeServicesAndEquipmentWeight(W_airframe_services)
 def CalculateLoadFactor(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
-    u_hat = Miscellaneous.GustVelocity * ft_per_meter  # m/s
+    u_hat = Miscellaneous.GustVelocity * meter_per_feet  # m/s
 
     mu = 2 * Planform.WingLoading / Miscellaneous.densityFL / 9.81 / Aerodynamics.CL_alpha / Planform.MAC
 
