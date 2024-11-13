@@ -18,7 +18,7 @@ Fuselage = FuselageParameters.Fuselage()
 Weight = WeightParameters.Weight()
 
 
-nmax = 2
+nmax = 10
 for i in range(1,nmax+1):
     #Wing_parametersFunction(Planform,Miscellaneous)
     #print (Planform.b)

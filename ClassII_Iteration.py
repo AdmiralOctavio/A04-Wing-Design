@@ -77,7 +77,7 @@ def CalculateNacelleWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuse
 def CalculatePropulsionGroup(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     EngineWeight = 1040
     NoEngines = 2
-    PropulsionWeight = 1.15*1.18*EngineWeight * NoEngines*0.453592**2
+    PropulsionWeight = 1.15*1.18*EngineWeight * NoEngines
     Weight.updatePropulsionWeight(PropulsionWeight)
 
 def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
