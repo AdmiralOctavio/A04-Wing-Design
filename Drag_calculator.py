@@ -143,28 +143,28 @@ def Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
         Cf_fus = (Cf_nose*S_nose + Cf_cyl*S_cyl + Cf_cone*S_cone)/S_fus
 
         #Printing
-        print('\n')
-        if case == 0:
-            print('Cruise','Cf\t\t','Swet')
-        if case == 1:
-            print('Approach','Cf\t\t','Swet')
-        print('\n')
-        print('Nose\t',round(Cf_nose,prec1), '\t', round(S_nose,prec2))
-        print('Cylinder',round(Cf_cyl,prec1), '\t', round(S_cyl,prec2))
-        print('Cone\t',round(Cf_cone,prec1), '\t', round(S_cone,prec2))
-        print('Fuselage',round(Cf_fus,prec1), '\t', round(S_fus,prec2))
-        print('Wing\t',round(Cf_W,prec1), '\t', round(S_W,prec2))
-        print('H tail\t',round(Cf_HT,prec1), '\t', round(S_HT,prec2))
-        print('V tail\t',round(Cf_VT,prec1), '\t', round(S_VT,prec2))
-        print('Engines\t',round(Cf_eng,prec1), '\t', round(S_eng,prec2))
-        print('Stot =', round(S_tot,prec2))
+        # print('\n')
+        # if case == 0:
+        #     print('Cruise','Cf\t\t','Swet')
+        # if case == 1:
+        #     print('Approach','Cf\t\t','Swet')
+        # print('\n')
+        # print('Nose\t',round(Cf_nose,prec1), '\t', round(S_nose,prec2))
+        # print('Cylinder',round(Cf_cyl,prec1), '\t', round(S_cyl,prec2))
+        # print('Cone\t',round(Cf_cone,prec1), '\t', round(S_cone,prec2))
+        # print('Fuselage',round(Cf_fus,prec1), '\t', round(S_fus,prec2))
+        # print('Wing\t',round(Cf_W,prec1), '\t', round(S_W,prec2))
+        # print('H tail\t',round(Cf_HT,prec1), '\t', round(S_HT,prec2))
+        # print('V tail\t',round(Cf_VT,prec1), '\t', round(S_VT,prec2))
+        # print('Engines\t',round(Cf_eng,prec1), '\t', round(S_eng,prec2))
+        # print('Stot =', round(S_tot,prec2))
 
         #Check overal values
         S_ref = (cr+ct)*b/2
         Cf = (S_nose*Cf_nose + S_fus*Cf_fus + S_cone*Cf_cone + S_W*Cf_W + S_HT*Cf_HT + S_VT*Cf_VT + S_eng*Cf_eng)/S_tot
         CD = Cf*S_tot/S_ref
-        print('Cf =', round(Cf,prec1))
-        print('CD0 =', round(CD,prec1))
+        # print('Cf =', round(Cf,prec1))
+        # print('CD0 =', round(CD,prec1))
 
         if case == 1:
             Cf_nose_app = Cf_nose
