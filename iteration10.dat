@@ -1,53 +1,53 @@
-{'WingLoading': 4000.0
- 'wing_area': 64.96300294150561
- 'MAC': 2.9938985040173507
- 'yMAC': 4.90698290063606
+{'WingLoading': np.float64(4050.0)
+ 'wing_area': np.float64(64.06581759661843)
+ 'MAC': np.float64(2.973152708074104)
+ 'yMAC': 4.8729806571341525
  'xMAC': 1.446
- 'c_r': 4.11383542977537
- 'c_t': 1.44807007128093
+ 'c_r': np.float64(4.08532918941495)
+ 'c_t': np.float64(1.4380358746740625)
  'taper': 0.352
- 'b': 23.360003104436455
+ 'b': 23.19813326917385
  't_over_c': 0.1
- 't_r': 0.411383542977537
+ 't_r': np.float64(0.408532918941495)
  'sweep_le': 16.46
- 'sweep_half': 10.278190690088145
- 'sweep_quarter_chord': 13.408801194695853
- 'sweep_te': 3.845691766514737
- 'b_s': 23.740973878567697
+ 'sweep_half': 10.278190690088149
+ 'sweep_quarter_chord': 13.408801194695855
+ 'sweep_te': 3.84569176651474
+ 'b_s': 23.57646416024631
  'b_ref': 1.905
- 'AR': 8.4
- 'dihedral': -0.3408801194695854
- 'y1ail': 0.667
- 'y2ail': 0.9
+ 'AR': np.float64(8.4)
+ 'dihedral': -0.34088011946958563
+ 'y1ail': np.float64(0.661)
+ 'y2ail': np.float64(0.89)
  'xc_m': 0.35
  'beta': 0.6380438856379709
- 'CL_alpha': 3.832766272170569
+ 'CL_alpha': np.float64(3.8327662721705518)
  'xc_mHT': 0.3
  'xc_mVT': 0.3
  't_c_HT': 0.12
  't_c_VT': 0.12
  'l_t': 15.96
- 'HT_area': 11.691633759085663
- 'HT_span': 7.090417841288929
- 'HT_cr': 2.903374346838981
- 'HT_ct': 1.004716013326104
- 'HT_MAC': 1.7591108472058603
+ 'HT_area': np.float64(11.435172411258264)
+ 'HT_span': 7.012220858502
+ 'HT_cr': np.float64(2.2807678837215812)
+ 'HT_ct': np.float64(0.9807301900002799)
+ 'HT_MAC': np.float64(1.7171151773529052)
  'HT_AR': 4.3
  'HT_taper': 0.43
  'HT_quarter_sweep': 26.6
- 'VT_area': 7.3084481123642835
- 'VT_span': 2.9614418337757606
- 'VT_cr': 2.8511646488775373
- 'VT_ct': 1.995815254214276
- 'VT_MAC': 2.4486472866830615
+ 'VT_area': np.float64(7.146371064644533)
+ 'VT_span': 2.928420269970388
+ 'VT_cr': np.float64(2.871000264676851)
+ 'VT_ct': np.float64(2.0097001852737955)
+ 'VT_MAC': np.float64(2.465682580251884)
  'VT_AR': 1.2
  'VT_taper': 0.7
  'VT_quarter_sweep': 39.5
- 'FlapAreaRatio': 0.7329207100591717
+ 'FlapAreaRatio': np.float64(0.7329207100591717)
  'FlapChordRatio': 0.35
  'FlapDeflectionTO': 15
  'FlapDeflectionL': 35
- 'xmAC': 1.4497104219627286}
+ 'xmAC': 1.4396648587779781}
 
 {'densitySL': 1.225
  'densityFL': 0.379597
@@ -57,7 +57,7 @@
  'Velocity': 228.1664
  'EASVelocity': 127.01208096693715
  'V_dive_EAS': 250.33499999999998
- 'V_stall': 53.28598904230365
+ 'V_stall': 53.61799218610494
  'Range': 2963
  'fcon': 0.05
  'Rdiv': 250
@@ -65,10 +65,11 @@
  'tE': 2700
  'hCR': 10668
  'Mpl': 7200
- 'Rlost': 260.6659113723815
- 'WingloadStartCr': 4000.0000000000005
- 'WingloadEndCr': 3399.8407312507998
- 'CL_cruise': 0.4118972625990307}
+ 'Rlost': np.float64(259.3999493820579)
+ 'nose_gear_load_ratio': 0.15
+ 'WingloadStartCr': np.float64(4050.0000000000005)
+ 'WingloadEndCr': np.float64(3439.8344205932854)
+ 'CL_cruise': np.float64(0.4169065804529694)}
 
 {'CL_alpha': 5.76
  'cd0airfoil': 0.00486
@@ -77,42 +78,42 @@
  'CL_max_Landing': 2.3
  'CL_max_Takeoff': 1.9
  'CL_max_Cruise': 1.5
- 'CD0_Landing_DOWN': 0.16119545129028504
- 'CD0_Landing_UP': 0.07056898900891331
- 'CD0_Takeoff_DOWN': 0.1213318938701667
- 'CD0_Takeoff_UP': 0.030705431588794956
- 'CD0_Clean_UP': 0.020739542233765368
- 'CD0_Cruise': 0.02126916164837107
- 'e_Takeoff': 0.6059687486906913
- 'e_Landing': 0.6075744516025261
+ 'CD0_Landing_DOWN': np.float64(0.1626592470939562)
+ 'CD0_Landing_UP': np.float64(0.07076364103407586)
+ 'CD0_Takeoff_DOWN': np.float64(0.12279568967383789)
+ 'CD0_Takeoff_UP': np.float64(0.030900083613957505)
+ 'CD0_Clean_UP': np.float64(0.02093419425892792)
+ 'CD0_Cruise': np.float64(0.021477270048384747)
+ 'e_Takeoff': np.float64(0.6059687486906913)
+ 'e_Landing': np.float64(0.6075744516025261)
  'e_Clean': 0.8280596821832961
- 'Cf_nose_app': 0.004490774336783928
- 'Cf_cyl_app': 0.0016346617034014561
- 'Cf_cone_app': 0.0018951415912761567
- 'Cf_fus_app': 0.0020531594434243837
- 'Cf_W_app': 0.002625259851175739
- 'Cf_HT_app': 0.002781800429303175
- 'Cf_VT_app': 0.001348329256110362
- 'Cf_eng_app': 0.006083053492762884
- 'Cf_tot_app': 0.002853858256776403
+ 'Cf_nose_app': 0.004485199127007872
+ 'Cf_cyl_app': 0.0016326323024060201
+ 'Cf_cone_app': np.float64(0.00189278880952087)
+ 'Cf_fus_app': np.float64(0.002050610485551568)
+ 'Cf_W_app': np.float64(0.0026254648225053)
+ 'Cf_HT_app': np.float64(0.0028693622442865475)
+ 'Cf_VT_app': np.float64(0.0013453647411058689)
+ 'Cf_eng_app': 0.006075501499107062
+ 'Cf_tot_app': np.float64(0.002858599977480958)
  'Cf_nose_cr': 0.004166210777196164
  'Cf_cyl_cr': 0.0015165191334593363
- 'Cf_cone_cr': 0.001758173252486747
- 'Cf_fus_cr': 0.0019047706161567284
- 'Cf_W_cr': 0.002353339989349985
- 'Cf_HT_cr': 0.002490202283207436
- 'Cf_VT_cr': 0.001207934405757971
+ 'Cf_cone_cr': np.float64(0.001758173252486747)
+ 'Cf_fus_cr': np.float64(0.0019047706161567284)
+ 'Cf_W_cr': np.float64(0.0023559386372548584)
+ 'Cf_HT_cr': np.float64(0.0025694088426785975)
+ 'Cf_VT_cr': np.float64(0.0012065925041285287)
  'Cf_eng_cr': 0.005643410494315579
- 'Cf_tot_cr': 0.002614090205304044
+ 'Cf_tot_cr': np.float64(0.002622181927984862)
  'S_nose': 32.6458877030629
  'S_cyl': 177.39410832377482
  'S_cone': 33.78775608238884
  'S_fus': 243.82775210922654
- 'S_W': 139.0209588552454
- 'S_HT': 29.64969316813966
- 'S_VT': 15.35883248616053
+ 'S_W': np.float64(137.1009819706084)
+ 'S_HT': np.float64(24.471268960092686)
+ 'S_VT': np.float64(15.293234078339301)
  'S_eng': 12.893096250332512
- 'S_tot': 440.7503328691046
+ 'S_tot': np.float64(433.58633336859947)
  'IFtail': 1.04
  'IFwing': 1.0
  'IFfuselage': 1.0
@@ -128,10 +129,10 @@
  'DeltaCDs': 0.58
  'CD_excrFrac': 0.05
  'CD_cruise': 0.03267672670773851
- 'LD': 13.696277052529174
+ 'LD': np.float64(13.62975908680763)
  'alphaStall': 19.32
  'alphaZeroLift': -1.0
- 'e_clean': 0.6047644715068152}
+ 'e_clean': np.float64(0.6047644715068152)}
 
 {'b_f': 2.9
  'h_f': 2.9
@@ -153,28 +154,28 @@
  'ef': 44
  'TSFC': 15.6521479098578
  'nj': 0.3313027726203689
- 'Thrust_to_Weight': 0.45
- 'Thrust': 116933.4052947101
+ 'Thrust_to_Weight': 0.445
+ 'Thrust': np.float64(115462.61976350559)
  'l_nac': 1.9
  'd_nacelle': 1.08}
 
-{'MTOW': 26497.53093727445
- 'M_fuel': 3975.684697743487
+{'MTOW': np.float64(26458.225924888182)
+ 'M_fuel': np.float64(3986.147839884733)
  'M_Payload': 7255
- 'OE_MTOW': 0.5761610874489017
- 'OEW': 15266.846239530962
- 'MZFW': 22521.84623953096
- 'AirframeStructuralWeight': 8468.596011442813
- 'WingGroupWeight': 2026.0851663436858
+ 'OE_MTOW': np.float64(0.5751359946884934)
+ 'OEW': np.float64(15217.078085003448)
+ 'MZFW': np.float64(22472.07808500345)
+ 'AirframeStructuralWeight': np.float64(8433.838462067895)
+ 'WingGroupWeight': np.float64(1999.0162441167115)
  'BodyGroupWeight': 3613.4789492435534
- 'HoriTailWeight': 274.68709229700335
- 'VertTailWeight': 258.11982609686726
- 'LandingGearWeight': 1169.3013713350674
- 'SurfaceControlsWeight': 524.2371522618295
- 'NacelleWeight': 312.4960673492596
+ 'HoriTailWeight': np.float64(268.03732757893596)
+ 'VertTailWeight': np.float64(251.06541182015783)
+ 'LandingGearWeight': np.float64(1167.700774308789)
+ 'SurfaceControlsWeight': np.float64(523.7186109879597)
+ 'NacelleWeight': np.float64(312.0325310941009)
  'PropulsionWeight': 2822.5599999999995
- 'AirframeServicesAndEquipmentWeight': 4265.880614603696
- 'W_nose': 457.91343346055885
- 'XLEMAC': 13.72851801901085
- 'WingCG': 15.496873883726483
- 'OEWCG': 14.402145182414753}
+ 'AirframeServicesAndEquipmentWeight': np.float64(4259.468235853241)
+ 'W_nose': np.float64(457.3940472193675)
+ 'XLEMAC': np.float64(13.708196282593493)
+ 'WingCG': np.float64(15.464298575628188)
+ 'OEWCG': np.float64(14.377155641910166)}
