@@ -49,11 +49,7 @@ for i in range(1,nmax+1):
     SAR(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
     # print(Planform.b)
 
-    from Class2Drag import Class2_Drag
-    Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
-    #print(Aerodynamics.CD0_Cruise)
-    print(Aerodynamics.S_W,Aerodynamics.S_HT,Aerodynamics.S_VT)
-    print(Aerodynamics.CD0_Cruise)
+
 
 
     ClassII_Iteration.ClassIIWeightEstimation(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
@@ -73,6 +69,8 @@ for i in range(1,nmax+1):
 
     Class2_Drag(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight)
     # print(Aerodynamics.CD0_Cruise)
+    print(Aerodynamics.S_W, Aerodynamics.S_HT, Aerodynamics.S_VT)
+    print(Aerodynamics.CD0_Cruise)
 
 
     from undercarriage import Undercarriage
