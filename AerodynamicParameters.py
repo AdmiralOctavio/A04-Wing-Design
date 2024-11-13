@@ -10,6 +10,7 @@ class Aerodynamics:
             self.cd0airfoil = 0.00486
             self.clCruiseAirfoil = 0.4756492527004301
             self.clCruise = 0.37594287624283806
+            self.CL_max_wing = 1.4921436593032642
 
             self.CL_max_Landing = 2.3
             self.CL_max_Takeoff = 1.9
@@ -19,8 +20,8 @@ class Aerodynamics:
             self.CD0_Landing_UP = 0.0647
             self.CD0_Takeoff_DOWN = 0.0562
             self.CD0_Takeoff_UP = 0.0387
-            self.CD0_Clean_UP = 0.0192  # Zero lift drag coefficient, clean, at CRUISE
             self.CD0_Cruise = 0.0192 #Zero lift drag coefficient, clean, at CRUISE
+            self.CD0_Clean_UP = 0.026470848979104598
 
             self.e_Takeoff = 0.892    #for different flap configurations
             self.e_Landing = 0.984
@@ -61,8 +62,8 @@ class Aerodynamics:
             self.IFfuselage = 1.0
             self.IFnacelle = 1.3
 
-            self.S_Anose = 0.26711  # m^2 (frontal area of nose gear)
-            self.S_Agear = 0.80149  # m^2 (frontal area of landing gear)
+            self.S_Anose = 0.17057  # m^2 (frontal area of nose gear)
+            self.S_Agear = 0.55643  # m^2 (frontal area of landing gear)
             self.D_nose = 18*0.0254  # m tire diameter
             self.D_main = 33*0.0254  # m tire diameter
             self.W_nose = 4.25*0.0254  # m tire width
@@ -80,26 +81,8 @@ class Aerodynamics:
 
 
 
-    def updateCD0_Landing_DOWN(self,CD0_Landing_DOWN):
-            self.CD0_Landing_DOWN = CD0_Landing_DOWN
-    def updateCD0_Landing_UP(self,CD0_Landing_UP):
-            self.CD0_Landing_UP = CD0_Landing_UP
-    def updateCD0_Takeoff_DOWN(self,CD0_Takeoff_DOWN):
-            self.CD0_Takeoff_DOWN = CD0_Takeoff_DOWN
-    def updateCD0_Takeoff_UP(self,CD0_Takeoff_UP):
-            self.CD0_Takeoff_UP = CD0_Takeoff_UP
-    def updateCD0_Clean_UP(self,CD0_Clean_UP):
-            self.CD0_Clean_UP = CD0_Clean_UP
-    def updateCD0_Cruise(self,CD0_Cruise):
-            self.CD0_Cruise = CD0_Cruise
-    def updatee_Landing(self, e_Landing):
-            self.e_Landing = e_Landing
-    def updatee_Takeoff(self, e_Takeoff):
-            self.e_Takeoff = e_Takeoff
-    def updatee_Clean(self, e_Clean):
-            self.e_clean = e_Clean
-
-
+    def updateCL_max_wing(self, CL_max_wing):
+            self.CL_max_wing = CL_max_wing
     def updateCf_nose_cr(self,Cf_nose_cr):
             self.Cf_nose_cr = Cf_nose_cr
     def updateCf_cyl_cr(self, Cf_cyl_cr):
@@ -157,9 +140,27 @@ class Aerodynamics:
     def updateS_tot(self, S_tot):
             self.S_tot = S_tot
 
+    def updateCD0_Landing_DOWN(self,CD0_Landing_DOWN):
+            self.CD0_Landing_DOWN = CD0_Landing_DOWN
+    def updateCD0_Landing_UP(self,CD0_Landing_UP):
+            self.CD0_Landing_UP = CD0_Landing_UP
+    def updateCD0_Takeoff_DOWN(self,CD0_Takeoff_DOWN):
+            self.CD0_Takeoff_DOWN = CD0_Takeoff_DOWN
+    def updateCD0_Takeoff_UP(self,CD0_Takeoff_UP):
+            self.CD0_Takeoff_UP = CD0_Takeoff_UP
+    def updateCD0_Cruise(self,CD0_Cruise):
+            self.CD0_Cruise = CD0_Cruise
+    def updateCD0_Clean_UP(self, CD0_Clean_UP):
+            self.CD0_Clean_UP = CD0_Clean_UP
+    def updatee_Landing(self, e_Landing):
+            self.e_Landing = e_Landing
+    def updatee_Takeoff(self, e_Takeoff):
+            self.e_Takeoff = e_Takeoff
+    def updatee_Clean(self, e_Clean):
+            self.e_clean = e_Clean
             
     def updatealphaStall(self, alphaStall):
-            self.alphaStall
+            self.alphaStall = alphaStall
     def updateLD(self, LD):
             self.LD = LD
             

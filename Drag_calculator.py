@@ -231,7 +231,7 @@ def Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
                      [Cf_tot_cr, Cf_tot_app, S_tot]])
 
             
-#Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
+Cf_Calculator(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight)
 
 
 #Note on the obtained values
