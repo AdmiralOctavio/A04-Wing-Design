@@ -8,7 +8,7 @@ class Fuselage:
             self.fineness = 4.5
             self.l_f = 31.93
             self.S_f_wet = 3.14 * self.b_f * self.l_f * (1 - 2 / self.fineness) ** 0.666667 * (1 + 1 / self.fineness ** 2)
-            self.upsweep = radians(8.641)
+            self.upsweep = radians(5.0)
             self.tc_ratio = 2.5
             self.nc_ratio = 1.8
             self.d_fus_outer = 2.9046338716900144
