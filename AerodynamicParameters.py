@@ -74,6 +74,7 @@ class Aerodynamics:
             self.LD = 15.6  # Lift drag ratio
             self.alphaStall = 19.32
             self.alphaZeroLift = -1.0  # degrees
+            self.CDcruise = 0.027924055418342905
 
 
 
@@ -169,8 +170,12 @@ class Aerodynamics:
     def updateCL_max_Cruise(self, CL_max_Cruise):
         self.CL_max_Cruise = CL_max_Cruise
 
+    def updateCDcruise(self, CDcruise):
+            self.CDcruise = CDcruise
+
     def updatestrut(self, strut):
         self.strut = strut
+
 
 
 
