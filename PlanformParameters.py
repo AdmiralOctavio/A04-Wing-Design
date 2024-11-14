@@ -77,7 +77,7 @@ class Planform:
 
     def updateyMAC(self, yMAC): self.yMAC = yMAC
 
-    def updatexMAC(self, xMAC): self.xmAC = xMAC
+    def updatexMAC(self, xMAC): self.xMAC = xMAC
 
     def updateTaper(self, Taper): self.Taper = Taper
 

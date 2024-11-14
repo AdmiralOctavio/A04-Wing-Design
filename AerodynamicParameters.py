@@ -154,7 +154,7 @@ class Aerodynamics:
     def updatee_Takeoff(self, e_Takeoff):
             self.e_Takeoff = e_Takeoff
     def updatee_Clean(self, e_Clean):
-            self.e_clean = e_Clean
+            self.e_Clean = e_Clean
             
     def updatealphaStall(self, alphaStall):
             self.alphaStall = alphaStall

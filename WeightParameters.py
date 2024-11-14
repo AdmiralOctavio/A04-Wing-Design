@@ -72,8 +72,6 @@ class Weight:
     def updateM_Payload(self,M_Payload):
         self.M_Payload = M_Payload
 
-    def updateOE_MTOW(self,OE_MTOW):
-        self.OE_MTOW = OE_MTOW
 
     def updateMZFW(self,MZFW):
         self.MZFW = MZFW
