@@ -176,7 +176,7 @@ for i in range(1,nmax+1):
     #print(Miscellaneous.V_stall)
     #print(Planform.WingLoading)
     #print(Propulsion.Thrust_to_Weight)
-    #plt.show()
+    plt.show()
 
     Planform.updatePlanformDependencies(Weight)
     Propulsion.updatePropulsionDependencies(Miscellaneous,Weight)
