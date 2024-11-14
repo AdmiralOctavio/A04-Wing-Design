@@ -22,7 +22,7 @@ Weight = WP.Weight()
 # HLD ref values
 
 def GearSA(D, W, L, W_s):
-    SA = 2*D*W*0.0254**2+W_s*(L-D/2*0.0254)
+    return 2*D*W+W_s*(L-D/2)
 
 def Croot(taper, b, A):
     return 2*b/(A*(1+taper))
@@ -57,7 +57,7 @@ def Swet_tail(S_exp_tail):
     return 1.05*2*S_exp_tail
 
 def Fuselage_S_wet(L1, L2, L3, D):
-    Swet = math.pi*D/4*(1/(3*L1**2)*((4*L1**2+D**2/4)**1.5-D**3/8)+4*L2+2*math.sqrt(L3**2+D**2/4))
+    Swet = math.pi*D/4*(1/(3*L1**2)*((4*L1**2+D**2/4)**1.5-D**3/8)-D+4*L2+2*math.sqrt(L3**2+D**2/4))
     return Swet 
 
 # Form Factors FF
@@ -217,7 +217,7 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     e = Aerodynamics.strut  # m nose gear strut length
     DeltaCD_s = Aerodynamics.DeltaCDs  # from graph for nose gear
     S_A_nose = GearSA(d_nose, w_nose, Aerodynamics.strut, W_s=0.05)  # m^2 (frontal area of nose gear)
-    S_A_gear = GearSA(d_main, w_main, Aerodynamics.strut, W_s=0.07)  # m^2 (frontal area of landing gear)
+    S_A_gear = GearSA(d_main, w_main, Aerodynamics.strut, W_s=0.05)  # m^2 (frontal area of landing gear)
 
     # Tail
     A_HT = float(Planform.HT_AR)  # AR
