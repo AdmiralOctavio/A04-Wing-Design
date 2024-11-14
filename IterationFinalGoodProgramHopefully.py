@@ -7,6 +7,7 @@ import WeightParameters
 import ClassII_Iteration
 
 import matplotlib.pyplot as plt
+import xlwt
 
 #from Wing_parameters import Wing_parametersFunction
 
@@ -18,70 +19,137 @@ Fuselage = FuselageParameters.Fuselage()
 Weight = WeightParameters.Weight()
 
 
+#g = open("iteration" + str(0)+ ".dat", "w")  # Open file for writing
+
 nmax = 10
+
+
+book = xlwt.Workbook(encoding="utf-8")
+
+sheet1 = book.add_sheet("Iteration Parameters")
+
+sheet1.write(0, 0, "Variable")
+
+for i in range(0,nmax+1):
+    sheet1.write(0,i+1,"Value"+str(i))
+
+
+PlanformData = vars(Planform)
+PlanformDataString = str(PlanformData)
+PlanformDataSplit = PlanformDataString.replace(':',',').replace("'",'').replace('{','').replace('}','').split(',')
+
+MiscellaneousData = vars(Miscellaneous)
+MiscellaneousDataString = str(MiscellaneousData)
+MiscellaneousDataSplit = MiscellaneousDataString.replace(':',',').replace("'",'').replace('{','').replace('}','').split(',')
+
+AerodynamicsData = vars(Aerodynamics)
+AerodynamicsDataString = str(AerodynamicsData)
+AerodynamicsDataSplit = AerodynamicsDataString.replace(':',',').replace("'",'').replace('{','').replace('}','').split(',')
+
+FuselageData = vars(Fuselage)
+FuselageDataString = str(FuselageData)
+FuselageDataSplit = FuselageDataString.replace(':',',').replace("'",'').replace('{','').replace('}','').split(',')
+
+WeightData = vars(Weight)
+WeightDataString = str(WeightData)
+WeightDataSplit = WeightDataString.replace(':',',').replace("'",'').replace('{','').replace('}','').split(',')
+
+PropulsionData = vars(Propulsion)
+PropulsionDataString = str(PropulsionData)
+PropulsionDataSplit = PropulsionDataString.replace(':',',').replace("'",'').replace('{','').replace('}','').split(',')
+
+row = 1
+for j in range(0,len(PlanformDataSplit)):
+    if (j%2 == 0):
+        sheet1.write(row, 0, PlanformDataSplit[j])
+        row += 1
+for j in range(0,len(MiscellaneousDataSplit)):
+    if(j%2 == 0):
+        sheet1.write(row, 0, MiscellaneousDataSplit[j])
+        row += 1
+for j in range(0,len(AerodynamicsDataSplit)):
+    if (j%2 == 0):
+        sheet1.write(row, 0, AerodynamicsDataSplit[j])
+        row += 1
+for j in range(0,len(FuselageDataSplit)):
+    if (j%2 == 0):
+        sheet1.write(row, 0, FuselageDataSplit[j])
+        row += 1
+for j in range(0,len(WeightDataSplit)):
+    if (j%2 == 0):
+        sheet1.write(row, 0, WeightDataSplit[j])
+        row += 1
+for j in range(0,len(PropulsionDataSplit)):
+    if (j%2 == 0):
+        sheet1.write(row, 0, PropulsionDataSplit[j])
+        row += 1
+row = 1
+
+
+
+for j in range(0,len(PlanformDataSplit)):
+    if (j%2 != 0):
+        sheet1.write(row, 1, PlanformDataSplit[j])
+        row += 1
+for j in range(0,len(MiscellaneousDataSplit)):
+    if(j%2 != 0):
+        sheet1.write(row, 1, MiscellaneousDataSplit[j])
+        row += 1
+for j in range(0,len(AerodynamicsDataSplit)):
+    if (j%2 != 0):
+        sheet1.write(row, 1, AerodynamicsDataSplit[j])
+        row += 1
+for j in range(0,len(FuselageDataSplit)):
+    if (j%2 != 0):
+        sheet1.write(row, 1, FuselageDataSplit[j])
+        row += 1
+for j in range(0,len(WeightDataSplit)):
+    if (j%2 != 0):
+        sheet1.write(row, 1, WeightDataSplit[j])
+        row += 1
+for j in range(0,len(PropulsionDataSplit)):
+    if (j%2 != 0):
+        sheet1.write(row, 1, PropulsionDataSplit[j])
+        row += 1
+row = 1
+
+with open("iteration" + str(0) + ".dat", "w") as fout:
+    # fout.write(str(PlanformData))
+    for j in range(0, len(PlanformDataSplit)):
+        fout.write(PlanformDataSplit[j] + '\n')
+
+    fout.write('\n')
+
+    for j in range(0, len(MiscellaneousDataSplit)):
+        fout.write(MiscellaneousDataSplit[j] + '\n')
+
+    fout.write('\n')
+
+    for j in range(0, len(AerodynamicsDataSplit)):
+        fout.write(AerodynamicsDataSplit[j] + '\n')
+
+    fout.write('\n')
+
+    for j in range(0, len(FuselageDataSplit)):
+        fout.write(FuselageDataSplit[j] + '\n')
+
+    fout.write('\n')
+
+    for j in range(0, len(PropulsionDataSplit)):
+        fout.write(PropulsionDataSplit[j] + '\n')
+
+    fout.write('\n')
+
+    for j in range(0, len(WeightDataSplit)):
+        fout.write(WeightDataSplit[j] + '\n')
+
+
 for i in range(1,nmax+1):
     #Wing_parametersFunction(Planform,Miscellaneous)
     #print (Planform.b)
     print(i)
 
-    g = open("iteration" + str(i-1)+ ".dat", "w")  # Open file for writing
 
-    PlanformData = vars(Planform)
-    PlanformDataString = str(PlanformData)
-    PlanformDataSplit = PlanformDataString.split(',')
-
-    MiscellaneousData = vars(Miscellaneous)
-    MiscellaneousDataString = str(MiscellaneousData)
-    MiscellaneousDataSplit = MiscellaneousDataString.split(',')
-
-    AerodynamicsData = vars(Aerodynamics)
-    AerodynamicsDataString = str(AerodynamicsData)
-    AerodynamicsDataSplit = AerodynamicsDataString.split(',')
-
-    FuselageData = vars(Fuselage)
-    FuselageDataString = str(FuselageData)
-    FuselageDataSplit = FuselageDataString.split(',')
-
-    WeightData = vars(Weight)
-    WeightDataString = str(WeightData)
-    WeightDataSplit = WeightDataString.split(',')
-
-
-    PropulsionData = vars(Propulsion)
-    PropulsionDataString = str(PropulsionData)
-    PropulsionDataSplit = PropulsionDataString.split(',')
-
-    with open("iteration" + str(i-1)+ ".dat", "w")  as fout:
-        #fout.write(str(PlanformData))
-        for j in range(0,len(PlanformDataSplit)):
-             fout.write(PlanformDataSplit[j] + '\n')
-
-        fout.write('\n')
-
-        for j in range(0,len(MiscellaneousDataSplit)):
-            fout.write(MiscellaneousDataSplit[j] + '\n')
-
-        fout.write('\n')
-
-        for j in range(0,len(AerodynamicsDataSplit)):
-            fout.write(AerodynamicsDataSplit[j] + '\n')
-
-        fout.write('\n')
-
-        for j in range(0,len(FuselageDataSplit)):
-            fout.write(FuselageDataSplit[j] + '\n')
-
-        fout.write('\n')
-
-        for j in range(0,len(PropulsionDataSplit)):
-            fout.write(PropulsionDataSplit[j] + '\n')
-
-        fout.write('\n')
-
-        for j in range(0,len(WeightDataSplit)):
-            fout.write(WeightDataSplit[j] + '\n')
-
-        fout.write(str(Miscellaneous.WingloadEndCr))
 
         #     fout.write(str(j[0]) + "\n")
         # for j in MiscellaneousData:
@@ -209,60 +277,90 @@ for i in range(1,nmax+1):
 
     plt.close()
 
+    #g = open("iteration" + str(i - 1) + ".dat", "w")  # Open file for writing
 
-g = open("iteration" + str(nmax)+ ".dat", "w")  # Open file for writing
+    PlanformData = vars(Planform)
+    PlanformDataString = str(PlanformData)
+    PlanformDataSplit = PlanformDataString.replace(':', ',').replace("'", '').replace('{', '').replace('}', '').split(',')
 
-PlanformData = vars(Planform)
-PlanformDataString = str(PlanformData)
-PlanformDataSplit = PlanformDataString.split(',')
+    MiscellaneousData = vars(Miscellaneous)
+    MiscellaneousDataString = str(MiscellaneousData)
+    MiscellaneousDataSplit = MiscellaneousDataString.replace(':', ',').replace("'", '').replace('{', '').replace('}','').split(',')
 
-MiscellaneousData = vars(Miscellaneous)
-MiscellaneousDataString = str(MiscellaneousData)
-MiscellaneousDataSplit = MiscellaneousDataString.split(',')
+    AerodynamicsData = vars(Aerodynamics)
+    AerodynamicsDataString = str(AerodynamicsData)
+    AerodynamicsDataSplit = AerodynamicsDataString.replace(':', ',').replace("'", '').replace('{', '').replace('}','').split(',')
 
-AerodynamicsData = vars(Aerodynamics)
-AerodynamicsDataString = str(AerodynamicsData)
-AerodynamicsDataSplit = AerodynamicsDataString.split(',')
+    FuselageData = vars(Fuselage)
+    FuselageDataString = str(FuselageData)
+    FuselageDataSplit = FuselageDataString.replace(':', ',').replace("'", '').replace('{', '').replace('}', '').split(',')
 
-FuselageData = vars(Fuselage)
-FuselageDataString = str(FuselageData)
-FuselageDataSplit = FuselageDataString.split(',')
+    WeightData = vars(Weight)
+    WeightDataString = str(WeightData)
+    WeightDataSplit = WeightDataString.replace(':', ',').replace("'", '').replace('{', '').replace('}', '').split(',')
 
-WeightData = vars(Weight)
-WeightDataString = str(WeightData)
-WeightDataSplit = WeightDataString.split(',')
+    PropulsionData = vars(Propulsion)
+    PropulsionDataString = str(PropulsionData)
+    PropulsionDataSplit = PropulsionDataString.replace(':', ',').replace("'", '').replace('{', '').replace('}','').split(',')
 
-
-PropulsionData = vars(Propulsion)
-PropulsionDataString = str(PropulsionData)
-PropulsionDataSplit = PropulsionDataString.split(',')
-
-with open("iteration" + str(nmax) + ".dat", "w") as fout:
-    # fout.write(str(PlanformData))
     for j in range(0, len(PlanformDataSplit)):
-        fout.write(PlanformDataSplit[j] + '\n')
-
-    fout.write('\n')
-
+        if (j % 2 != 0):
+            sheet1.write(row, i+1, PlanformDataSplit[j])
+            row += 1
     for j in range(0, len(MiscellaneousDataSplit)):
-        fout.write(MiscellaneousDataSplit[j] + '\n')
-
-    fout.write('\n')
-
+        if (j % 2 != 0):
+            sheet1.write(row, i+1, MiscellaneousDataSplit[j])
+            row += 1
     for j in range(0, len(AerodynamicsDataSplit)):
-        fout.write(AerodynamicsDataSplit[j] + '\n')
-
-    fout.write('\n')
-
+        if (j % 2 != 0):
+            sheet1.write(row, i+1, AerodynamicsDataSplit[j])
+            row += 1
     for j in range(0, len(FuselageDataSplit)):
-        fout.write(FuselageDataSplit[j] + '\n')
-
-    fout.write('\n')
-
-    for j in range(0, len(PropulsionDataSplit)):
-        fout.write(PropulsionDataSplit[j] + '\n')
-
-    fout.write('\n')
-
+        if (j % 2 != 0):
+            sheet1.write(row, i+1, FuselageDataSplit[j])
+            row += 1
     for j in range(0, len(WeightDataSplit)):
-        fout.write(WeightDataSplit[j] + '\n')
+        if (j % 2 != 0):
+            sheet1.write(row, i+1, WeightDataSplit[j])
+            row += 1
+    for j in range(0, len(PropulsionDataSplit)):
+        if (j % 2 != 0):
+            sheet1.write(row, i+1, PropulsionDataSplit[j])
+            row += 1
+    row = 1
+
+
+    with open("iteration" + str(i) + ".dat", "w") as fout:
+        # fout.write(str(PlanformData))
+        for j in range(0, len(PlanformDataSplit)):
+            fout.write(PlanformDataSplit[j] + '\n')
+
+        fout.write('\n')
+
+        for j in range(0, len(MiscellaneousDataSplit)):
+            fout.write(MiscellaneousDataSplit[j] + '\n')
+
+        fout.write('\n')
+
+        for j in range(0, len(AerodynamicsDataSplit)):
+            fout.write(AerodynamicsDataSplit[j] + '\n')
+
+        fout.write('\n')
+
+        for j in range(0, len(FuselageDataSplit)):
+            fout.write(FuselageDataSplit[j] + '\n')
+
+        fout.write('\n')
+
+        for j in range(0, len(PropulsionDataSplit)):
+            fout.write(PropulsionDataSplit[j] + '\n')
+
+        fout.write('\n')
+
+        for j in range(0, len(WeightDataSplit)):
+            fout.write(WeightDataSplit[j] + '\n')
+
+        #fout.write(str(Miscellaneous.WingloadEndCr))
+
+
+book.save("Iterations.xls")
