@@ -108,7 +108,7 @@ def CLmaxWing(CLClRatio, Clmax):
 
 CLmax = CLmaxWing(CLClRatio, Clmax)  # at M=0.2
 print('CLmax at 0.2 Mach:', CLmax)
-CLmax_cruise = CLmax*(1-0.2**2)**0.5/((1-0.77**2)**0.5)
+CLmax_cruise = CLmax
 print(CLmax_cruise)
 
 # finding stall AoA using CLalpha for M=0.2
