@@ -8,6 +8,7 @@ import ClassII_Iteration
 
 import matplotlib.pyplot as plt
 import xlwt
+import numpy as np
 
 #from Wing_parameters import Wing_parametersFunction
 
@@ -25,10 +26,10 @@ nmax = 10
 
 
 book = xlwt.Workbook(encoding="utf-8")
-
 sheet1 = book.add_sheet("Iteration Parameters")
-
 sheet1.write(0, 0, "Variable")
+
+np.set_printoptions(legacy='1.25')
 
 for i in range(0,nmax+1):
     sheet1.write(0,i+1,"Value"+str(i))
