@@ -23,7 +23,8 @@ Weight = WeightParameters.Weight()
 #g = open("iteration" + str(0)+ ".dat", "w")  # Open file for writing
 
 nmax = 10
-
+prec = 5
+form = '{:.'+str(prec)+'g}'
 
 book = xlwt.Workbook(encoding="utf-8")
 sheet1 = book.add_sheet("Iteration Parameters")
@@ -87,32 +88,35 @@ for j in range(0,len(PropulsionDataSplit)):
 row = 1
 
 
-
 for j in range(0,len(PlanformDataSplit)):
     if (j%2 != 0):
-        sheet1.write(row, 1, PlanformDataSplit[j])
+        sheet1.write(row, 1, '{:g}'.format(float(form.format(float(PlanformDataSplit[j])))))
         row += 1
 for j in range(0,len(MiscellaneousDataSplit)):
     if(j%2 != 0):
-        sheet1.write(row, 1, MiscellaneousDataSplit[j])
+        sheet1.write(row, 1, '{:g}'.format(float(form.format(float(MiscellaneousDataSplit[j])))))
         row += 1
 for j in range(0,len(AerodynamicsDataSplit)):
     if (j%2 != 0):
-        sheet1.write(row, 1, AerodynamicsDataSplit[j])
+        sheet1.write(row, 1, '{:g}'.format(float(form.format(float(AerodynamicsDataSplit[j])))))
         row += 1
 for j in range(0,len(FuselageDataSplit)):
     if (j%2 != 0):
-        sheet1.write(row, 1, FuselageDataSplit[j])
+        sheet1.write(row, 1, '{:g}'.format(float(form.format(float(FuselageDataSplit[j])))))
         row += 1
 for j in range(0,len(WeightDataSplit)):
     if (j%2 != 0):
-        sheet1.write(row, 1, WeightDataSplit[j])
+        sheet1.write(row, 1, '{:g}'.format(float(form.format(float(WeightDataSplit[j])))))
         row += 1
 for j in range(0,len(PropulsionDataSplit)):
     if (j%2 != 0):
-        sheet1.write(row, 1, PropulsionDataSplit[j])
+        sheet1.write(row, 1, '{:g}'.format(float(form.format(float(PropulsionDataSplit[j])))))
         row += 1
 row = 1
+
+
+
+
 
 with open("iteration" + str(0) + ".dat", "w") as fout:
     # fout.write(str(PlanformData))
@@ -306,27 +310,27 @@ for i in range(1,nmax+1):
 
     for j in range(0, len(PlanformDataSplit)):
         if (j % 2 != 0):
-            sheet1.write(row, i+1, PlanformDataSplit[j])
+            sheet1.write(row, i+1, '{:g}'.format(float(form.format(float(PlanformDataSplit[j])))))
             row += 1
     for j in range(0, len(MiscellaneousDataSplit)):
         if (j % 2 != 0):
-            sheet1.write(row, i+1, MiscellaneousDataSplit[j])
+            sheet1.write(row, i+1, '{:g}'.format(float(form.format(float(MiscellaneousDataSplit[j])))))
             row += 1
     for j in range(0, len(AerodynamicsDataSplit)):
         if (j % 2 != 0):
-            sheet1.write(row, i+1, AerodynamicsDataSplit[j])
+            sheet1.write(row, i+1, '{:g}'.format(float(form.format(float(AerodynamicsDataSplit[j])))))
             row += 1
     for j in range(0, len(FuselageDataSplit)):
         if (j % 2 != 0):
-            sheet1.write(row, i+1, FuselageDataSplit[j])
+            sheet1.write(row, i+1, '{:g}'.format(float(form.format(float(FuselageDataSplit[j])))))
             row += 1
     for j in range(0, len(WeightDataSplit)):
         if (j % 2 != 0):
-            sheet1.write(row, i+1, WeightDataSplit[j])
+            sheet1.write(row, i+1, '{:g}'.format(float(form.format(float(WeightDataSplit[j])))))
             row += 1
     for j in range(0, len(PropulsionDataSplit)):
         if (j % 2 != 0):
-            sheet1.write(row, i+1, PropulsionDataSplit[j])
+            sheet1.write(row, i+1, '{:g}'.format(float(form.format(float(PropulsionDataSplit[j])))))
             row += 1
     row = 1
 
