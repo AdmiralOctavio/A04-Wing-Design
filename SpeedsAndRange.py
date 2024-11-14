@@ -27,8 +27,6 @@ class Miscellaneous:
             self.Mpl = 7200  # kg, design payload mass
             self.Rlost = (1 / 0.7 * Aerodynamics.LD * (self.hCR + self.Velocity ** 2 / (2 * 9.80665))) / 1000  # km, lost range from drag
 
-            self.nose_gear_load_ratio = 0.15
-
             self.WingloadStartCr = (Weight.MTOW*9.80665)/Planform.wing_area
             self.WingloadEndCr = (Weight.MTOW*9.80665 - Weight.M_fuel*9.80665)/Planform.wing_area
             self.CL_cruise = 1.1/(0.5*self.densityFL*self.Velocity**2)*0.5*(self.WingloadStartCr + self.WingloadEndCr)

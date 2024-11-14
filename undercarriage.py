@@ -20,24 +20,24 @@ def get_angle_contraint_line_from_angle_and_point(point: shapely.Point, angle: f
     return shapely.LineString([start, end])
 
 
-
-def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
-
+def Undercarriage(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, Weight):
     tire_pressure = 782000  # [Pa] TODO: When static load changes, this must be retrieved from the graph again
-    tip_over_angle = 12  # [deg]
-    scrape_angle = 8  # [deg]
+    tip_over_angle = 30  # [deg]
+    scrape_angle = 7  # [deg]
     overturn_angle = 55  # [deg]
     ground_clearance_angle = 5  # [deg]
     compression_stroke = 0.3  # [m]
-    vertical_cg_fraction = 0.6  # [-] TODO: what the fuck
+    vertical_cg_fraction = 0.5  # [-] TODO: what the fuck
+
+    nose_static_load_ratio = 0.13
 
     # Aircraft parameters
-    MTOW = Weight.MTOW # [kg]
+    MTOW = Weight.MTOW  # [kg]
     wing_span = Planform.b  # [m]
     dihedral_angle = Planform.dihedral  # [deg]
     engine_diameter = Propulsion.d_nacelle  # [m]
     engine_wing_position = 0.35 * wing_span / 2  # [m]
-    x_cg_pos = Weight.OEWCG # [m] from nose
+    x_cg_pos = Weight.OEWCG  # [m] from nose
 
     # Fuselage Dimensions
     fuselage_diameter = Fuselage.d_fus_outer  # [m]
@@ -46,7 +46,6 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
     tail_cone_length = Fuselage.l_tc  # [m]
 
     # Wing Dimensions
-
 
     cg_position = shapely.Point(x_cg_pos, vertical_cg_fraction * fuselage_diameter)
 
@@ -66,8 +65,8 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
     n_main_wheels = max(4 * round(aircraft_weight / (120000 * 4)), 4)
     n_nose_wheels = 2
 
-    static_load_main = (1 - Miscellaneous.nose_gear_load_ratio) * aircraft_weight / n_main_wheels  # [N] per tire
-    static_load_nose = Miscellaneous.nose_gear_load_ratio * aircraft_weight / n_nose_wheels  # [N] per tire
+    static_load_main = (1 - nose_static_load_ratio) * aircraft_weight / n_main_wheels  # [N] per tire
+    static_load_nose = nose_static_load_ratio * aircraft_weight / n_nose_wheels  # [N] per tire
 
     # print(f"{n_main_wheels = }")
     # print(f"{static_load_main = }")
@@ -89,8 +88,8 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
         0.5 * diameter_main * math.sin(math.radians(scrape_angle)) - compression_stroke,
     )
 
-    scrape_constraint = get_angle_contraint_line_from_angle_and_point(adapated_scrape_position, scrape_angle, 1000)
-    original_scrape_constraint = get_angle_contraint_line_from_angle_and_point(cabin_bottom_right, scrape_angle, 1000)
+    # scrape_constraint = get_angle_contraint_line_from_angle_and_point(adapated_scrape_position, scrape_angle, 1000)
+    scrape_constraint = get_angle_contraint_line_from_angle_and_point(cabin_bottom_right, scrape_angle, 1000)
     tip_over_constraint = get_angle_contraint_line_from_angle_and_point(cg_position, 90 + tip_over_angle, 1000)
 
     main_gear_position = scrape_constraint.intersection(tip_over_constraint)
@@ -101,7 +100,7 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
     # Pn * ln = Pm * lm
     # ln = Pm * lm / Pn
     nose_gear_relative_position = (static_load_main * n_main_wheels * main_gear_relative_position) / (
-                static_load_nose * n_nose_wheels)
+            static_load_nose * n_nose_wheels)
     # print(nose_gear_relative_position)
 
     nose_gear_position = shapely.Point(cg_position.x - nose_gear_relative_position,
@@ -153,9 +152,9 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
     )
 
     lateral_tip_ground_clearance_criterion = (wing_span / 2) - (
-                floor_to_tip_distance / math.tan(math.radians(ground_clearance_angle)))
+            floor_to_tip_distance / math.tan(math.radians(ground_clearance_angle)))
     lateral_engine_ground_clearance_criterion = (wing_span / 2) - (
-                engine_to_floor_distance / math.tan(math.radians(ground_clearance_angle)))
+            engine_to_floor_distance / math.tan(math.radians(ground_clearance_angle)))
 
     wheel_lateral_offset = max(lateral_tipover_criterion, lateral_engine_ground_clearance_criterion,
                                lateral_tip_ground_clearance_criterion)
@@ -173,8 +172,8 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
     ax1.set_aspect(1)
 
     ax1.plot(*fuselage_polygon.exterior.xy)
-    ax1.plot(*original_scrape_constraint.xy)
-    ax1.plot(*tip_over_constraint.xy)
+    # ax1.plot(*original_scrape_constraint.xy)
+    # ax1.plot(*tip_over_constraint.xy)
 
     ax1.scatter(*cg_position.coords.xy)
 
@@ -191,10 +190,14 @@ def Undercarriage(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight
 
     ax2.fill(*left_wheels.exterior.xy, color="orange")
 
-
     Aerodynamics.updatestrut(main_gear_position.y)
 
-    # plt.show()
+    print(f"nose_gear_position dist. from nose = {nose_gear_position.x}")
+    print(f"nose_gear_position dist. below fuselage = {nose_gear_position.y}")
+    print(f"main_gear_position dist. from nose = {main_gear_position.x}")
+    print(f"main_gear_position dist. below fuselage = {main_gear_position.y}")
+    print(f"main_gear_position lateral axle distance = {wheel_lateral_offset}")
+    plt.show()
 
 # Undercarriage()
-    #No need to update anything - only check that the chosen wheel works for the final MTOW
+# No need to update anything - only check that the chosen wheel works for the final MTOW
