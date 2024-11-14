@@ -131,8 +131,6 @@ densitySL
  7200
  Rlost
  274.38370186220055
- nose_gear_load_ratio
- 0.15
  WingloadStartCr
  4200.0
  WingloadEndCr
@@ -153,11 +151,11 @@ cd0airfoil
  CL_max_Cruise
  2.291372534
  CD0_Landing_DOWN
- 0.06871714654345465
+ 0.06899777780160538
  CD0_Landing_UP
  0.06863659379178279
  CD0_Takeoff_DOWN
- 0.02885358912333631
+ 0.029134220381487042
  CD0_Takeoff_UP
  0.028773036371664444
  CD0_Cruise
@@ -245,7 +243,7 @@ cd0airfoil
  Nose_x
  8.06
  strut
- -1.5415894742531762
+ -1.091992757389633
  DeltaCDs
  0.58
  CD_excrFrac
