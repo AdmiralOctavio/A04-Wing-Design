@@ -60,7 +60,6 @@ class Aerodynamics:
             self.IFnacelle = 1.3
 
             self.S_Anose = 0.17057  # m^2 (frontal area of nose gear)
-            self.S_Agear = 0.55643  # m^2 (frontal area of landing gear)
             self.D_nose = 18*0.0254  # m tire diameter
             self.D_main = 33*0.0254  # m tire diameter
             self.W_nose = 4.25*0.0254  # m tire width
