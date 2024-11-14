@@ -63,7 +63,15 @@ class Aerodynamics:
             self.W_nose = 4.25*0.0254  # m tire width
             self.W_main = 9.75*0.0254  # m tire width
             self.Nose_x = 8.06  # m nose gear x-position
-            self.strut = 1.56  # m nose gear strut length
+
+            self.strut = 1.56  # m nose gear strut length #gear Y
+            self.Xgear = 14.9
+            self.Zgear = 2.99
+
+            self.Nstrut = 1.56  # m nose gear strut length #gear Y
+            self.NXgear = 6.26
+
+
             self.DeltaCDs = 0.58  # from graph for nose gear
 
             self.CD_excrFrac = 0.05
@@ -172,6 +180,15 @@ class Aerodynamics:
 
     def updatestrut(self, strut):
         self.strut = strut
+    def updateXgear(self, Xgear):
+        self.Xgear = Xgear
+    def updateZgear(self, Zgear):
+        self.Zgear = Zgear
+
+    def updateNstrut(self, Nstrut):
+        self.Nstrut = Nstrut
+    def updateNXgear(self, NXgear):
+        self.NXgear = NXgear
 
 
 

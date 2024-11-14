@@ -244,6 +244,14 @@ cd0airfoil
  8.06
  strut
  1.56
+ Xgear
+ 14.9
+ Zgear
+ 2.99
+ Nstrut
+ 1.56
+ NXgear
+ 6.26
  DeltaCDs
  0.58
  CD_excrFrac

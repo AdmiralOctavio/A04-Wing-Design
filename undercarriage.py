@@ -191,6 +191,11 @@ def Undercarriage(Planform, Miscellaneous, Propulsion, Aerodynamics, Fuselage, W
     ax2.fill(*left_wheels.exterior.xy, color="orange")
 
     Aerodynamics.updatestrut(main_gear_position.y)
+    Aerodynamics.updateXgear(main_gear_position.x)
+    Aerodynamics.updateZgear(wheel_lateral_offset)
+
+    Aerodynamics.updateNstrut(nose_gear_position.y)
+    Aerodynamics.updateNXgear(nose_gear_position.x)
 
     print(f"nose_gear_position dist. from nose = {nose_gear_position.x}")
     print(f"nose_gear_position dist. below fuselage = {nose_gear_position.y}")
