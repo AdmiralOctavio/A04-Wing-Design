@@ -170,8 +170,8 @@ class Aerodynamics:
     def updateCL_max_Cruise(self, CL_max_Cruise):
         self.CL_max_Cruise = CL_max_Cruise
 
-    def updateCDcruise(self, CDcruise):
-            self.CDcruise = CDcruise
+    def updateCD_cruise(self, CD_cruise):
+            self.CD_cruise = CD_cruise
 
     def updatestrut(self, strut):
         self.strut = strut
