@@ -45,7 +45,7 @@ WingLoading
  beta
  0.6380438856379709
  CL_alpha
- 3.0209407845202914
+ 6.191380494261674
  xc_mHT
  0.3
  xc_mVT
@@ -105,8 +105,6 @@ densitySL
  66
  VcrM
  0.77
- M_app
- 0.1781271034532561
  Velocity
  228.1664
  EASVelocity
@@ -115,6 +113,8 @@ densitySL
  250.33499999999998
  V_stall
  50.55152782453616
+ M_app
+ 0.18273642284476502
  Range
  2963
  fcon
@@ -140,9 +140,7 @@ densitySL
  CL_cruise
  0.3761716075836646
 
-CL_alpha
- 5.76
- cd0airfoil
+cd0airfoil
  0.00486
  clCruiseAirfoil
  0.4756492527004301
@@ -253,15 +251,13 @@ CL_alpha
  CD_excrFrac
  0.05
  CD_cruise
- 0.03267672670773851
+ 0.027924055418342905
  LD
  15.6
  alphaStall
  19.32
  alphaZeroLift
  -1.0
- CDcruise
- 0.027924055418342905
 
 b_f
  2.9

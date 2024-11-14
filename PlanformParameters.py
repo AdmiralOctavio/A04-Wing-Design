@@ -27,7 +27,7 @@ class Planform:
             self.y2ail = 0.95
             self.xc_m = 0.35
             self.beta = (1 - 0.77**2)**0.5
-            self.CL_alpha = 2*pi*self.AR/(2+(4+((self.AR*self.beta/0.95)**2)*(1+(tan(self.sweep_half)/self.beta)**2))**0.5)
+            self.CL_alpha = 2*pi*self.AR/(2+(4+((self.AR*self.beta/0.95)**2)*(1+(tan(radians(self.sweep_half))/self.beta)**2))**0.5)
 
             self.xc_mHT = 0.3  # NACA0012
             self.xc_mVT = 0.3
@@ -67,7 +67,7 @@ class Planform:
         self.sweep_te = degrees(atan(tan(radians(self.sweep_le)) - 2 * self.c_r / self.b * (1 - self.taper)))
         self.b_s = self.b / cos(radians(self.sweep_half))
         self.dihedral = 3 - 0.1 * self.sweep_quarter_chord - 2  # deg
-        self.CL_alpha = 2 * pi * self.AR / (2 + (4 + ((self.AR * self.beta / 0.95) ** 2) * (1 + (tan(self.sweep_half) / self.beta) ** 2)) ** 0.5)
+        self.CL_alpha = 2 * pi * self.AR / (2 + (4 + ((self.AR * self.beta / 0.95) ** 2) * (1 + (tan(radians(self.sweep_half)) / self.beta) ** 2)) ** 0.5)
 
     def updateC_r(self, c_r): self.c_r = c_r
 

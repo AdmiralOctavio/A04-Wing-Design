@@ -3,8 +3,6 @@ from math import sqrt,atan,tan,radians,cos,pi
 
 class Aerodynamics:
     def __init__(self):
-            self.CL_alpha = 5.76
-
             self.cd0airfoil = 0.00486
             self.clCruiseAirfoil = 0.4756492527004301
             self.clCruise = 0.37594287624283806
@@ -69,12 +67,11 @@ class Aerodynamics:
             self.DeltaCDs = 0.58  # from graph for nose gear
 
             self.CD_excrFrac = 0.05
-            self.CD_cruise = 0.03267672670773851
+            self.CD_cruise = 0.027924055418342905
 
             self.LD = 15.6  # Lift drag ratio
             self.alphaStall = 19.32
             self.alphaZeroLift = -1.0  # degrees
-            self.CDcruise = 0.027924055418342905
 
 
 

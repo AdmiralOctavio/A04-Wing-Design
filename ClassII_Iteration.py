@@ -107,14 +107,14 @@ def CalculateAirframeServicesAndEquipmentWeight(Planform,Miscellaneous,Propulsio
 def CalculateLoadFactor(Planform,Miscellaneous,Propulsion, Aerodynamics, Fuselage, Weight):
     u_hat = Miscellaneous.GustVelocity * meter_per_feet  # m/s
 
-    mu = 2 * Planform.WingLoading / Miscellaneous.densityFL / 9.81 / Aerodynamics.CL_alpha / Planform.MAC
+    mu = 2 * Planform.WingLoading / Miscellaneous.densityFL / 9.81 / Planform.CL_alpha / Planform.MAC
 
     K = 0.88 * mu / (5.3 + mu)
 
     u = K * u_hat
 
     # MAXIMUM LOAD FACTOR
-    n_max = 1 + Miscellaneous.densityFL * Miscellaneous.Velocity * Aerodynamics.CL_alpha * u / 2 / Planform.WingLoading
+    n_max = 1 + Miscellaneous.densityFL * Miscellaneous.Velocity * Planform.CL_alpha * u / 2 / Planform.WingLoading
     n_ult = 1.5 * n_max
 
     return n_ult
