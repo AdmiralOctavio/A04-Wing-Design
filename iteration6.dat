@@ -7,7 +7,7 @@ WingLoading
  yMAC
  4.744336181411798
  xMAC
- 1.446
+ 1.4016583604960187
  c_r
  3.977478354637658
  c_t
@@ -96,8 +96,6 @@ WingLoading
  15
  FlapDeflectionL
  35
- xmAC
- 1.4016583604960187
 
 densitySL
  1.225
@@ -173,7 +171,7 @@ CL_alpha
  e_Landing
  0.6075744516025261
  e_Clean
- 0.8280596821832961
+ 0.6047644715068152
  Cf_nose_app
  0.004484187317092938
  Cf_cyl_app
@@ -262,8 +260,8 @@ CL_alpha
  19.32
  alphaZeroLift
  -1.0
- e_clean
- 0.6047644715068152
+ CDcruise
+ 0.03103480348645211
 
 b_f
  2.9

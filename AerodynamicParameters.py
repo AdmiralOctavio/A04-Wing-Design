@@ -154,7 +154,7 @@ class Aerodynamics:
     def updatee_Takeoff(self, e_Takeoff):
             self.e_Takeoff = e_Takeoff
     def updatee_Clean(self, e_Clean):
-            self.e_clean = e_Clean
+            self.e_Clean = e_Clean
             
     def updatealphaStall(self, alphaStall):
             self.alphaStall = alphaStall
@@ -170,8 +170,8 @@ class Aerodynamics:
     def updateCL_max_Cruise(self, CL_max_Cruise):
         self.CL_max_Cruise = CL_max_Cruise
 
-    def updateCDcruise(self, CDcruise):
-            self.CDcruise = CDcruise
+    def updateCD_cruise(self, CD_cruise):
+            self.CD_cruise = CD_cruise
 
     def updatestrut(self, strut):
         self.strut = strut
