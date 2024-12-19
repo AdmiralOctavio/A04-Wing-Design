@@ -358,26 +358,26 @@ def Class2_Drag(Planform,Miscellaneous,Propulsion,Aerodynamics,Fuselage,Weight):
     # # print('time ground effect at gamma=3deg', TimeGroundEffect(b, V_stall, gamma3))
     # # print('time ground effect at gamma=5deg', TimeGroundEffect(b, V_stall, gamma5))
     
-    # # Generate x values
-    # gamma = np.linspace(-0.35, 0.35, 400)
+    # Generate x values
+    gamma = np.linspace(-0.35, 0.35, 400)
     
-    # # Compute y values
-    # t = f(gamma)
+    # Compute y values
+    t = f(gamma)
     
-    # # Create the plot
-    # plt.plot(gamma, t, label='f(gamma) = b/(2*V_stall*sin(gamma))')
+    # Create the plot
+    plt.plot(gamma, t, label='f(gamma) = b/(2*V_stall*sin(gamma))')
     
-    # # Add title and labels
-    # plt.title('Plot of f(gamma) = b/(2*V_stall*sin(gamma))')
-    # plt.xlabel('gamma')
-    # plt.ylabel('time for ground effect')
+    # Add title and labels
+    plt.title('Plot of f(gamma) = b/(2*V_stall*sin(gamma))')
+    plt.xlabel('gamma')
+    plt.ylabel('time for ground effect')
     
-    # # Add a legend
-    # plt.legend()
+    # Add a legend
+    plt.legend()
     
-    # # Show the plot
-    # plt.grid(True)
-    # #plt.show()
+    # Show the plot
+    plt.grid(True)
+    plt.show()
 
 
     # These are the 6 needed parameters, only 3 were calculated
